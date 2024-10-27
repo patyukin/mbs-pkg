@@ -1,3 +1,3 @@
-module github.com/patyukin/bs-pkg
+module github.com/patyukin/mbs-pkg
 
 go 1.23.2
