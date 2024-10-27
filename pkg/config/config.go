@@ -8,10 +8,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func LoadConfig[T any](configFilePathEnv string, config *T) error {
-	yamlConfigFilePath := os.Getenv(configFilePathEnv)
+const YamlConfigFilePath = "YAML_CONFIG_FILE_PATH"
+
+func LoadConfig[T any](config *T) error {
+	yamlConfigFilePath := os.Getenv(YamlConfigFilePath)
 	if yamlConfigFilePath == "" {
-		return fmt.Errorf("environment variable %s is not set", configFilePathEnv)
+		return fmt.Errorf("environment variable %s is not set", YamlConfigFilePath)
 	}
 
 	f, err := os.Open(yamlConfigFilePath)
