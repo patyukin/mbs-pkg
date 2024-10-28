@@ -10,11 +10,11 @@ import (
 	"go.opentelemetry.io/otel/semconv/v1.26.0"
 )
 
-func Init(ctx context.Context, serviceName string) (*trace.TracerProvider, error) {
+func Init(ctx context.Context, serviceName string, port int) (*trace.TracerProvider, error) {
 	exporter, err := otlptracegrpc.New(
 		ctx,
 		otlptracegrpc.WithInsecure(),
-		otlptracegrpc.WithEndpoint("0.0.0.0:5011"),
+		otlptracegrpc.WithEndpoint(fmt.Sprintf("0.0.0.0:%d", port)),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create trace exporter: %w", err)
