@@ -61,6 +61,8 @@ func (m *SignUpRequest) validate(all bool) error {
 
 	// no validation rules for Password
 
+	// no validation rules for TelegramLogin
+
 	// no validation rules for FirstName
 
 	// no validation rules for LastName

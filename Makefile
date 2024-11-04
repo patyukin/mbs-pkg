@@ -8,7 +8,8 @@ install-deps:
 	GOBIN=$(LOCAL_BIN) go install github.com/envoyproxy/protoc-gen-validate@v1.1.0
 	GOBIN=$(LOCAL_BIN) go install github.com/pressly/goose/v3/cmd/goose@latest
 
-gen-auth-api:
+gen-api:
+	rm -rf pkg/proto/auth_v1
 	mkdir -p pkg/proto/auth_v1
 	protoc --proto_path api/auth_v1 --proto_path vendor.protogen \
 	--go_out=pkg/proto/auth_v1 --go_opt=paths=source_relative \
@@ -18,10 +19,20 @@ gen-auth-api:
 	--validate_out lang=go:pkg/proto/auth_v1 --validate_opt=paths=source_relative \
 	--plugin=protoc-gen-validate=bin/protoc-gen-validate \
 	api/auth_v1/auth.proto
+	rm -rf pkg/proto/payment_v1
+	mkdir -p pkg/proto/payment_v1
+	protoc --proto_path api/payment_v1 --proto_path vendor.protogen \
+	--go_out=pkg/proto/payment_v1 --go_opt=paths=source_relative \
+	--plugin=protoc-gen-go=bin/protoc-gen-go \
+	--go-grpc_out=pkg/proto/payment_v1 --go-grpc_opt=paths=source_relative \
+	--plugin=protoc-gen-go-grpc=bin/protoc-gen-go-grpc \
+	--validate_out lang=go:pkg/proto/payment_v1 --validate_opt=paths=source_relative \
+	--plugin=protoc-gen-validate=bin/protoc-gen-validate \
+	api/payment_v1/payment.proto
 
 gen:
 	make install-deps
-	make gen-auth-api
+	make gen-api
 
 vendor-proto:
 		@if [ ! -d vendor.protogen/validate ]; then \

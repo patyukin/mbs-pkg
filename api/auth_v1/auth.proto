@@ -17,12 +17,13 @@ service AuthService {
 message SignUpRequest {
   string email = 1;
   string password = 2;
-  string first_name = 3;
-  string last_name = 4;
-  string patronymic = 5;
-  string date_of_birth = 6;
-  string phone = 7;
-  string address = 8;
+  string telegram_login = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string patronymic = 6;
+  string date_of_birth = 7;
+  string phone = 8;
+  string address = 9;
 }
 
 message SignUpResponse {
