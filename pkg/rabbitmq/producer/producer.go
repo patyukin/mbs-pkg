@@ -63,6 +63,25 @@ func (p *Producer) BindQueueToExchange(exchangeName, queueName string, routingKe
 	return nil
 }
 
+func (p *Producer) QueuesDeclare(queues []string) error {
+	for _, queue := range queues {
+		_, err := p.channel.QueueDeclare(
+			queue,
+			true,
+			false,
+			false,
+			false,
+			nil,
+		)
+		if err != nil {
+			return fmt.Errorf("failed to declare queue: %w", err)
+		}
+	}
+
+	return nil
+
+}
+
 func (p *Producer) Close() error {
 	return p.conn.Close()
 }
