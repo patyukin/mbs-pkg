@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package payment_v1;
+
+option go_package = ".;payment_v1";
+
+import "google/protobuf/timestamp.proto";
+
+// Сообщение запроса для создания платежа
+message CreatePaymentRequest {
+  string sender_account_id = 1;
+  string receiver_account_id = 2;
+  double amount = 3;
+  string currency = 4;
+  string description = 5;
+}
+
+// Сообщение ответа после создания платежа
+message CreatePaymentResponse {
+  Payment payment = 1;
+}
+
+// Сообщение платежа
+message Payment {
+  string id = 1;
+  string sender_account_id = 2;
+  string receiver_account_id = 3;
+  double amount = 4;
+  string currency = 5;
+  string description = 6;
+  string status = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+// Запрос для получения информации о платеже
+message GetPaymentRequest {
+  string id = 1;
+}
+
+// Ответ с информацией о платеже
+message GetPaymentResponse {
+  Payment payment = 1;
+}
+
+// Запрос для обновления статуса платежа
+message UpdatePaymentStatusRequest {
+  string id = 1;
+  string status = 2;
+}
+
+// Ответ после обновления статуса платежа
+message UpdatePaymentStatusResponse {
+  Payment payment = 1;
+}
+
+// Сообщение транзакции
+message Transaction {
+  string id = 1;
+  string payment_id = 2;
+  string account_id = 3;
+  string type = 4; // 'DEBIT' или 'CREDIT'
+  double amount = 5;
+  string currency = 6;
+  string description = 7;
+  string status = 8;
+  google.protobuf.Timestamp created_at = 9;
+}
+
+// Запрос для получения транзакций по платежу
+message GetTransactionsByPaymentRequest {
+  string payment_id = 1;
+}
+
+// Ответ с транзакциями по платежу
+message GetTransactionsByPaymentResponse {
+  repeated Transaction transactions = 1;
+}
+
+// Сервис платежей и транзакций
+service PaymentService {
+  // Методы для платежей
+  rpc CreatePayment (CreatePaymentRequest) returns (CreatePaymentResponse);
+  rpc GetPayment (GetPaymentRequest) returns (GetPaymentResponse);
+  rpc UpdatePaymentStatus (UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
+
+  // Методы для транзакций
+  rpc GetTransactionsByPayment (GetTransactionsByPaymentRequest) returns (GetTransactionsByPaymentResponse);
+}
