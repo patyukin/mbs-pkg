@@ -63,7 +63,15 @@ func (p *Producer) BindQueueToExchange(exchangeName, queueName string, routingKe
 	return nil
 }
 
-func (p *Producer) PublishMessage(ctx context.Context, routeKey string, body []byte) error {
+func (p *Producer) Close() error {
+	return p.conn.Close()
+}
+
+func (p *Producer) CloseChannel() error {
+	return p.channel.Close()
+}
+
+func (p *Producer) publishMessage(ctx context.Context, routeKey string, body []byte) error {
 	err := p.channel.PublishWithContext(
 		ctx,
 		p.exchange,
@@ -83,4 +91,8 @@ func (p *Producer) PublishMessage(ctx context.Context, routeKey string, body []b
 	log.Info().Msgf("Message sent to route key %s via exchange %s: %s", routeKey, p.exchange, string(body))
 
 	return nil
+}
+
+func (p *Producer) PublishAuthSignUpMessage(ctx context.Context, body []byte) error {
+	return p.publishMessage(ctx, "auth_sign_up_route_key", body)
 }
