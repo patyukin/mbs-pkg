@@ -34,7 +34,7 @@ func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []b
 
 // PublishDQLMessage
 // Отправка сообщение в DQL в RabbitMQ
-func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte) error {
 	err := r.channel.PublishWithContext(
 		ctx,
 		"",
@@ -46,7 +46,6 @@ func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte, headers a
 			Body:         body,
 			Timestamp:    time.Now(),
 			DeliveryMode: amqp.Persistent,
-			Headers:      headers,
 		},
 	)
 	if err != nil {
