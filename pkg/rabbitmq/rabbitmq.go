@@ -12,6 +12,7 @@ const (
 	SignInCodeRouteKey           = "sign_in_code_route_key"
 	AuthNotifyQueue              = "auth_notify_queue"
 	NotifyAuthQueue              = "notify_auth_queue"
+	dlqRouteKey                  = "dead_letter_queue_route_key"
 )
 
 type HandlerFunction func(ctx context.Context, d amqp.Delivery) error
@@ -61,7 +62,9 @@ func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKe
 		false,
 		false,
 		amqp.Table{
-			"x-message-ttl": int64(2592000000), // 30 дней = 30 * 24 * 60 * 60 * 1000 = 2592000000 миллисекунд
+			"x-dead-letter-exchange":    "",
+			"x-dead-letter-routing-key": dlqRouteKey,
+			"x-message-ttl":             int64(2592000000), // 30 дней = 30 * 24 * 60 * 60 * 1000 = 2592000000 миллисекунд
 		},
 	)
 	if err != nil {
@@ -81,7 +84,7 @@ func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKe
 		}
 	}
 
-	if workerCount != 0 {
+	if workerCount > 0 {
 		err = r.channel.Qos(
 			workerCount,
 			0,

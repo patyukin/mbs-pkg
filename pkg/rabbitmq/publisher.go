@@ -16,9 +16,10 @@ func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []b
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "application/json",
-			Body:        body,
-			Timestamp:   time.Now(),
+			ContentType:  "application/json",
+			Body:         body,
+			Timestamp:    time.Now(),
+			DeliveryMode: amqp.Persistent,
 		},
 	)
 	if err != nil {
