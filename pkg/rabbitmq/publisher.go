@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []byte) error {
+func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []byte, headers amqp.Table) error {
 	err := r.channel.PublishWithContext(
 		ctx,
 		r.exchange,
@@ -20,6 +20,7 @@ func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []b
 			Body:         body,
 			Timestamp:    time.Now(),
 			DeliveryMode: amqp.Persistent,
+			Headers:      headers,
 		},
 	)
 	if err != nil {
@@ -33,18 +34,18 @@ func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []b
 
 // PublishSignUpCodeRouteKeyMessage
 // Отправка кода подтверждения регистрации из телеграм в RabbitMQ
-func (r *RabbitMQ) PublishSignUpCodeRouteKeyMessage(ctx context.Context, body []byte) error {
-	return r.publishMessage(ctx, SignUpConfirmCodeRouteKey, body)
+func (r *RabbitMQ) PublishSignUpCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, SignUpConfirmCodeRouteKey, body, headers)
 }
 
 // PublishAuthSignUpMessage
 // Отправка информации подтверждения регистрации из authService в RabbitMQ
-func (r *RabbitMQ) PublishAuthSignUpMessage(ctx context.Context, body []byte) error {
-	return r.publishMessage(ctx, SignUpConfirmMessageRouteKey, body)
+func (r *RabbitMQ) PublishAuthSignUpMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, SignUpConfirmMessageRouteKey, body, headers)
 }
 
 // PublishSignInCodeRouteKeyMessage
 // Отправка кода подтверждения входа из authService в RabbitMQ
-func (r *RabbitMQ) PublishSignInCodeRouteKeyMessage(ctx context.Context, body []byte) error {
-	return r.publishMessage(ctx, SignInCodeRouteKey, body)
+func (r *RabbitMQ) PublishSignInCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, SignInCodeRouteKey, body, headers)
 }
