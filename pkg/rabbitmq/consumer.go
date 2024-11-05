@@ -2,6 +2,7 @@ package rabbitmq
 
 import (
 	"context"
+	"fmt"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/rs/zerolog/log"
 	"sync"
@@ -9,7 +10,7 @@ import (
 
 // AuthNotifyConsumer - consumer for auth_notify_queue
 // Обработка сообщений из очереди auth_notify_queue
-func (r *RabbitMQ) AuthNotifyConsumer(ctx context.Context, processMessage HandlerFunction, workerCount int) {
+func (r *RabbitMQ) AuthNotifyConsumer(ctx context.Context, processMessage HandlerFunction, workerCount int) error {
 	msgs, err := r.channel.Consume(
 		AuthNotifyQueue,
 		"",
@@ -20,8 +21,7 @@ func (r *RabbitMQ) AuthNotifyConsumer(ctx context.Context, processMessage Handle
 		nil,
 	)
 	if err != nil {
-		log.Printf("failed to consume: %v", err)
-		return
+		return fmt.Errorf("failed to consume in auth_notify_queue: %w", err)
 	}
 
 	wg := &sync.WaitGroup{}
@@ -62,6 +62,8 @@ func (r *RabbitMQ) AuthNotifyConsumer(ctx context.Context, processMessage Handle
 
 	wg.Wait()
 	log.Info().Msg("All workers finished")
+
+	return nil
 }
 
 func (r *RabbitMQ) NotifySignUpConfirmCodeConsumer(ctx context.Context, processMessage HandlerFunction) {
