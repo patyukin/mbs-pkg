@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog/log"
+	"time"
 )
 
 type PostgreSQLConfig struct {
@@ -30,6 +31,8 @@ func New(ctx context.Context, cfg PostgreSQLConfig) (*sql.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to db: %w", err)
 	}
+
+	dbConn.SetConnMaxLifetime(time.Hour)
 
 	log.Info().Msg("connected to db")
 
