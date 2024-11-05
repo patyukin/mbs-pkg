@@ -32,6 +32,32 @@ func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []b
 	return nil
 }
 
+// PublishDQLMessage
+// Отправка сообщение в DQL в RabbitMQ
+func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+	err := r.channel.PublishWithContext(
+		ctx,
+		"",
+		dlqRouteKey,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType:  "application/json",
+			Body:         body,
+			Timestamp:    time.Now(),
+			DeliveryMode: amqp.Persistent,
+			Headers:      headers,
+		},
+	)
+	if err != nil {
+		return fmt.Errorf("failed to publish message: %w", err)
+	}
+
+	log.Info().Msgf("Message sent to route key %s via exchange %s: %s", dlqRouteKey, r.exchange, string(body))
+
+	return nil
+}
+
 // PublishSignUpCodeRouteKeyMessage
 // Отправка кода подтверждения регистрации из телеграм в RabbitMQ
 func (r *RabbitMQ) PublishSignUpCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
