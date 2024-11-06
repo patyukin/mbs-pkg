@@ -8,30 +8,6 @@ import (
 	"time"
 )
 
-func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []byte, headers amqp.Table) error {
-	err := r.channel.PublishWithContext(
-		ctx,
-		r.exchange,
-		routeKey,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType:  "application/json",
-			Body:         body,
-			Timestamp:    time.Now(),
-			DeliveryMode: amqp.Persistent,
-			Headers:      headers,
-		},
-	)
-	if err != nil {
-		return fmt.Errorf("failed to publish message: %w", err)
-	}
-
-	log.Info().Msgf("Message sent to route key %s via exchange %s: %s", routeKey, r.exchange, string(body))
-
-	return nil
-}
-
 // PublishDQLMessage
 // Отправка сообщение в DQL в RabbitMQ
 func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte) error {
@@ -57,20 +33,44 @@ func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte) error {
 	return nil
 }
 
-// PublishSignUpCodeRouteKeyMessage
+func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []byte, headers amqp.Table) error {
+	err := r.channel.PublishWithContext(
+		ctx,
+		r.exchange,
+		routeKey,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType:  "application/json",
+			Body:         body,
+			Timestamp:    time.Now(),
+			DeliveryMode: amqp.Persistent,
+			Headers:      headers,
+		},
+	)
+	if err != nil {
+		return fmt.Errorf("failed to publish message: %w", err)
+	}
+
+	log.Info().Msgf("Message sent to route key %s via exchange %s: %s", routeKey, r.exchange, string(body))
+
+	return nil
+}
+
+// PublishNotifySignUpConfirmCode
 // Отправка кода подтверждения регистрации из телеграм в RabbitMQ
-func (r *RabbitMQ) PublishSignUpCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+func (r *RabbitMQ) PublishNotifySignUpConfirmCode(ctx context.Context, body []byte, headers amqp.Table) error {
 	return r.publishMessage(ctx, NotifySignUpConfirmCodeRouteKey, body, headers)
 }
 
-// PublishAuthSignUpMessage
+// PublishAuthSignUpResultMessage
 // Отправка информации подтверждения регистрации из authService в RabbitMQ
-func (r *RabbitMQ) PublishAuthSignUpMessage(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, AuthSignUpConfirmMessageRouteKey, body, headers)
+func (r *RabbitMQ) PublishAuthSignUpResultMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, AuthSignUpResultMessageRouteKey, body, headers)
 }
 
-// PublishSignInCodeRouteKeyMessage
+// PublishAuthSignInCode
 // Отправка кода подтверждения входа из authService в RabbitMQ
-func (r *RabbitMQ) PublishSignInCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, AuthSignInCodeRouteKey, body, headers)
+func (r *RabbitMQ) PublishAuthSignInCode(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, AuthSignInConfirmCodeRouteKey, body, headers)
 }

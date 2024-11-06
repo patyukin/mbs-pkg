@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	Exchange                         = "banking_system_exchange"
-	NotifySignUpConfirmCodeRouteKey  = "notify_sign_up_confirm_code_route_key"
-	AuthSignUpConfirmMessageRouteKey = "auth_sign_up_confirm_message_route_key"
-	AuthSignInCodeRouteKey           = "auth_sign_in_code_route_key"
-	AuthNotifyQueue                  = "auth_notify_queue"
-	NotifyAuthQueue                  = "notify_auth_queue"
-	DeadLetterQueueRouteKey          = "dead_letter_queue_route_key"
+	Exchange                        = "banking_system_exchange"
+	NotifySignUpConfirmCodeRouteKey = "notify_sign_up_confirm_code_route_key"
+	AuthSignUpResultMessageRouteKey = "auth_sign_up_result_message_route_key"
+	AuthSignInConfirmCodeRouteKey   = "auth_sign_in_confirm_code_route_key"
+	AuthNotifyQueue                 = "auth_notify_queue"
+	NotifyAuthQueue                 = "notify_auth_queue"
+	DeadLetterQueueRouteKey         = "dead_letter_queue_route_key"
 )
 
 type HandlerFunction func(ctx context.Context, d amqp.Delivery) error
