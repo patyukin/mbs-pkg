@@ -60,17 +60,17 @@ func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte) error {
 // PublishSignUpCodeRouteKeyMessage
 // Отправка кода подтверждения регистрации из телеграм в RabbitMQ
 func (r *RabbitMQ) PublishSignUpCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, SignUpConfirmCodeRouteKey, body, headers)
+	return r.publishMessage(ctx, NotifySignUpConfirmCodeRouteKey, body, headers)
 }
 
 // PublishAuthSignUpMessage
 // Отправка информации подтверждения регистрации из authService в RabbitMQ
 func (r *RabbitMQ) PublishAuthSignUpMessage(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, SignUpConfirmMessageRouteKey, body, headers)
+	return r.publishMessage(ctx, AuthSignUpConfirmMessageRouteKey, body, headers)
 }
 
 // PublishSignInCodeRouteKeyMessage
 // Отправка кода подтверждения входа из authService в RabbitMQ
 func (r *RabbitMQ) PublishSignInCodeRouteKeyMessage(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, SignInCodeRouteKey, body, headers)
+	return r.publishMessage(ctx, AuthSignInCodeRouteKey, body, headers)
 }
