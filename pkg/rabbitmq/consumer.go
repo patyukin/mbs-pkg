@@ -66,7 +66,7 @@ func (r *RabbitMQ) AuthNotifyConsumer(ctx context.Context, processMessage Handle
 	return nil
 }
 
-func (r *RabbitMQ) NotifySignUpConfirmCodeConsumer(ctx context.Context, processMessage HandlerFunction) {
+func (r *RabbitMQ) NotifyAuthConsumer(ctx context.Context, processMessage HandlerFunction) {
 	msgs, err := r.channel.Consume(
 		NotifyAuthQueue,
 		"",
