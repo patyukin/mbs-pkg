@@ -64,7 +64,7 @@ func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKe
 		false,
 		amqp.Table{
 			"x-dead-letter-exchange":    "",
-			"x-dead-letter-routing-key": dlqRouteKey,
+			"x-dead-letter-routing-key": DeadLetterQueueRouteKey,
 			"x-message-ttl":             int64(2592000000), // 30 дней = 30 * 24 * 60 * 60 * 1000 = 2592000000 миллисекунд
 		},
 	)
