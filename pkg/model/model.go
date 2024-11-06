@@ -11,3 +11,8 @@ type AuthSignUpConfirmCode struct {
 	UserTelegramLogin string `json:"user_telegram_login"`
 	UserTelegramID    int64  `json:"user_telegram_id"`
 }
+
+type AuthSignUpResultMessage struct {
+	ChatID  int64  `json:"chat_id"`
+	Message string `json:"message"`
+}
