@@ -66,7 +66,7 @@ func (r *RabbitMQ) AuthNotifyConsumer(ctx context.Context, processMessage Handle
 	return nil
 }
 
-func (r *RabbitMQ) NotifyAuthConsumer(ctx context.Context, processMessage HandlerFunction) {
+func (r *RabbitMQ) NotifyAuthConsumer(ctx context.Context, processMessage HandlerFunction) error {
 	msgs, err := r.channel.Consume(
 		NotifyAuthQueue,
 		"",
@@ -77,8 +77,7 @@ func (r *RabbitMQ) NotifyAuthConsumer(ctx context.Context, processMessage Handle
 		nil,
 	)
 	if err != nil {
-		log.Error().Msgf("failed to consume in auth_sign_up_confirm_code_queue: %v", err)
-		return
+		return fmt.Errorf("failed to consume in auth_sign_up_confirm_code_queue: %w", err)
 	}
 
 	for msg := range msgs {
@@ -101,4 +100,6 @@ func (r *RabbitMQ) NotifyAuthConsumer(ctx context.Context, processMessage Handle
 			log.Debug().Msgf("Message processed in auth_sign_up_confirm_code_queue: %s", string(d.Body))
 		}(msg)
 	}
+
+	return nil
 }
