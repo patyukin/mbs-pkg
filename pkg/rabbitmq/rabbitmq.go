@@ -55,7 +55,7 @@ func New(url, exchange string) (*RabbitMQ, error) {
 	}, nil
 }
 
-func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKeys []string, workerCount int) error {
+func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKeys []string) error {
 	q, err := r.channel.QueueDeclare(
 		queueName,
 		true,
@@ -82,17 +82,6 @@ func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKe
 		)
 		if err != nil {
 			return fmt.Errorf("failed to bind queue to exchange: %w", err)
-		}
-	}
-
-	if workerCount > 0 {
-		err = r.channel.Qos(
-			workerCount,
-			0,
-			false,
-		)
-		if err != nil {
-			return fmt.Errorf("failed to set QoS: %w", err)
 		}
 	}
 
