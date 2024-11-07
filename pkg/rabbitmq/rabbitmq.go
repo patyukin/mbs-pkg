@@ -13,7 +13,8 @@ const (
 	AuthSignInConfirmCodeRouteKey   = "auth_sign_in_confirm_code_route_key"
 	AuthNotifyQueue                 = "auth_notify_queue"
 	NotifyAuthQueue                 = "notify_auth_queue"
-	DeadLetterQueueRouteKey         = "dead_letter_queue_route_key"
+	DeadLetterExchange              = "dead_letter_exchange"
+	DeadLetterQueue                 = "dead_letter_queue"
 )
 
 type HandlerFunction func(ctx context.Context, d amqp.Delivery) error
@@ -48,6 +49,42 @@ func New(url, exchange string) (*RabbitMQ, error) {
 		return nil, fmt.Errorf("failed to declare exchange: %w", err)
 	}
 
+	err = channel.ExchangeDeclare(
+		DeadLetterExchange,
+		"direct",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to declare a DLX exchange: %w", err)
+	}
+
+	_, err = channel.QueueDeclare(
+		DeadLetterQueue,
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to declare a DLQ: %w", err)
+	}
+
+	err = channel.QueueBind(
+		DeadLetterQueue,
+		DeadLetterQueue,
+		DeadLetterExchange,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to bind DLQ to DLX: %w", err)
+	}
+
 	return &RabbitMQ{
 		conn:     conn,
 		channel:  channel,
@@ -63,8 +100,8 @@ func (r *RabbitMQ) BindQueueToExchange(exchangeName, queueName string, routingKe
 		false,
 		false,
 		amqp.Table{
-			"x-dead-letter-exchange":    "",
-			"x-dead-letter-routing-key": DeadLetterQueueRouteKey,
+			"x-dead-letter-exchange":    DeadLetterExchange,
+			"x-dead-letter-routing-key": DeadLetterQueue,
 			"x-message-ttl":             int64(2592000000), // 30 дней = 30 * 24 * 60 * 60 * 1000 = 2592000000 миллисекунд
 		},
 	)
