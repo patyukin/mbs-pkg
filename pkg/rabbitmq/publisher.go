@@ -13,8 +13,8 @@ import (
 func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte) error {
 	err := r.channel.PublishWithContext(
 		ctx,
-		"",
-		DeadLetterQueueRouteKey,
+		DeadLetterExchange,
+		DeadLetterQueue,
 		false,
 		false,
 		amqp.Publishing{
@@ -28,7 +28,7 @@ func (r *RabbitMQ) PublishDQLMessage(ctx context.Context, body []byte) error {
 		return fmt.Errorf("failed to publish message: %w", err)
 	}
 
-	log.Info().Msgf("Message sent to route key %s via exchange %s: %s", DeadLetterQueueRouteKey, r.exchange, string(body))
+	log.Info().Msgf("Message sent to route key %s via exchange %s: %s", DeadLetterQueue, r.exchange, string(body))
 
 	return nil
 }
