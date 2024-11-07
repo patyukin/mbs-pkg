@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-func Init(ctx context.Context, jaegerURL string, serviceName string) (*trace.TracerProvider, func(context.Context), error) {
+func Init(jaegerURL string, serviceName string) (*trace.TracerProvider, func(context.Context), error) {
 	exporter, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(jaegerURL)))
 	if err != nil {
 		return nil, nil, fmt.Errorf("initialize exporter: %w", err)
