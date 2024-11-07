@@ -11,7 +11,10 @@ import (
 	"log"
 )
 
-const ProviderNameApiGateway = "ApiGateway"
+const (
+	ProviderNameApiGateway  = "ApiGateway"
+	ProviderNameAuthService = "AuthService"
+)
 
 func Init(jaegerURL string, serviceName string) (*trace.TracerProvider, func(context.Context), error) {
 	exporter, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(jaegerURL)))
