@@ -24,7 +24,7 @@ func (r *RabbitMQ) Consume(ctx context.Context, queue string, processMessage Han
 	for msg := range msgs {
 		go func(d amqp.Delivery) {
 			if err = processMessage(ctx, d); err != nil {
-				if err = d.Nack(false, true); err != nil {
+				if err = d.Nack(false, false); err != nil {
 					log.Error().Msgf("failed to nack message in auth_sign_up_confirm_code_queue: %v", err)
 					return
 				}
