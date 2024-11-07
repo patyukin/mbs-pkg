@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-func Init(ctx context.Context, jaegerURL string, serviceName string) (*trace.TracerProvider, func(), error) {
+func Init(ctx context.Context, jaegerURL string, serviceName string) (*trace.TracerProvider, func(context.Context), error) {
 	exporter, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(jaegerURL)))
 	if err != nil {
 		return nil, nil, fmt.Errorf("initialize exporter: %w", err)
@@ -35,7 +35,7 @@ func Init(ctx context.Context, jaegerURL string, serviceName string) (*trace.Tra
 
 	otel.SetTracerProvider(tp)
 
-	return tp, func() {
+	return tp, func(ctx context.Context) {
 		if err = tp.Shutdown(ctx); err != nil {
 			log.Fatalf("Ошибка при завершении Tracer Provider: %v", err)
 		}
