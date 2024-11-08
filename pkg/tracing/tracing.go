@@ -2,11 +2,12 @@ package tracing
 
 import (
 	"github.com/opentracing/opentracing-go"
+	"github.com/rs/zerolog/log"
 	"github.com/uber/jaeger-client-go"
 	"github.com/uber/jaeger-client-go/config"
 )
 
-func InitJaeger(jaegerURL, serviceName string) (opentracing.Tracer, error) {
+func InitJaeger(jaegerURL, serviceName string) (opentracing.Tracer, func(), error) {
 	cfg := config.Configuration{
 		ServiceName: serviceName,
 		Sampler: &config.SamplerConfig{
@@ -19,12 +20,16 @@ func InitJaeger(jaegerURL, serviceName string) (opentracing.Tracer, error) {
 		},
 	}
 
-	tracer, _, err := cfg.NewTracer()
+	tracer, closer, err := cfg.NewTracer(config.Logger(jaeger.StdLogger))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	opentracing.SetGlobalTracer(tracer)
 
-	return tracer, nil
+	return tracer, func() {
+		if err = closer.Close(); err != nil {
+			log.Error().Msgf("failed to close tracer, error: %v", err)
+		}
+	}, nil
 }
