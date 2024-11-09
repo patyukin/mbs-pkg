@@ -2,11 +2,13 @@ syntax = "proto3";
 
 package auth_v1;
 
-option go_package = ".;auth_v1";
+import "error.proto";
+import 'google/protobuf/empty.proto';
+
+option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/auth_v1;auth_v1";
 
 service AuthService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
-  rpc ResendSignUpCode(ResendSignUpCodeRequest) returns (ResendSignUpCodeResponse);
   rpc SignIn(SignInRequest) returns (SignInResponse);
   rpc SignInVerify(SignInVerifyRequest) returns (SignInVerifyResponse);
   rpc GetUserByUUID(GetUserByUUIDRequest) returns (GetUserByUUIDResponse);
@@ -37,6 +39,14 @@ message SignInRequest {
 }
 
 message SignInResponse {
+  google.protobuf.Empty result = 1;
+  error_v1.ErrorResponse error = 2;
+}
+
+message CustomError {
+  int32 code = 1;
+  string message = 2;
+  map<string, string> details = 3;
 }
 
 message GetUserByUUIDRequest {
@@ -118,12 +128,7 @@ message SignInVerifyResponse {
   string refresh_token = 2;
 }
 
-message ResendSignUpCodeRequest {
-  string email = 1;
-  string password = 2;
-}
-
-message ResendSignUpCodeResponse {
-  string user_id = 1;
+message Error {
+  int32 code = 1;
   string message = 2;
 }
