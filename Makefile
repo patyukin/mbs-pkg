@@ -47,6 +47,7 @@ gen-api:
 
 gen:
 	make install-deps
+	make vendor-proto
 	make gen-api
 
 vendor-proto:

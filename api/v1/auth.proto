@@ -14,6 +14,7 @@ service AuthService {
   rpc GetUserByUUID(GetUserByUUIDRequest) returns (GetUserByUUIDResponse);
   rpc GetUsersWithTokens (GetUsersWithTokensRequest) returns (GetUsersWithTokensResponse);
   rpc GetUsersWithProfiles (GetUsersWithProfilesRequest) returns (GetUsersWithProfilesResponse);
+  rpc AddUserRole (AddUserRoleRequest) returns (AddUserRoleResponse);
 }
 
 message SignUpRequest {
@@ -41,12 +42,6 @@ message SignInRequest {
 message SignInResponse {
   google.protobuf.Empty result = 1;
   error_v1.ErrorResponse error = 2;
-}
-
-message CustomError {
-  int32 code = 1;
-  string message = 2;
-  map<string, string> details = 3;
 }
 
 message GetUserByUUIDRequest {
@@ -128,7 +123,12 @@ message SignInVerifyResponse {
   string refresh_token = 2;
 }
 
-message Error {
-  int32 code = 1;
-  string message = 2;
+message AddUserRoleRequest {
+  string user_id = 1;
+  string role_id = 2;
+}
+
+message AddUserRoleResponse {
+  google.protobuf.Empty result = 1;
+  error_v1.ErrorResponse error = 2;
 }

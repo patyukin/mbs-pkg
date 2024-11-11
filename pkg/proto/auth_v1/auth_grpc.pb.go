@@ -25,6 +25,7 @@ const (
 	AuthService_GetUserByUUID_FullMethodName        = "/auth_v1.AuthService/GetUserByUUID"
 	AuthService_GetUsersWithTokens_FullMethodName   = "/auth_v1.AuthService/GetUsersWithTokens"
 	AuthService_GetUsersWithProfiles_FullMethodName = "/auth_v1.AuthService/GetUsersWithProfiles"
+	AuthService_AddUserRole_FullMethodName          = "/auth_v1.AuthService/AddUserRole"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -37,6 +38,7 @@ type AuthServiceClient interface {
 	GetUserByUUID(ctx context.Context, in *GetUserByUUIDRequest, opts ...grpc.CallOption) (*GetUserByUUIDResponse, error)
 	GetUsersWithTokens(ctx context.Context, in *GetUsersWithTokensRequest, opts ...grpc.CallOption) (*GetUsersWithTokensResponse, error)
 	GetUsersWithProfiles(ctx context.Context, in *GetUsersWithProfilesRequest, opts ...grpc.CallOption) (*GetUsersWithProfilesResponse, error)
+	AddUserRole(ctx context.Context, in *AddUserRoleRequest, opts ...grpc.CallOption) (*AddUserRoleResponse, error)
 }
 
 type authServiceClient struct {
@@ -107,6 +109,16 @@ func (c *authServiceClient) GetUsersWithProfiles(ctx context.Context, in *GetUse
 	return out, nil
 }
 
+func (c *authServiceClient) AddUserRole(ctx context.Context, in *AddUserRoleRequest, opts ...grpc.CallOption) (*AddUserRoleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddUserRoleResponse)
+	err := c.cc.Invoke(ctx, AuthService_AddUserRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
@@ -117,6 +129,7 @@ type AuthServiceServer interface {
 	GetUserByUUID(context.Context, *GetUserByUUIDRequest) (*GetUserByUUIDResponse, error)
 	GetUsersWithTokens(context.Context, *GetUsersWithTokensRequest) (*GetUsersWithTokensResponse, error)
 	GetUsersWithProfiles(context.Context, *GetUsersWithProfilesRequest) (*GetUsersWithProfilesResponse, error)
+	AddUserRole(context.Context, *AddUserRoleRequest) (*AddUserRoleResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -144,6 +157,9 @@ func (UnimplementedAuthServiceServer) GetUsersWithTokens(context.Context, *GetUs
 }
 func (UnimplementedAuthServiceServer) GetUsersWithProfiles(context.Context, *GetUsersWithProfilesRequest) (*GetUsersWithProfilesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersWithProfiles not implemented")
+}
+func (UnimplementedAuthServiceServer) AddUserRole(context.Context, *AddUserRoleRequest) (*AddUserRoleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUserRole not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -274,6 +290,24 @@ func _AuthService_GetUsersWithProfiles_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_AddUserRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddUserRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).AddUserRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_AddUserRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).AddUserRole(ctx, req.(*AddUserRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +338,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsersWithProfiles",
 			Handler:    _AuthService_GetUsersWithProfiles_Handler,
+		},
+		{
+			MethodName: "AddUserRole",
+			Handler:    _AuthService_AddUserRole_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
