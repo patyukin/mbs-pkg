@@ -1,7 +1,9 @@
-package errors
+package errs
 
 import (
+	"errors"
 	"fmt"
+	"github.com/patyukin/mbs-pkg/pkg/proto/error_v1"
 	"google.golang.org/grpc/codes"
 )
 
@@ -11,22 +13,32 @@ var (
 	ErrDatabaseError  = fmt.Errorf("database connection error")
 )
 
-// NewError - Функция для создания детализированной ошибки с кодом и сообщением
-func NewError(code codes.Code, shortMessage, fullDescription string) *CustomError {
-	return &CustomError{
-		Code:        code,
-		Message:     shortMessage,
-		Description: fullDescription,
+// ToErrorResponse преобразует предопределенные ошибки в error_v1.ErrorResponse
+func ToErrorResponse(err error) *error_v1.ErrorResponse {
+	switch {
+	case errors.Is(err, ErrUserNotFound):
+		return &error_v1.ErrorResponse{
+			Code:        int32(codes.NotFound),
+			Message:     "User not found",
+			Description: "The user with the given ID was not found",
+		}
+	case errors.Is(err, ErrInvalidRequest):
+		return &error_v1.ErrorResponse{
+			Code:        int32(codes.InvalidArgument),
+			Message:     "Invalid request",
+			Description: "The request parameters are invalid",
+		}
+	case errors.Is(err, ErrDatabaseError):
+		return &error_v1.ErrorResponse{
+			Code:        int32(codes.Internal),
+			Message:     "Database error",
+			Description: "There was an error connecting to the database",
+		}
+	default:
+		return &error_v1.ErrorResponse{
+			Code:        int32(codes.Unknown),
+			Message:     "Unknown error",
+			Description: err.Error(),
+		}
 	}
-}
-
-// CustomError - Кастомная структура ошибки
-type CustomError struct {
-	Code        codes.Code
-	Message     string
-	Description string
-}
-
-func (e *CustomError) Error() string {
-	return e.Description
 }
