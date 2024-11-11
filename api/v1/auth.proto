@@ -34,6 +34,7 @@ message SignUpRequest {
 message SignUpResponse {
   string user_id = 1;
   string message = 2;
+  error_v1.ErrorResponse error = 3;
 }
 
 message SignInRequest {
@@ -65,6 +66,7 @@ message GetUserByUUIDResponse {
   string role = 12;
   string created_at = 13;
   string updated_at = 14;
+  error_v1.ErrorResponse error = 15;
 }
 
 message TokenGUWR {
@@ -87,6 +89,7 @@ message GetUsersWithTokensRequest {
 message GetUsersWithTokensResponse {
   repeated UserGUWR users = 1;
   int32 total = 2;
+  error_v1.ErrorResponse error = 3;
 }
 
 message ProfileGUWP {
@@ -114,6 +117,7 @@ message GetUsersWithProfilesRequest {
 message GetUsersWithProfilesResponse {
   repeated UserGUWP users = 1;
   int32 total = 2;
+  error_v1.ErrorResponse error = 3;
 }
 
 message SignInVerifyRequest {
@@ -123,6 +127,7 @@ message SignInVerifyRequest {
 message SignInVerifyResponse {
   string access_token = 1;
   string refresh_token = 2;
+  error_v1.ErrorResponse error = 3;
 }
 
 message AddUserRoleRequest {
@@ -151,6 +156,5 @@ message RefreshTokenRequest {
 
 message RefreshTokenResponse {
   string access_token = 1;
-  string refresh_token = 2;
-  error_v1.ErrorResponse error = 3;
+  error_v1.ErrorResponse error = 2;
 }
