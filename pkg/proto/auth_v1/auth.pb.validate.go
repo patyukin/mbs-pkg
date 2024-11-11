@@ -2207,3 +2207,506 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AddUserRoleResponseValidationError{}
+
+// Validate checks the field values on AuthorizeRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *AuthorizeRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AuthorizeRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AuthorizeRequestMultiError, or nil if none found.
+func (m *AuthorizeRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AuthorizeRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for UserId
+
+	// no validation rules for RoutePath
+
+	if len(errors) > 0 {
+		return AuthorizeRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AuthorizeRequestMultiError is an error wrapping multiple validation errors
+// returned by AuthorizeRequest.ValidateAll() if the designated constraints
+// aren't met.
+type AuthorizeRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AuthorizeRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AuthorizeRequestMultiError) AllErrors() []error { return m }
+
+// AuthorizeRequestValidationError is the validation error returned by
+// AuthorizeRequest.Validate if the designated constraints aren't met.
+type AuthorizeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AuthorizeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AuthorizeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AuthorizeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AuthorizeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AuthorizeRequestValidationError) ErrorName() string { return "AuthorizeRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AuthorizeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAuthorizeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AuthorizeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AuthorizeRequestValidationError{}
+
+// Validate checks the field values on AuthorizeResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *AuthorizeResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AuthorizeResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AuthorizeResponseMultiError, or nil if none found.
+func (m *AuthorizeResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AuthorizeResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetResult()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AuthorizeResponseValidationError{
+					field:  "Result",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AuthorizeResponseValidationError{
+					field:  "Result",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetResult()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AuthorizeResponseValidationError{
+				field:  "Result",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetError()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AuthorizeResponseValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AuthorizeResponseValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AuthorizeResponseValidationError{
+				field:  "Error",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return AuthorizeResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// AuthorizeResponseMultiError is an error wrapping multiple validation errors
+// returned by AuthorizeResponse.ValidateAll() if the designated constraints
+// aren't met.
+type AuthorizeResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AuthorizeResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AuthorizeResponseMultiError) AllErrors() []error { return m }
+
+// AuthorizeResponseValidationError is the validation error returned by
+// AuthorizeResponse.Validate if the designated constraints aren't met.
+type AuthorizeResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AuthorizeResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AuthorizeResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AuthorizeResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AuthorizeResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AuthorizeResponseValidationError) ErrorName() string {
+	return "AuthorizeResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AuthorizeResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAuthorizeResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AuthorizeResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AuthorizeResponseValidationError{}
+
+// Validate checks the field values on RefreshTokenRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *RefreshTokenRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RefreshTokenRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// RefreshTokenRequestMultiError, or nil if none found.
+func (m *RefreshTokenRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RefreshTokenRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for RefreshToken
+
+	if len(errors) > 0 {
+		return RefreshTokenRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// RefreshTokenRequestMultiError is an error wrapping multiple validation
+// errors returned by RefreshTokenRequest.ValidateAll() if the designated
+// constraints aren't met.
+type RefreshTokenRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RefreshTokenRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RefreshTokenRequestMultiError) AllErrors() []error { return m }
+
+// RefreshTokenRequestValidationError is the validation error returned by
+// RefreshTokenRequest.Validate if the designated constraints aren't met.
+type RefreshTokenRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RefreshTokenRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RefreshTokenRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RefreshTokenRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RefreshTokenRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RefreshTokenRequestValidationError) ErrorName() string {
+	return "RefreshTokenRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RefreshTokenRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRefreshTokenRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RefreshTokenRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RefreshTokenRequestValidationError{}
+
+// Validate checks the field values on RefreshTokenResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *RefreshTokenResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RefreshTokenResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// RefreshTokenResponseMultiError, or nil if none found.
+func (m *RefreshTokenResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RefreshTokenResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccessToken
+
+	// no validation rules for RefreshToken
+
+	if all {
+		switch v := interface{}(m.GetError()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, RefreshTokenResponseValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, RefreshTokenResponseValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RefreshTokenResponseValidationError{
+				field:  "Error",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return RefreshTokenResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// RefreshTokenResponseMultiError is an error wrapping multiple validation
+// errors returned by RefreshTokenResponse.ValidateAll() if the designated
+// constraints aren't met.
+type RefreshTokenResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RefreshTokenResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RefreshTokenResponseMultiError) AllErrors() []error { return m }
+
+// RefreshTokenResponseValidationError is the validation error returned by
+// RefreshTokenResponse.Validate if the designated constraints aren't met.
+type RefreshTokenResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RefreshTokenResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RefreshTokenResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RefreshTokenResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RefreshTokenResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RefreshTokenResponseValidationError) ErrorName() string {
+	return "RefreshTokenResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RefreshTokenResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRefreshTokenResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RefreshTokenResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RefreshTokenResponseValidationError{}
