@@ -9,7 +9,7 @@ install-deps:
 	GOBIN=$(LOCAL_BIN) go install github.com/pressly/goose/v3/cmd/goose@latest
 
 gen-pb:
-	# Удаляем и создаем папку для error_v1
+	# error_v1
 	rm -rf pkg/proto/error_v1
 	mkdir -p pkg/proto/error_v1
 	protoc --proto_path=api/v1 --proto_path=vendor.protogen \
@@ -21,7 +21,7 @@ gen-pb:
 		--plugin=protoc-gen-validate=bin/protoc-gen-validate \
 		api/v1/error.proto
 
-	# Удаляем и создаем папку для auth_v1
+	# auth_v1
 	rm -rf pkg/proto/auth_v1
 	mkdir -p pkg/proto/auth_v1
 	protoc --proto_path=api/v1 --proto_path=vendor.protogen \
@@ -33,7 +33,7 @@ gen-pb:
 		--plugin=protoc-gen-validate=bin/protoc-gen-validate \
 		api/v1/auth.proto
 
-	# Удаляем и создаем папку для payment_v1
+	# payment_v1
 	rm -rf pkg/proto/payment_v1
 	mkdir -p pkg/proto/payment_v1
 	protoc --proto_path=api/v1 --proto_path=vendor.protogen \
@@ -45,7 +45,7 @@ gen-pb:
 		--plugin=protoc-gen-validate=bin/protoc-gen-validate \
 		api/v1/payment.proto
 
-	# Удаляем и создаем папку для payment_v1
+	# logger_v1
 	rm -rf pkg/proto/logger_v1
 	mkdir -p pkg/proto/logger_v1
 	protoc --proto_path=api/v1 --proto_path=vendor.protogen \
@@ -55,7 +55,7 @@ gen-pb:
 		--plugin=protoc-gen-go-grpc=bin/protoc-gen-go-grpc \
 		--validate_out=lang=go:pkg/proto/logger_v1 --validate_opt=paths=source_relative \
 		--plugin=protoc-gen-validate=bin/protoc-gen-validate \
-		api/v1/payment.proto
+		api/v1/logger.proto
 
 gen:
 	make install-deps
