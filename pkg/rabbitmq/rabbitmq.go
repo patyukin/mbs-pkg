@@ -6,17 +6,6 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-const (
-	Exchange                        = "banking_system_exchange"
-	NotifySignUpConfirmCodeRouteKey = "notify_sign_up_confirm_code_route_key"
-	AuthSignUpResultMessageRouteKey = "auth_sign_up_result_message_route_key"
-	AuthSignInConfirmCodeRouteKey   = "auth_sign_in_confirm_code_route_key"
-	AuthNotifyQueue                 = "auth_notify_queue"
-	NotifyAuthQueue                 = "notify_auth_queue"
-	DeadLetterExchange              = "dead_letter_exchange"
-	DeadLetterQueue                 = "dead_letter_queue"
-)
-
 type HandlerFunction func(ctx context.Context, d amqp.Delivery) error
 
 type RabbitMQ struct {
