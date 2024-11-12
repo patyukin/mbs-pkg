@@ -3,7 +3,7 @@ syntax = "proto3";
 package auth_v1;
 
 import "error.proto";
-import 'google/protobuf/empty.proto';
+import "google/protobuf/empty.proto";
 
 option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/auth_v1;auth_v1";
 

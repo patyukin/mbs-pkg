@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package logger_v1;
+
+import "error.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/logger_v1;logger_v1";
+
+service LoggerService {
+  rpc GetLogReport (LogReportRequest) returns (LogReportResponse);
+}
+
+message LogReportRequest {
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+  repeated string service_names = 3;
+  repeated string keywords = 4;
+}
+
+message LogReportResponse {
+  google.protobuf.Empty result = 1;
+  error_v1.ErrorResponse error = 3;
+}
