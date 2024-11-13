@@ -63,7 +63,6 @@ message GetUserByUUIDResponse {
   string telegram_login = 9;
   string telegram_id = 10;
   string chat_id = 11;
-  string role = 12;
   string created_at = 13;
   string updated_at = 14;
   error_v1.ErrorResponse error = 15;
@@ -77,8 +76,7 @@ message TokenGUWR {
 message UserGUWR {
   string id = 1;
   string email = 2;
-  string role = 3;
-  repeated TokenGUWR tokens = 4;
+  repeated TokenGUWR tokens = 3;
 }
 
 message GetUsersWithTokensRequest {
@@ -105,8 +103,7 @@ message ProfileGUWP {
 message UserGUWP {
   string id = 1;
   string email = 2;
-  string role = 3;
-  ProfileGUWP profile = 4;
+  ProfileGUWP profile = 3;
 }
 
 message GetUsersWithProfilesRequest {

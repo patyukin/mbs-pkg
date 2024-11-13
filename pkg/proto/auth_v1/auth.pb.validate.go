@@ -696,8 +696,6 @@ func (m *GetUserByUUIDResponse) validate(all bool) error {
 
 	// no validation rules for ChatId
 
-	// no validation rules for Role
-
 	// no validation rules for CreatedAt
 
 	// no validation rules for UpdatedAt
@@ -939,8 +937,6 @@ func (m *UserGUWR) validate(all bool) error {
 	// no validation rules for Id
 
 	// no validation rules for Email
-
-	// no validation rules for Role
 
 	for idx, item := range m.GetTokens() {
 		_, _ = idx, item
@@ -1464,8 +1460,6 @@ func (m *UserGUWP) validate(all bool) error {
 	// no validation rules for Id
 
 	// no validation rules for Email
-
-	// no validation rules for Role
 
 	if all {
 		switch v := interface{}(m.GetProfile()).(type) {
