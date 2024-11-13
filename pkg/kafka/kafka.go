@@ -14,8 +14,6 @@ func NewConsumer(brokers []string, consumerGroup string, topics []string) (*Clie
 		kgo.SeedBrokers(brokers...),
 		kgo.ConsumerGroup(consumerGroup),
 		kgo.ConsumeTopics(topics...),
-		kgo.ConsumeResetOffset(kgo.NewOffset().AtStart()),
-		kgo.FetchMaxBytes(10e6),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed create consumer, err: %v", err)
