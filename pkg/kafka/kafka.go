@@ -14,6 +14,7 @@ func NewConsumer(brokers []string, consumerGroup string, topics []string) (*Clie
 		kgo.SeedBrokers(brokers...),
 		kgo.ConsumerGroup(consumerGroup),
 		kgo.ConsumeTopics(topics...),
+		kgo.DisableAutoCommit(),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed create consumer, err: %v", err)

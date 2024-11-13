@@ -2,6 +2,8 @@ package kafka
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/rs/zerolog/log"
 	"github.com/twmb/franz-go/pkg/kgo"
 	"math"
@@ -13,6 +15,15 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(*kgo.Reco
 		fetches := c.client.PollFetches(ctx)
 		if fetches.IsClientClosed() {
 			return nil
+		}
+
+		var errs []error
+		fetches.EachError(func(t string, p int32, err error) {
+			errs = append(errs, fmt.Errorf("failed to fetch %s partition %d: %w", t, p, err))
+		})
+
+		if len(errs) > 0 {
+			return errors.Join(errs...)
 		}
 
 		fetches.EachPartition(func(p kgo.FetchTopicPartition) {
