@@ -115,6 +115,8 @@ func (m *LogReportRequest) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for ServiceName
+
 	if len(errors) > 0 {
 		return LogReportRequestMultiError(errors)
 	}
