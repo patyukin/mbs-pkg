@@ -16,7 +16,6 @@ message LogReportRequest {
   google.protobuf.Timestamp start_time = 1;
   google.protobuf.Timestamp end_time = 2;
   string service_name = 3;
-  repeated string keywords = 4;
 }
 
 message LogReportResponse {
