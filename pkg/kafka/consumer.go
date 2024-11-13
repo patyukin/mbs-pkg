@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (c *Client) ProcessMessages(ctx context.Context, processFunc func(*kgo.Record) error) error {
+func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx context.Context, record *kgo.Record) error) error {
 	for {
 		fetches := c.client.PollFetches(ctx)
 		if fetches.IsClientClosed() {
@@ -34,13 +34,13 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(*kgo.Reco
 	}
 }
 
-func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processFunc func(*kgo.Record) error) {
+func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processFunc func(context.Context, *kgo.Record) error) {
 	var attempt int
 	backoff := time.Millisecond * 100
 	maxBackoff := time.Second * 2
 
 	for attempt = 1; attempt <= maxRetries; attempt++ {
-		err := processFunc(record)
+		err := processFunc(ctx, record)
 		if err == nil {
 			log.Printf("Сообщение из топика %s успешно обработано\n", record.Topic)
 			return
