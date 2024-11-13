@@ -37,7 +37,6 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx conte
 func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processFunc func(context.Context, *kgo.Record) error) {
 	var attempt int
 	backoff := time.Millisecond * 100
-	maxBackoff := time.Second * 2
 
 	for attempt = 1; attempt <= maxRetries; attempt++ {
 		err := processFunc(ctx, record)

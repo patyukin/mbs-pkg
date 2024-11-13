@@ -74,3 +74,9 @@ func (r *RabbitMQ) PublishAuthSignUpResultMessage(ctx context.Context, body []by
 func (r *RabbitMQ) PublishAuthSignInCode(ctx context.Context, body []byte, headers amqp.Table) error {
 	return r.publishMessage(ctx, AuthSignInConfirmCodeRouteKey, body, headers)
 }
+
+// PublishLogReport
+// Отправка информации о логах сервиса в RabbitMQ
+func (r *RabbitMQ) PublishLogReport(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, LoggerReportRouteKey, body, headers)
+}

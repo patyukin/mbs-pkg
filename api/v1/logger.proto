@@ -15,11 +15,11 @@ service LoggerService {
 message LogReportRequest {
   google.protobuf.Timestamp start_time = 1;
   google.protobuf.Timestamp end_time = 2;
-  repeated string service_names = 3;
+  string service_name = 3;
   repeated string keywords = 4;
 }
 
 message LogReportResponse {
   google.protobuf.Empty result = 1;
-  error_v1.ErrorResponse error = 3;
+  error_v1.ErrorResponse error = 2;
 }
