@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/patyukin/mbs-pkg/pkg/proto/error_v1"
-	"google.golang.org/grpc/codes"
+	"net/http"
 )
 
 var (
@@ -18,26 +18,26 @@ func ToErrorResponse(err error) *error_v1.ErrorResponse {
 	switch {
 	case errors.Is(err, ErrUserNotFound):
 		return &error_v1.ErrorResponse{
-			Code:        int32(codes.NotFound),
+			Code:        http.StatusNotFound,
 			Message:     "User not found",
-			Description: "The user with the given ID was not found",
+			Description: err.Error(),
 		}
 	case errors.Is(err, ErrInvalidRequest):
 		return &error_v1.ErrorResponse{
-			Code:        int32(codes.InvalidArgument),
+			Code:        http.StatusBadRequest,
 			Message:     "Invalid request",
-			Description: "The request parameters are invalid",
+			Description: err.Error(),
 		}
 	case errors.Is(err, ErrDatabaseError):
 		return &error_v1.ErrorResponse{
-			Code:        int32(codes.Internal),
-			Message:     "Database error",
-			Description: "There was an error connecting to the database",
+			Code:        http.StatusInternalServerError,
+			Message:     "Internal Server Error",
+			Description: err.Error(),
 		}
 	default:
 		return &error_v1.ErrorResponse{
-			Code:        int32(codes.Unknown),
-			Message:     "Unknown error",
+			Code:        http.StatusInternalServerError,
+			Message:     "Internal Server Error",
 			Description: err.Error(),
 		}
 	}

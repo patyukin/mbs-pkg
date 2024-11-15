@@ -22,10 +22,10 @@ func NewConsumer(brokers []string, consumerGroup string, topics []string) (*Clie
 	return &Client{client: cl}, err
 }
 
-func NewProducer(brokers []string, topic string) (*Client, error) {
+func NewProducer(brokers []string) (*Client, error) {
 	cl, err := kgo.NewClient(
 		kgo.SeedBrokers(brokers...),
-		kgo.DefaultProduceTopic(topic),
+		kgo.ProducerBatchCompression(kgo.GzipCompression()),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed create producer, err: %v", err)
