@@ -1,6 +1,7 @@
 package errs
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"github.com/patyukin/mbs-pkg/pkg/proto/error_v1"
@@ -20,6 +21,12 @@ func ToErrorResponse(err error) *error_v1.ErrorResponse {
 		return &error_v1.ErrorResponse{
 			Code:        http.StatusNotFound,
 			Message:     "User not found",
+			Description: err.Error(),
+		}
+	case errors.Is(err, sql.ErrNoRows):
+		return &error_v1.ErrorResponse{
+			Code:        http.StatusNotFound,
+			Message:     "Not found",
 			Description: err.Error(),
 		}
 	case errors.Is(err, ErrInvalidRequest):
