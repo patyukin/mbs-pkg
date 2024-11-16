@@ -9,24 +9,7 @@ import (
 	"time"
 )
 
-type PostgreSQLConfig struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-	Name     string
-}
-
-func New(ctx context.Context, cfg PostgreSQLConfig) (*sql.DB, error) {
-	dsn := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		cfg.Host,
-		cfg.Port,
-		cfg.User,
-		cfg.Password,
-		cfg.Name,
-	)
-
+func New(ctx context.Context, dsn string) (*sql.DB, error) {
 	dbConn, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to db: %w", err)
