@@ -2,6 +2,11 @@
 
 LOCAL_BIN:=$(CURDIR)/bin
 
+gen:
+	make install-deps
+	make vendor-proto
+	make gen-pb
+
 install-deps:
 	GOBIN=$(LOCAL_BIN) go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.2
 	GOBIN=$(LOCAL_BIN) go install -mod=mod google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
@@ -56,11 +61,6 @@ gen-pb:
 		--validate_out=lang=go:pkg/proto/logger_v1 --validate_opt=paths=source_relative \
 		--plugin=protoc-gen-validate=bin/protoc-gen-validate \
 		api/v1/logger.proto
-
-gen:
-	make install-deps
-	make vendor-proto
-	make gen-pb
 
 vendor-proto:
 		@if [ ! -d vendor.protogen/validate ]; then \
