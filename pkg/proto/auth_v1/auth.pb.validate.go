@@ -2373,6 +2373,8 @@ func (m *AuthorizeRequest) validate(all bool) error {
 
 	// no validation rules for RoutePath
 
+	// no validation rules for Method
+
 	if len(errors) > 0 {
 		return AuthorizeRequestMultiError(errors)
 	}
