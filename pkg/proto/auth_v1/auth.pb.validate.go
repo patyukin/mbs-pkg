@@ -2637,6 +2637,8 @@ func (m *RefreshTokenRequest) validate(all bool) error {
 
 	// no validation rules for RefreshToken
 
+	// no validation rules for UserId
+
 	if len(errors) > 0 {
 		return RefreshTokenRequestMultiError(errors)
 	}

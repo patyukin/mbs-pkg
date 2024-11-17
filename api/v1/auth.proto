@@ -150,6 +150,7 @@ message AuthorizeResponse {
 
 message RefreshTokenRequest {
   string refresh_token = 1;
+  string user_id = 2;
 }
 
 message RefreshTokenResponse {
