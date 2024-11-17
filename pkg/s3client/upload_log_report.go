@@ -9,10 +9,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	s3types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 	"time"
 )
 
 func (c *Client) UploadLogReport(ctx context.Context, buf *bytes.Buffer) (string, error) {
+	log.Debug().Msgf("UploadLogReport, buf: %v", buf)
+
 	keyName := fmt.Sprintf("%s/%s.log", time.Now().Format("2006-01-02"), uuid.New().String())
 	uploader := manager.NewUploader(c.client)
 	_, err := uploader.Upload(ctx, &s3.PutObjectInput{
@@ -31,7 +34,7 @@ func (c *Client) UploadLogReport(ctx context.Context, buf *bytes.Buffer) (string
 	}
 
 	presignDuration := time.Hour * 24
-	presignResult, err := c.presignClient.PresignGetObject(context.TODO(), presignParams, func(opts *s3.PresignOptions) {
+	presignResult, err := c.presignClient.PresignGetObject(ctx, presignParams, func(opts *s3.PresignOptions) {
 		opts.Expires = presignDuration
 	})
 	if err != nil {
