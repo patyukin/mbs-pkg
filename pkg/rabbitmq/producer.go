@@ -86,3 +86,9 @@ func (r *RabbitMQ) PublishLogReport(ctx context.Context, body []byte, headers am
 func (r *RabbitMQ) PublishPaymentExecutionInitiate(ctx context.Context, body []byte, headers amqp.Table) error {
 	return r.publishMessage(ctx, PaymentExecutionInitiateRouteKey, body, headers)
 }
+
+// PublishAccountCreation
+// Отправка информации о добавлении банковского счета в RabbitMQ
+func (r *RabbitMQ) PublishAccountCreation(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, AccountCreationRouteKey, body, headers)
+}
