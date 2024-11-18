@@ -80,3 +80,9 @@ func (r *RabbitMQ) PublishAuthSignInCode(ctx context.Context, body []byte, heade
 func (r *RabbitMQ) PublishLogReport(ctx context.Context, body []byte, headers amqp.Table) error {
 	return r.publishMessage(ctx, LoggerReportRouteKey, body, headers)
 }
+
+// PublishPaymentExecutionInitiate
+// Отправка информации о регистрации платежа в RabbitMQ
+func (r *RabbitMQ) PublishPaymentExecutionInitiate(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, PaymentExecutionInitiateRouteKey, body, headers)
+}
