@@ -172,8 +172,8 @@ message UserInfo {
   string phone = 7;
   string address = 8;
   string telegram_login = 9;
-  string telegram_id = 10;
-  string chat_id = 11;
+  int64 telegram_id = 10;
+  int64 chat_id = 11;
   string created_at = 13;
 }
 
