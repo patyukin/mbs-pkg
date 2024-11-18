@@ -3,7 +3,6 @@ syntax = "proto3";
 package logger_v1;
 
 import "error.proto";
-import "google/protobuf/empty.proto";
 
 option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/logger_v1;logger_v1";
 
@@ -18,6 +17,6 @@ message LogReportRequest {
 }
 
 message LogReportResponse {
-  google.protobuf.Empty result = 1;
+  string file_url = 1;
   error_v1.ErrorResponse error = 2;
 }
