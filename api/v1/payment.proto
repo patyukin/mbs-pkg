@@ -4,23 +4,54 @@ package payment_v1;
 
 option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/payment_v1;payment_v1";
 
+import "error.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
-// Сообщение запроса для создания платежа
+service PaymentService {
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc CreatePayment (CreatePaymentRequest) returns (CreatePaymentResponse);
+  rpc VerifyPayment (VerifyPaymentRequest) returns (VerifyPaymentResponse);
+  rpc GetPayment (GetPaymentRequest) returns (GetPaymentResponse);
+  rpc UpdatePaymentStatus (UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
+  rpc GetTransactionsByPayment (GetTransactionsByPaymentRequest) returns (GetTransactionsByPaymentResponse);
+}
+
+message CreateAccountRequest {
+  string currency = 1;
+  int64 balance = 2;
+  string user_id = 3;
+}
+
+message CreateAccountResponse {
+  google.protobuf.Empty result = 1;
+  error_v1.ErrorResponse error = 2;
+}
+
+message VerifyPaymentRequest {
+  string code = 1;
+  string user_id = 2;
+}
+
+message VerifyPaymentResponse {
+  Payment payment = 1;
+  error_v1.ErrorResponse error = 2;
+}
+
 message CreatePaymentRequest {
   string sender_account_id = 1;
   string receiver_account_id = 2;
   double amount = 3;
   string currency = 4;
   string description = 5;
+  string user_id = 6;
 }
 
-// Сообщение ответа после создания платежа
 message CreatePaymentResponse {
-  Payment payment = 1;
+  string message = 1;
+  error_v1.ErrorResponse error = 2;
 }
 
-// Сообщение платежа
 message Payment {
   string id = 1;
   string sender_account_id = 2;
@@ -30,31 +61,27 @@ message Payment {
   string description = 6;
   string status = 7;
   google.protobuf.Timestamp created_at = 8;
-  google.protobuf.Timestamp updated_at = 9;
 }
 
-// Запрос для получения информации о платеже
 message GetPaymentRequest {
   string id = 1;
 }
 
-// Ответ с информацией о платеже
 message GetPaymentResponse {
   Payment payment = 1;
+  error_v1.ErrorResponse error = 2;
 }
 
-// Запрос для обновления статуса платежа
 message UpdatePaymentStatusRequest {
   string id = 1;
   string status = 2;
 }
 
-// Ответ после обновления статуса платежа
 message UpdatePaymentStatusResponse {
-  Payment payment = 1;
+  string message = 1;
+  error_v1.ErrorResponse error = 2;
 }
 
-// Сообщение транзакции
 message Transaction {
   string id = 1;
   string payment_id = 2;
@@ -67,23 +94,12 @@ message Transaction {
   google.protobuf.Timestamp created_at = 9;
 }
 
-// Запрос для получения транзакций по платежу
 message GetTransactionsByPaymentRequest {
   string payment_id = 1;
 }
 
-// Ответ с транзакциями по платежу
 message GetTransactionsByPaymentResponse {
   repeated Transaction transactions = 1;
+  error_v1.ErrorResponse error = 2;
 }
 
-// Сервис платежей и транзакций
-service PaymentService {
-  // Методы для платежей
-  rpc CreatePayment (CreatePaymentRequest) returns (CreatePaymentResponse);
-  rpc GetPayment (GetPaymentRequest) returns (GetPaymentResponse);
-  rpc UpdatePaymentStatus (UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
-
-  // Методы для транзакций
-  rpc GetTransactionsByPayment (GetTransactionsByPaymentRequest) returns (GetTransactionsByPaymentResponse);
-}
