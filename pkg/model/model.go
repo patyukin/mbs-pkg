@@ -18,5 +18,6 @@ type AuthSignUpResultMessage struct {
 }
 
 type AccountCreationMessage struct {
+	ChatID  int64  `json:"chat_id"`
 	Message string `json:"message"`
 }

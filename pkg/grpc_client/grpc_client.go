@@ -7,9 +7,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func NewGRPCClientServiceConn(host string, port int) (*grpc.ClientConn, error) {
+func NewGRPCClientServiceConn(url string) (*grpc.ClientConn, error) {
 	clientGRPCConn, err := grpc.NewClient(
-		fmt.Sprintf("%s:%d", host, port),
+		url,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithUnaryInterceptor(grpcopentracing.UnaryClientInterceptor()),
 	)
