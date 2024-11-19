@@ -34,7 +34,6 @@ message VerifyPaymentRequest {
 }
 
 message VerifyPaymentResponse {
-  Payment payment = 1;
   error_v1.ErrorResponse error = 2;
 }
 
