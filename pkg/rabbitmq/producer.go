@@ -92,3 +92,7 @@ func (r *RabbitMQ) PublishPaymentExecutionInitiate(ctx context.Context, body []b
 func (r *RabbitMQ) PublishAccountCreation(ctx context.Context, body []byte, headers amqp.Table) error {
 	return r.publishMessage(ctx, AccountCreationRouteKey, body, headers)
 }
+
+func (r *RabbitMQ) PushPaymentStatusChanged(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, PaymentStatusChangedRouteKey, body, headers)
+}

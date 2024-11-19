@@ -21,3 +21,8 @@ type SimpleTelegramMessage struct {
 	ChatID  int64  `json:"chat_id"`
 	Message string `json:"message"`
 }
+
+type PaymentStatusChangedMessage struct {
+	PaymentID string `json:"payment_id"`
+	Status    string `json:"status"`
+}
