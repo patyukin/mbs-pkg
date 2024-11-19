@@ -17,7 +17,7 @@ type AuthSignUpResultMessage struct {
 	Message string `json:"message"`
 }
 
-type AccountCreationMessage struct {
+type SimpleTelegramMessage struct {
 	ChatID  int64  `json:"chat_id"`
 	Message string `json:"message"`
 }
