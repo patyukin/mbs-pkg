@@ -28,6 +28,6 @@ const (
 const (
 	PaymentNotifyQueue               = "payment_notify_queue"
 	PaymentExecutionInitiateRouteKey = "payment_execution_initiate_route_key"
-	PaymentStatusChangedRouteKey     = "payment_status_change_route_key"
 	AccountCreationRouteKey          = "account_creation_route_key"
+	PaymentStatusChangedRouteKey     = "payment_status_change_route_key"
 )

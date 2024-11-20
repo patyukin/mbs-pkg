@@ -1,0 +1,192 @@
+syntax = "proto3";
+
+package credits;
+
+option go_package = "github.com/yourusername/yourrepo/creditspb";
+
+import "error.proto";
+import "google/protobuf/empty.proto";
+
+enum CreditApplicationStatus {
+  UNKNOWN_STATUS = 0;
+  PENDING = 1;
+  APPROVED = 2;
+  REJECTED = 3;
+}
+
+enum CreditStatus {
+  UNKNOWN_CREDIT_STATUS = 0;
+  ACTIVE = 1;
+  CLOSED = 2;
+}
+
+// Сообщение запроса для создания новой заявки на кредит
+message CreateCreditApplicationRequest {
+  string user_id = 1;                  // UUID пользователя, подающего заявку
+  int64 requested_amount = 2;          // Запрашиваемая сумма кредита
+  int32 interest_rate = 3;             // Процентная ставка
+  string start_date = 4;               // Предполагаемая дата начала кредита
+  string end_date = 5;                 // Предполагаемая дата окончания кредита
+  string description = 6;              // Дополнительное описание или комментарии
+}
+
+// Сообщение ответа при создании заявки на кредит
+message CreateCreditApplicationResponse {
+  string application_id = 1;             // UUID заявки
+  CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
+  string message = 3;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 4;
+}
+
+// Сообщение запроса для получения статуса заявки на кредит
+message GetCreditApplicationRequest {
+  string application_id = 1;             // UUID заявки
+}
+
+// Сообщение ответа при получении статуса заявки на кредит
+message GetCreditApplicationResponse {
+  string application_id = 1;             // UUID заявки
+  CreditApplicationStatus status = 2;    // Текущий статус заявки
+  double approved_amount = 3;            // Одобренная сумма (если применимо)
+  string decision_date = 4;              // Дата принятия решения
+  string message = 5;                    // Дополнительное сообщение
+}
+
+// Сообщение запроса для обновления статуса заявки (например, одобрение или отклонение)
+message UpdateCreditApplicationStatusRequest {
+  string application_id = 1;              // UUID заявки
+  CreditApplicationStatus new_status = 2; // Новый статус заявки (APPROVED или REJECTED)
+  double approved_amount = 3;             // Одобренная сумма (если статус APPROVED)
+  string decision_notes = 4;              // Примечания к решению
+}
+
+// Сообщение ответа при обновлении статуса заявки
+message UpdateCreditApplicationStatusResponse {
+  string application_id = 1;             // UUID заявки
+  CreditApplicationStatus status = 2;    // Обновлённый статус заявки
+  string message = 3;                    // Дополнительное сообщение
+}
+
+// Сообщение запроса для получения информации о кредите
+message GetCreditRequest {
+  string credit_id = 1;                   // UUID кредита
+}
+
+// Сообщение ответа при получении информации о кредите
+message GetCreditResponse {
+  string credit_id = 1;                   // UUID кредита
+  string user_id = 2;                     // UUID пользователя
+  double amount = 4;                      // Сумма кредита
+  double interest_rate = 5;               // Процентная ставка
+  double remaining_amount = 6;            // Остаток по кредиту
+  CreditStatus status = 7;                // Статус кредита
+  string start_date = 8;                  // Дата начала кредита
+  string end_date = 9;                    // Дата окончания кредита
+  string description = 10;                // Дополнительное описание или комментарии
+}
+
+// Сообщение запроса для получения всех кредитов пользователя
+message ListUserCreditsRequest {
+  string user_id = 1;                     // UUID пользователя
+  int32 page = 2;                         // Номер страницы (для пагинации)
+  int32 page_size = 3;                    // Размер страницы
+}
+
+// Сообщение ответа при получении списка кредитов пользователя
+message ListUserCreditsResponse {
+  repeated Credit credit_list = 1;        // Список кредитов пользователя
+  int32 total_credits = 2;                // Общее количество кредитов
+  int32 current_page = 3;                 // Текущий номер страницы
+  int32 total_pages = 4;                  // Общее количество страниц
+}
+
+// Сообщение кредита
+message Credit {
+  string credit_id = 1;                   // UUID кредита
+  string user_id = 2;                     // UUID пользователя
+  double amount = 4;                      // Сумма кредита
+  double interest_rate = 5;               // Процентная ставка
+  double remaining_amount = 6;            // Остаток по кредиту
+  CreditStatus status = 7;                // Статус кредита
+  string start_date = 8;                  // Дата начала кредита
+  string end_date = 9;                    // Дата окончания кредита
+  string description = 10;                // Дополнительное описание или комментарии
+}
+
+// Сообщение запроса для создания графика платежей
+message CreatePaymentScheduleRequest {
+  string credit_id = 1;                   // UUID кредита
+}
+
+// Сообщение ответа при создании графика платежей
+message CreatePaymentScheduleResponse {
+  string message = 1;                     // Сообщение о результате операции
+}
+
+// Сообщение запроса для получения графика платежей
+message GetPaymentScheduleRequest {
+  string credit_id = 1;                   // UUID кредита
+}
+
+// Сообщение ответа при получении графика платежей
+message GetPaymentScheduleResponse {
+  repeated PaymentSchedule schedules = 1; // Список платежей по графику
+}
+
+// Сообщение графика платежей
+message PaymentSchedule {
+  string payment_id = 1;                  // UUID платежа
+  double amount = 2;                      // Сумма платежа
+  string due_date = 3;                    // Дата платежа
+  PaymentStatus status = 4;               // Статус платежа
+}
+
+// Перечисление статусов платежей
+enum PaymentStatus {
+  UNKNOWN_PAYMENT_STATUS = 0;
+  SCHEDULED = 1;
+  PAID = 2;
+  MISSED = 3;
+  OVERPAID = 4;
+  REFUNDED = 5;
+}
+
+// Сообщение запроса для обновления графика платежей (например, отметка платежа как выполненного)
+message UpdatePaymentScheduleRequest {
+  string payment_id = 1;                  // UUID платежа
+  PaymentStatus new_status = 2;           // Новый статус платежа
+}
+
+// Сообщение ответа при обновлении графика платежей
+message UpdatePaymentScheduleResponse {
+  string payment_id = 1;                  // UUID платежа
+  PaymentStatus status = 2;               // Обновлённый статус платежа
+  string message = 3;                     // Дополнительное сообщение
+}
+
+// Сервис кредитов
+service CreditsServiceV1 {
+  // Создание новой заявки на кредит
+  rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
+
+  // Получение статуса заявки на кредит
+  rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
+
+  // Обновление статуса заявки на кредит (например, одобрение или отклонение)
+  rpc UpdateCreditApplicationStatus(UpdateCreditApplicationStatusRequest) returns (UpdateCreditApplicationStatusResponse);
+
+  // Получение информации о кредите
+  rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
+
+  // Получение списка кредитов пользователя с пагинацией
+  rpc ListUserCredits(ListUserCreditsRequest) returns (ListUserCreditsResponse);
+
+  // Создание графика платежей по кредиту
+  rpc CreatePaymentSchedule(CreatePaymentScheduleRequest) returns (CreatePaymentScheduleResponse);
+
+  // Получение графика платежей по кредиту
+  rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
+
+  // Обновление статуса платежа в графике
+  rpc UpdatePaymentSchedule(UpdatePaymentScheduleRequest) returns (UpdatePaymentScheduleResponse);
+}

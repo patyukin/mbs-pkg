@@ -5,7 +5,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/twmb/franz-go/pkg/kgo"
 	"math"
-	"sync"
 	"time"
 )
 
@@ -13,46 +12,41 @@ func (c *Client) PublishMessageWithRetry(ctx context.Context, topic string, key,
 	backoff := time.Millisecond * 100
 	record := &kgo.Record{Topic: topic, Key: key, Value: value}
 
-	var attempt int
-	var wg sync.WaitGroup
-	wg.Add(1)
+	var lastErr error
 
-	resultCh := make(chan error, 1)
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		resultCh := make(chan error, 1)
 
-	go func() {
-		defer wg.Done()
-		for attempt = 1; attempt <= maxRetries; attempt++ {
-			c.client.Produce(ctx, record, func(_ *kgo.Record, err error) {
-				resultCh <- err
-			})
+		c.client.Produce(ctx, record, func(_ *kgo.Record, err error) {
+			resultCh <- err
+		})
 
-			err := <-resultCh
-			if err == nil {
-				log.Printf("Сообщение успешно отправлено в топик %s\n", topic)
-				return
-			}
-
-			log.Printf("Попытка %d не удалась: %v", attempt, err)
-
-			if attempt < maxRetries {
-				log.Printf("Повторная попытка через %v...\n", backoff)
-				time.Sleep(backoff)
-				backoff = time.Duration(math.Min(float64(maxBackoff), float64(backoff)*2))
-			} else {
-				log.Printf("Все %d попыток отправки сообщения в топик %s исчерпаны.\n", maxRetries, topic)
-			}
+		err := <-resultCh
+		if err == nil {
+			log.Info().Msgf("Message %s sent to topic %s", string(value), topic)
+			return nil
 		}
-	}()
 
-	wg.Wait()
+		lastErr = err
+		log.Error().Msgf("Attempt %d failed for message %s to topic %s: %v", attempt, string(value), topic, err)
 
-	if attempt > maxRetries {
-		return <-resultCh
+		if attempt == maxRetries {
+			break
+		}
+
+		time.Sleep(backoff)
+		backoff = time.Duration(math.Min(float64(maxBackoff), float64(backoff)*2))
 	}
 
-	return nil
+	log.Error().Msgf("Message %s not sent to topic %s after %d attempts", string(value), topic, maxRetries)
+
+	return lastErr
 }
 
 func (c *Client) PublishLogReport(ctx context.Context, value []byte) error {
+	return c.PublishMessageWithRetry(ctx, LogReportTopic, nil, value)
+}
+
+func (c *Client) PublishPaymentReport(ctx context.Context, value []byte) error {
 	return c.PublishMessageWithRetry(ctx, LogReportTopic, nil, value)
 }
