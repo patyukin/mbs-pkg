@@ -6,18 +6,33 @@ option go_package = "github.com/yourusername/yourrepo/creditspb";
 
 import "error.proto";
 
-enum CreditApplicationStatus {
-  UNKNOWN_STATUS = 0;
-  PENDING = 1;
-  APPROVED = 2;
-  REJECTED = 3;
+// Сервис кредитов
+service CreditsServiceV1 {
+  // Создание новой заявки на кредит
+  rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
+
+  // Получение статуса заявки на кредит
+  rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
+
+  // Обновление статуса заявки на кредит (например, одобрение или отклонение)
+  rpc UpdateCreditApplicationStatus(UpdateCreditApplicationStatusRequest) returns (UpdateCreditApplicationStatusResponse);
+
+  // Получение информации о кредите
+  rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
+
+  // Получение списка кредитов пользователя с пагинацией
+  rpc ListUserCredits(ListUserCreditsRequest) returns (ListUserCreditsResponse);
+
+  // Создание графика платежей по кредиту
+  rpc CreatePaymentSchedule(CreatePaymentScheduleRequest) returns (CreatePaymentScheduleResponse);
+
+  // Получение графика платежей по кредиту
+  rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
+
+  // Обновление статуса платежа в графике
+  rpc UpdatePaymentSchedule(UpdatePaymentScheduleRequest) returns (UpdatePaymentScheduleResponse);
 }
 
-enum CreditStatus {
-  UNKNOWN_CREDIT_STATUS = 0;
-  ACTIVE = 1;
-  CLOSED = 2;
-}
 
 // Сообщение запроса для создания новой заявки на кредит
 message CreateCreditApplicationRequest {
@@ -32,7 +47,7 @@ message CreateCreditApplicationRequest {
 // Сообщение ответа при создании заявки на кредит
 message CreateCreditApplicationResponse {
   string application_id = 1;             // UUID заявки
-  CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
+  string status = 2;    // Статус заявки (обычно PENDING)
   string message = 3;                    // Дополнительное сообщение
   error_v1.ErrorResponse error = 4;
 }
@@ -45,7 +60,7 @@ message GetCreditApplicationRequest {
 // Сообщение ответа при получении статуса заявки на кредит
 message GetCreditApplicationResponse {
   string application_id = 1;             // UUID заявки
-  CreditApplicationStatus status = 2;    // Текущий статус заявки
+  string status = 2;    // Текущий статус заявки
   double approved_amount = 3;            // Одобренная сумма (если применимо)
   string decision_date = 4;              // Дата принятия решения
   string message = 5;                    // Дополнительное сообщение
@@ -55,7 +70,7 @@ message GetCreditApplicationResponse {
 // Сообщение запроса для обновления статуса заявки (например, одобрение или отклонение)
 message UpdateCreditApplicationStatusRequest {
   string application_id = 1;              // UUID заявки
-  CreditApplicationStatus new_status = 2; // Новый статус заявки (APPROVED или REJECTED)
+  string new_status = 2; // Новый статус заявки (APPROVED или REJECTED)
   double approved_amount = 3;             // Одобренная сумма (если статус APPROVED)
   string decision_notes = 4;              // Примечания к решению
 }
@@ -63,7 +78,7 @@ message UpdateCreditApplicationStatusRequest {
 // Сообщение ответа при обновлении статуса заявки
 message UpdateCreditApplicationStatusResponse {
   string application_id = 1;             // UUID заявки
-  CreditApplicationStatus status = 2;    // Обновлённый статус заявки
+  string status = 2;    // Обновлённый статус заявки
   string message = 3;                    // Дополнительное сообщение
   error_v1.ErrorResponse error = 4;
 }
@@ -80,7 +95,7 @@ message GetCreditResponse {
   double amount = 4;                      // Сумма кредита
   double interest_rate = 5;               // Процентная ставка
   double remaining_amount = 6;            // Остаток по кредиту
-  CreditStatus status = 7;                // Статус кредита
+  string status = 7;                // Статус кредита
   string start_date = 8;                  // Дата начала кредита
   string end_date = 9;                    // Дата окончания кредита
   string description = 10;                // Дополнительное описание или комментарии
@@ -110,7 +125,7 @@ message Credit {
   double amount = 4;                      // Сумма кредита
   double interest_rate = 5;               // Процентная ставка
   double remaining_amount = 6;            // Остаток по кредиту
-  CreditStatus status = 7;                // Статус кредита
+  string status = 7;                // Статус кредита
   string start_date = 8;                  // Дата начала кредита
   string end_date = 9;                    // Дата окончания кредита
   string description = 10;                // Дополнительное описание или комментарии
@@ -168,31 +183,4 @@ message UpdatePaymentScheduleResponse {
   PaymentStatus status = 2;               // Обновлённый статус платежа
   string message = 3;                     // Дополнительное сообщение
   error_v1.ErrorResponse error = 4;
-}
-
-// Сервис кредитов
-service CreditsServiceV1 {
-  // Создание новой заявки на кредит
-  rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
-
-  // Получение статуса заявки на кредит
-  rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
-
-  // Обновление статуса заявки на кредит (например, одобрение или отклонение)
-  rpc UpdateCreditApplicationStatus(UpdateCreditApplicationStatusRequest) returns (UpdateCreditApplicationStatusResponse);
-
-  // Получение информации о кредите
-  rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
-
-  // Получение списка кредитов пользователя с пагинацией
-  rpc ListUserCredits(ListUserCreditsRequest) returns (ListUserCreditsResponse);
-
-  // Создание графика платежей по кредиту
-  rpc CreatePaymentSchedule(CreatePaymentScheduleRequest) returns (CreatePaymentScheduleResponse);
-
-  // Получение графика платежей по кредиту
-  rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
-
-  // Обновление статуса платежа в графике
-  rpc UpdatePaymentSchedule(UpdatePaymentScheduleRequest) returns (UpdatePaymentScheduleResponse);
 }
