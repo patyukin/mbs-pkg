@@ -5,7 +5,6 @@ package credit_v1;
 option go_package = "github.com/yourusername/yourrepo/creditspb";
 
 import "error.proto";
-import "google/protobuf/empty.proto";
 
 enum CreditApplicationStatus {
   UNKNOWN_STATUS = 0;
@@ -50,6 +49,7 @@ message GetCreditApplicationResponse {
   double approved_amount = 3;            // Одобренная сумма (если применимо)
   string decision_date = 4;              // Дата принятия решения
   string message = 5;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 6;
 }
 
 // Сообщение запроса для обновления статуса заявки (например, одобрение или отклонение)
@@ -65,6 +65,7 @@ message UpdateCreditApplicationStatusResponse {
   string application_id = 1;             // UUID заявки
   CreditApplicationStatus status = 2;    // Обновлённый статус заявки
   string message = 3;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 4;
 }
 
 // Сообщение запроса для получения информации о кредите
@@ -83,6 +84,7 @@ message GetCreditResponse {
   string start_date = 8;                  // Дата начала кредита
   string end_date = 9;                    // Дата окончания кредита
   string description = 10;                // Дополнительное описание или комментарии
+  error_v1.ErrorResponse error = 11;
 }
 
 // Сообщение запроса для получения всех кредитов пользователя
@@ -98,6 +100,7 @@ message ListUserCreditsResponse {
   int32 total_credits = 2;                // Общее количество кредитов
   int32 current_page = 3;                 // Текущий номер страницы
   int32 total_pages = 4;                  // Общее количество страниц
+  error_v1.ErrorResponse error = 5;
 }
 
 // Сообщение кредита
@@ -121,6 +124,7 @@ message CreatePaymentScheduleRequest {
 // Сообщение ответа при создании графика платежей
 message CreatePaymentScheduleResponse {
   string message = 1;                     // Сообщение о результате операции
+  error_v1.ErrorResponse error = 2;
 }
 
 // Сообщение запроса для получения графика платежей
@@ -131,6 +135,7 @@ message GetPaymentScheduleRequest {
 // Сообщение ответа при получении графика платежей
 message GetPaymentScheduleResponse {
   repeated PaymentSchedule schedules = 1; // Список платежей по графику
+  error_v1.ErrorResponse error = 2;
 }
 
 // Сообщение графика платежей
@@ -162,6 +167,7 @@ message UpdatePaymentScheduleResponse {
   string payment_id = 1;                  // UUID платежа
   PaymentStatus status = 2;               // Обновлённый статус платежа
   string message = 3;                     // Дополнительное сообщение
+  error_v1.ErrorResponse error = 4;
 }
 
 // Сервис кредитов
