@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CreditsServiceV1_CreateCreditApplication_FullMethodName       = "/credits.CreditsServiceV1/CreateCreditApplication"
-	CreditsServiceV1_GetCreditApplication_FullMethodName          = "/credits.CreditsServiceV1/GetCreditApplication"
-	CreditsServiceV1_UpdateCreditApplicationStatus_FullMethodName = "/credits.CreditsServiceV1/UpdateCreditApplicationStatus"
-	CreditsServiceV1_GetCredit_FullMethodName                     = "/credits.CreditsServiceV1/GetCredit"
-	CreditsServiceV1_ListUserCredits_FullMethodName               = "/credits.CreditsServiceV1/ListUserCredits"
-	CreditsServiceV1_CreatePaymentSchedule_FullMethodName         = "/credits.CreditsServiceV1/CreatePaymentSchedule"
-	CreditsServiceV1_GetPaymentSchedule_FullMethodName            = "/credits.CreditsServiceV1/GetPaymentSchedule"
-	CreditsServiceV1_UpdatePaymentSchedule_FullMethodName         = "/credits.CreditsServiceV1/UpdatePaymentSchedule"
+	CreditsServiceV1_CreateCreditApplication_FullMethodName       = "/credit_v1.CreditsServiceV1/CreateCreditApplication"
+	CreditsServiceV1_GetCreditApplication_FullMethodName          = "/credit_v1.CreditsServiceV1/GetCreditApplication"
+	CreditsServiceV1_UpdateCreditApplicationStatus_FullMethodName = "/credit_v1.CreditsServiceV1/UpdateCreditApplicationStatus"
+	CreditsServiceV1_GetCredit_FullMethodName                     = "/credit_v1.CreditsServiceV1/GetCredit"
+	CreditsServiceV1_ListUserCredits_FullMethodName               = "/credit_v1.CreditsServiceV1/ListUserCredits"
+	CreditsServiceV1_CreatePaymentSchedule_FullMethodName         = "/credit_v1.CreditsServiceV1/CreatePaymentSchedule"
+	CreditsServiceV1_GetPaymentSchedule_FullMethodName            = "/credit_v1.CreditsServiceV1/GetPaymentSchedule"
+	CreditsServiceV1_UpdatePaymentSchedule_FullMethodName         = "/credit_v1.CreditsServiceV1/UpdatePaymentSchedule"
 )
 
 // CreditsServiceV1Client is the client API for CreditsServiceV1 service.
@@ -366,7 +366,7 @@ func _CreditsServiceV1_UpdatePaymentSchedule_Handler(srv interface{}, ctx contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CreditsServiceV1_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "credits.CreditsServiceV1",
+	ServiceName: "credit_v1.CreditsServiceV1",
 	HandlerType: (*CreditsServiceV1Server)(nil),
 	Methods: []grpc.MethodDesc{
 		{

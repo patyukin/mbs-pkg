@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package credits;
+package credit_v1;
 
 option go_package = "github.com/yourusername/yourrepo/creditspb";
 
