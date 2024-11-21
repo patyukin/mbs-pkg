@@ -154,7 +154,7 @@ message GetPaymentScheduleRequest {
 
 // Сообщение ответа при получении графика платежей
 message GetPaymentScheduleResponse {
-  repeated PaymentSchedule schedules = 1; // Список платежей по графику
+  repeated PaymentSchedule payments = 1;  // Список платежей по графику
   error_v1.ErrorResponse error = 2;       // Сообщение об ошибке
 }
 
