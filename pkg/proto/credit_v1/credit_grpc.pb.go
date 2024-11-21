@@ -4,7 +4,7 @@
 // - protoc             v5.28.0
 // source: credit.proto
 
-package creditspb
+package credit_v1
 
 import (
 	context "context"
