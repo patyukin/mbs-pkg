@@ -172,11 +172,34 @@ func (m *CreateCreditApplicationResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ApplicationId
-
-	// no validation rules for Status
-
-	// no validation rules for Message
+	if all {
+		switch v := interface{}(m.GetResult()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateCreditApplicationResponseValidationError{
+					field:  "Result",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateCreditApplicationResponseValidationError{
+					field:  "Result",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetResult()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateCreditApplicationResponseValidationError{
+				field:  "Result",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if all {
 		switch v := interface{}(m.GetError()).(type) {
@@ -288,6 +311,226 @@ var _ interface {
 	ErrorName() string
 } = CreateCreditApplicationResponseValidationError{}
 
+// Validate checks the field values on CreditApplicationConfirmationRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *CreditApplicationConfirmationRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreditApplicationConfirmationRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// CreditApplicationConfirmationRequestMultiError, or nil if none found.
+func (m *CreditApplicationConfirmationRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreditApplicationConfirmationRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for UserId
+
+	if len(errors) > 0 {
+		return CreditApplicationConfirmationRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreditApplicationConfirmationRequestMultiError is an error wrapping multiple
+// validation errors returned by
+// CreditApplicationConfirmationRequest.ValidateAll() if the designated
+// constraints aren't met.
+type CreditApplicationConfirmationRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreditApplicationConfirmationRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreditApplicationConfirmationRequestMultiError) AllErrors() []error { return m }
+
+// CreditApplicationConfirmationRequestValidationError is the validation error
+// returned by CreditApplicationConfirmationRequest.Validate if the designated
+// constraints aren't met.
+type CreditApplicationConfirmationRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreditApplicationConfirmationRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreditApplicationConfirmationRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreditApplicationConfirmationRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreditApplicationConfirmationRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreditApplicationConfirmationRequestValidationError) ErrorName() string {
+	return "CreditApplicationConfirmationRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreditApplicationConfirmationRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreditApplicationConfirmationRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreditApplicationConfirmationRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreditApplicationConfirmationRequestValidationError{}
+
+// Validate checks the field values on CreditApplicationConfirmationResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *CreditApplicationConfirmationResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreditApplicationConfirmationResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// CreditApplicationConfirmationResponseMultiError, or nil if none found.
+func (m *CreditApplicationConfirmationResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreditApplicationConfirmationResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ApplicationId
+
+	// no validation rules for Status
+
+	// no validation rules for Message
+
+	if len(errors) > 0 {
+		return CreditApplicationConfirmationResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreditApplicationConfirmationResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// CreditApplicationConfirmationResponse.ValidateAll() if the designated
+// constraints aren't met.
+type CreditApplicationConfirmationResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreditApplicationConfirmationResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreditApplicationConfirmationResponseMultiError) AllErrors() []error { return m }
+
+// CreditApplicationConfirmationResponseValidationError is the validation error
+// returned by CreditApplicationConfirmationResponse.Validate if the
+// designated constraints aren't met.
+type CreditApplicationConfirmationResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreditApplicationConfirmationResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreditApplicationConfirmationResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreditApplicationConfirmationResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreditApplicationConfirmationResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreditApplicationConfirmationResponseValidationError) ErrorName() string {
+	return "CreditApplicationConfirmationResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreditApplicationConfirmationResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreditApplicationConfirmationResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreditApplicationConfirmationResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreditApplicationConfirmationResponseValidationError{}
+
 // Validate checks the field values on GetCreditApplicationRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -311,6 +554,8 @@ func (m *GetCreditApplicationRequest) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for ApplicationId
+
+	// no validation rules for UserId
 
 	if len(errors) > 0 {
 		return GetCreditApplicationRequestMultiError(errors)

@@ -64,9 +64,9 @@ message GetUserByUUIDResponse {
   string telegram_login = 9;
   string telegram_id = 10;
   string chat_id = 11;
-  string created_at = 13;
-  string updated_at = 14;
-  error_v1.ErrorResponse error = 15;
+  string created_at = 12;
+  string updated_at = 13;
+  error_v1.ErrorResponse error = 14;
 }
 
 message TokenGUWR {

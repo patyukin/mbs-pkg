@@ -5,11 +5,14 @@ package credit_v1;
 option go_package = "github.com/yourusername/yourrepo/creditspb";
 
 import "error.proto";
+import "google/protobuf/empty.proto";
 
 // Сервис кредитов
 service CreditsServiceV1 {
   // Создание новой заявки на кредит
   rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
+  // Подтверждение новой заявки на кредит
+  rpc CreditApplicationConfirmation(CreditApplicationConfirmationRequest) returns (CreditApplicationConfirmationResponse);
 
   // Получение статуса заявки на кредит
   rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
@@ -46,15 +49,27 @@ message CreateCreditApplicationRequest {
 
 // Сообщение ответа при создании заявки на кредит
 message CreateCreditApplicationResponse {
+  google.protobuf.Empty result = 1;
+  error_v1.ErrorResponse error = 2;
+}
+
+// Сообщение запроса для подтверждения заявки на кредит
+message CreditApplicationConfirmationRequest {
+  string code = 1;                       // код для подтверждения заявки
+  string user_id = 2;                    // UUID пользователя
+}
+
+// Сообщение ответа при подтверждении заявки на кредит
+message CreditApplicationConfirmationResponse {
   string application_id = 1;             // UUID заявки
-  string status = 2;    // Статус заявки (обычно PENDING)
+  string status = 2;                     // Статус заявки (обычно PENDING)
   string message = 3;                    // Дополнительное сообщение
-  error_v1.ErrorResponse error = 4;
 }
 
 // Сообщение запроса для получения статуса заявки на кредит
 message GetCreditApplicationRequest {
   string application_id = 1;             // UUID заявки
+  string user_id = 2;                    // UUID пользователя
 }
 
 // Сообщение ответа при получении статуса заявки на кредит
