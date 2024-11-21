@@ -35,22 +35,18 @@ enum PaymentStatus {
 service CreditsServiceV1 {
   // Создание новой заявки на кредит
   rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
-
+  // Создание нового кредита
+  rpc CreateCredit(CreateCreditRequest) returns (CreateCreditResponse);
   // Подтверждение новой заявки на кредит
   rpc CreditApplicationConfirmation(CreditApplicationConfirmationRequest) returns (CreditApplicationConfirmationResponse);
-
   // Получение статуса заявки на кредит
   rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
-
   // Обновление статуса заявки на кредит (например, одобрение или отклонение)
   rpc UpdateCreditApplicationStatus(UpdateCreditApplicationStatusRequest) returns (UpdateCreditApplicationStatusResponse);
-
   // Получение информации о кредите
   rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
-
   // Получение списка кредитов пользователя с пагинацией
   rpc GetListUserCredits(GetListUserCreditsRequest) returns (GetListUserCreditsResponse);
-
   // Получение графика платежей по кредиту
   rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
 }
@@ -82,6 +78,16 @@ message CreditApplicationConfirmationResponse {
   string application_id = 1;             // UUID заявки
   CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
   string message = 3;                    // Дополнительное сообщение
+}
+
+message CreateCreditRequest {
+  string application_id = 1;             // UUID заявки
+  string user_id = 2;                    // UUID пользователя
+}
+
+message CreateCreditResponse {
+  string message = 1;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 2;      // Сообщение об ошибке
 }
 
 // Сообщение запроса для получения статуса заявки на кредит
