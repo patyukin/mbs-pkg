@@ -407,11 +407,11 @@ type GetCreditApplicationResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ApplicationId  string                  `protobuf:"bytes,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`      // UUID заявки
-	Status         string                  `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`                                         // Текущий статус заявки
-	ApprovedAmount float64                 `protobuf:"fixed64,3,opt,name=approved_amount,json=approvedAmount,proto3" json:"approved_amount,omitempty"` // Одобренная сумма (если применимо)
-	DecisionDate   string                  `protobuf:"bytes,4,opt,name=decision_date,json=decisionDate,proto3" json:"decision_date,omitempty"`         // Дата принятия решения
-	Message        string                  `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`                                       // Дополнительное сообщение
+	ApplicationId  string                  `protobuf:"bytes,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`     // UUID заявки
+	Status         string                  `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`                                        // Текущий статус заявки
+	ApprovedAmount int64                   `protobuf:"varint,3,opt,name=approved_amount,json=approvedAmount,proto3" json:"approved_amount,omitempty"` // Одобренная сумма (если применимо)
+	DecisionDate   string                  `protobuf:"bytes,4,opt,name=decision_date,json=decisionDate,proto3" json:"decision_date,omitempty"`        // Дата принятия решения
+	Message        string                  `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`                                      // Дополнительное сообщение
 	Error          *error_v1.ErrorResponse `protobuf:"bytes,6,opt,name=error,proto3" json:"error,omitempty"`
 }
 
@@ -461,7 +461,7 @@ func (x *GetCreditApplicationResponse) GetStatus() string {
 	return ""
 }
 
-func (x *GetCreditApplicationResponse) GetApprovedAmount() float64 {
+func (x *GetCreditApplicationResponse) GetApprovedAmount() int64 {
 	if x != nil {
 		return x.ApprovedAmount
 	}
@@ -495,10 +495,10 @@ type UpdateCreditApplicationStatusRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ApplicationId  string  `protobuf:"bytes,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`      // UUID заявки
-	NewStatus      string  `protobuf:"bytes,2,opt,name=new_status,json=newStatus,proto3" json:"new_status,omitempty"`                  // Новый статус заявки (APPROVED или REJECTED)
-	ApprovedAmount float64 `protobuf:"fixed64,3,opt,name=approved_amount,json=approvedAmount,proto3" json:"approved_amount,omitempty"` // Одобренная сумма (если статус APPROVED)
-	DecisionNotes  string  `protobuf:"bytes,4,opt,name=decision_notes,json=decisionNotes,proto3" json:"decision_notes,omitempty"`      // Примечания к решению
+	ApplicationId  string `protobuf:"bytes,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`     // UUID заявки
+	NewStatus      string `protobuf:"bytes,2,opt,name=new_status,json=newStatus,proto3" json:"new_status,omitempty"`                 // Новый статус заявки (APPROVED или REJECTED)
+	ApprovedAmount int64  `protobuf:"varint,3,opt,name=approved_amount,json=approvedAmount,proto3" json:"approved_amount,omitempty"` // Одобренная сумма (если статус APPROVED)
+	DecisionNotes  string `protobuf:"bytes,4,opt,name=decision_notes,json=decisionNotes,proto3" json:"decision_notes,omitempty"`     // Примечания к решению
 }
 
 func (x *UpdateCreditApplicationStatusRequest) Reset() {
@@ -547,7 +547,7 @@ func (x *UpdateCreditApplicationStatusRequest) GetNewStatus() string {
 	return ""
 }
 
-func (x *UpdateCreditApplicationStatusRequest) GetApprovedAmount() float64 {
+func (x *UpdateCreditApplicationStatusRequest) GetApprovedAmount() int64 {
 	if x != nil {
 		return x.ApprovedAmount
 	}
@@ -687,15 +687,15 @@ type GetCreditResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CreditId        string                  `protobuf:"bytes,1,opt,name=credit_id,json=creditId,proto3" json:"credit_id,omitempty"`                        // UUID кредита
-	UserId          string                  `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                              // UUID пользователя
-	Amount          float64                 `protobuf:"fixed64,4,opt,name=amount,proto3" json:"amount,omitempty"`                                          // Сумма кредита
-	InterestRate    float64                 `protobuf:"fixed64,5,opt,name=interest_rate,json=interestRate,proto3" json:"interest_rate,omitempty"`          // Процентная ставка
-	RemainingAmount float64                 `protobuf:"fixed64,6,opt,name=remaining_amount,json=remainingAmount,proto3" json:"remaining_amount,omitempty"` // Остаток по кредиту
-	Status          string                  `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`                                            // Статус кредита
-	StartDate       string                  `protobuf:"bytes,8,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`                     // Дата начала кредита
-	EndDate         string                  `protobuf:"bytes,9,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`                           // Дата окончания кредита
-	Description     string                  `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`                                 // Дополнительное описание или комментарии
+	CreditId        string                  `protobuf:"bytes,1,opt,name=credit_id,json=creditId,proto3" json:"credit_id,omitempty"`                       // UUID кредита
+	UserId          string                  `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                             // UUID пользователя
+	Amount          int64                   `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`                                          // Сумма кредита
+	InterestRate    int64                   `protobuf:"varint,5,opt,name=interest_rate,json=interestRate,proto3" json:"interest_rate,omitempty"`          // Процентная ставка
+	RemainingAmount int64                   `protobuf:"varint,6,opt,name=remaining_amount,json=remainingAmount,proto3" json:"remaining_amount,omitempty"` // Остаток по кредиту
+	Status          string                  `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`                                           // Статус кредита
+	StartDate       string                  `protobuf:"bytes,8,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`                    // Дата начала кредита
+	EndDate         string                  `protobuf:"bytes,9,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`                          // Дата окончания кредита
+	Description     string                  `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`                                // Дополнительное описание или комментарии
 	Error           *error_v1.ErrorResponse `protobuf:"bytes,11,opt,name=error,proto3" json:"error,omitempty"`
 }
 
@@ -745,21 +745,21 @@ func (x *GetCreditResponse) GetUserId() string {
 	return ""
 }
 
-func (x *GetCreditResponse) GetAmount() float64 {
+func (x *GetCreditResponse) GetAmount() int64 {
 	if x != nil {
 		return x.Amount
 	}
 	return 0
 }
 
-func (x *GetCreditResponse) GetInterestRate() float64 {
+func (x *GetCreditResponse) GetInterestRate() int64 {
 	if x != nil {
 		return x.InterestRate
 	}
 	return 0
 }
 
-func (x *GetCreditResponse) GetRemainingAmount() float64 {
+func (x *GetCreditResponse) GetRemainingAmount() int64 {
 	if x != nil {
 		return x.RemainingAmount
 	}
@@ -951,15 +951,15 @@ type Credit struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CreditId        string  `protobuf:"bytes,1,opt,name=credit_id,json=creditId,proto3" json:"credit_id,omitempty"`                        // UUID кредита
-	UserId          string  `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                              // UUID пользователя
-	Amount          float64 `protobuf:"fixed64,4,opt,name=amount,proto3" json:"amount,omitempty"`                                          // Сумма кредита
-	InterestRate    float64 `protobuf:"fixed64,5,opt,name=interest_rate,json=interestRate,proto3" json:"interest_rate,omitempty"`          // Процентная ставка
-	RemainingAmount float64 `protobuf:"fixed64,6,opt,name=remaining_amount,json=remainingAmount,proto3" json:"remaining_amount,omitempty"` // Остаток по кредиту
-	Status          string  `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`                                            // Статус кредита
-	StartDate       string  `protobuf:"bytes,8,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`                     // Дата начала кредита
-	EndDate         string  `protobuf:"bytes,9,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`                           // Дата окончания кредита
-	Description     string  `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`                                 // Дополнительное описание или комментарии
+	CreditId        string `protobuf:"bytes,1,opt,name=credit_id,json=creditId,proto3" json:"credit_id,omitempty"`                       // UUID кредита
+	UserId          string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                             // UUID пользователя
+	Amount          int64  `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`                                          // Сумма кредита
+	InterestRate    int64  `protobuf:"varint,5,opt,name=interest_rate,json=interestRate,proto3" json:"interest_rate,omitempty"`          // Процентная ставка
+	RemainingAmount int64  `protobuf:"varint,6,opt,name=remaining_amount,json=remainingAmount,proto3" json:"remaining_amount,omitempty"` // Остаток по кредиту
+	Status          string `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`                                           // Статус кредита
+	StartDate       string `protobuf:"bytes,8,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`                    // Дата начала кредита
+	EndDate         string `protobuf:"bytes,9,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`                          // Дата окончания кредита
+	Description     string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`                                // Дополнительное описание или комментарии
 }
 
 func (x *Credit) Reset() {
@@ -1008,21 +1008,21 @@ func (x *Credit) GetUserId() string {
 	return ""
 }
 
-func (x *Credit) GetAmount() float64 {
+func (x *Credit) GetAmount() int64 {
 	if x != nil {
 		return x.Amount
 	}
 	return 0
 }
 
-func (x *Credit) GetInterestRate() float64 {
+func (x *Credit) GetInterestRate() int64 {
 	if x != nil {
 		return x.InterestRate
 	}
 	return 0
 }
 
-func (x *Credit) GetRemainingAmount() float64 {
+func (x *Credit) GetRemainingAmount() int64 {
 	if x != nil {
 		return x.RemainingAmount
 	}
@@ -1272,7 +1272,7 @@ type PaymentSchedule struct {
 	unknownFields protoimpl.UnknownFields
 
 	PaymentId string        `protobuf:"bytes,1,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`        // UUID платежа
-	Amount    float64       `protobuf:"fixed64,2,opt,name=amount,proto3" json:"amount,omitempty"`                             // Сумма платежа
+	Amount    int64         `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`                              // Сумма платежа
 	DueDate   string        `protobuf:"bytes,3,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"`              // Дата платежа
 	Status    PaymentStatus `protobuf:"varint,4,opt,name=status,proto3,enum=credit_v1.PaymentStatus" json:"status,omitempty"` // Статус платежа
 }
@@ -1316,7 +1316,7 @@ func (x *PaymentSchedule) GetPaymentId() string {
 	return ""
 }
 
-func (x *PaymentSchedule) GetAmount() float64 {
+func (x *PaymentSchedule) GetAmount() int64 {
 	if x != nil {
 		return x.Amount
 	}
@@ -1521,7 +1521,7 @@ var file_credit_proto_rawDesc = []byte{
 	0x61, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x16, 0x0a,
 	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73,
 	0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x27, 0x0a, 0x0f, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65,
-	0x64, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0e,
+	0x64, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e,
 	0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x64, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23,
 	0x0a, 0x0d, 0x64, 0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18,
 	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x64, 0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x44,
@@ -1538,7 +1538,7 @@ var file_credit_proto_rawDesc = []byte{
 	0x6e, 0x65, 0x77, 0x5f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x09, 0x6e, 0x65, 0x77, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x27, 0x0a, 0x0f, 0x61,
 	0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x64, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03,
-	0x20, 0x01, 0x28, 0x01, 0x52, 0x0e, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x64, 0x41, 0x6d,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x64, 0x41, 0x6d,
 	0x6f, 0x75, 0x6e, 0x74, 0x12, 0x25, 0x0a, 0x0e, 0x64, 0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e,
 	0x5f, 0x6e, 0x6f, 0x74, 0x65, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x64, 0x65,
 	0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x4e, 0x6f, 0x74, 0x65, 0x73, 0x22, 0xaf, 0x01, 0x0a, 0x25,
@@ -1561,12 +1561,12 @@ var file_credit_proto_rawDesc = []byte{
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x72, 0x65, 0x64, 0x69, 0x74, 0x49,
 	0x64, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d,
-	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75,
+	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75,
 	0x6e, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x5f, 0x72,
-	0x61, 0x74, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x69, 0x6e, 0x74, 0x65, 0x72,
+	0x61, 0x74, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x69, 0x6e, 0x74, 0x65, 0x72,
 	0x65, 0x73, 0x74, 0x52, 0x61, 0x74, 0x65, 0x12, 0x29, 0x0a, 0x10, 0x72, 0x65, 0x6d, 0x61, 0x69,
 	0x6e, 0x69, 0x6e, 0x67, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x0f, 0x72, 0x65, 0x6d, 0x61, 0x69, 0x6e, 0x69, 0x6e, 0x67, 0x41, 0x6d, 0x6f, 0x75,
+	0x03, 0x52, 0x0f, 0x72, 0x65, 0x6d, 0x61, 0x69, 0x6e, 0x69, 0x6e, 0x67, 0x41, 0x6d, 0x6f, 0x75,
 	0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x07, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74,
 	0x61, 0x72, 0x74, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
@@ -1603,11 +1603,11 @@ var file_credit_proto_rawDesc = []byte{
 	0x08, 0x63, 0x72, 0x65, 0x64, 0x69, 0x74, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65,
 	0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72,
 	0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x69, 0x6e,
+	0x28, 0x03, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x69, 0x6e,
 	0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x0c, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x52, 0x61, 0x74, 0x65, 0x12,
+	0x03, 0x52, 0x0c, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x52, 0x61, 0x74, 0x65, 0x12,
 	0x29, 0x0a, 0x10, 0x72, 0x65, 0x6d, 0x61, 0x69, 0x6e, 0x69, 0x6e, 0x67, 0x5f, 0x61, 0x6d, 0x6f,
-	0x75, 0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0f, 0x72, 0x65, 0x6d, 0x61, 0x69,
+	0x75, 0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0f, 0x72, 0x65, 0x6d, 0x61, 0x69,
 	0x6e, 0x69, 0x6e, 0x67, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74,
 	0x61, 0x74, 0x75, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74,
 	0x75, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x64, 0x61, 0x74, 0x65,
@@ -1642,7 +1642,7 @@ var file_credit_proto_rawDesc = []byte{
 	0x65, 0x6e, 0x74, 0x53, 0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x70,
 	0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x09, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d,
-	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75,
+	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75,
 	0x6e, 0x74, 0x12, 0x19, 0x0a, 0x08, 0x64, 0x75, 0x65, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x03,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x64, 0x75, 0x65, 0x44, 0x61, 0x74, 0x65, 0x12, 0x30, 0x0a,
 	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x18, 0x2e,

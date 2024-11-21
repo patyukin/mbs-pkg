@@ -75,8 +75,8 @@ message GetCreditApplicationRequest {
 // Сообщение ответа при получении статуса заявки на кредит
 message GetCreditApplicationResponse {
   string application_id = 1;             // UUID заявки
-  string status = 2;    // Текущий статус заявки
-  double approved_amount = 3;            // Одобренная сумма (если применимо)
+  string status = 2;                     // Текущий статус заявки
+  int64 approved_amount = 3;             // Одобренная сумма (если применимо)
   string decision_date = 4;              // Дата принятия решения
   string message = 5;                    // Дополнительное сообщение
   error_v1.ErrorResponse error = 6;
@@ -85,15 +85,15 @@ message GetCreditApplicationResponse {
 // Сообщение запроса для обновления статуса заявки (например, одобрение или отклонение)
 message UpdateCreditApplicationStatusRequest {
   string application_id = 1;              // UUID заявки
-  string new_status = 2; // Новый статус заявки (APPROVED или REJECTED)
-  double approved_amount = 3;             // Одобренная сумма (если статус APPROVED)
+  string new_status = 2;                  // Новый статус заявки (APPROVED или REJECTED)
+  int64 approved_amount = 3;              // Одобренная сумма (если статус APPROVED)
   string decision_notes = 4;              // Примечания к решению
 }
 
 // Сообщение ответа при обновлении статуса заявки
 message UpdateCreditApplicationStatusResponse {
   string application_id = 1;             // UUID заявки
-  string status = 2;    // Обновлённый статус заявки
+  string status = 2;                     // Обновлённый статус заявки
   string message = 3;                    // Дополнительное сообщение
   error_v1.ErrorResponse error = 4;
 }
@@ -107,10 +107,10 @@ message GetCreditRequest {
 message GetCreditResponse {
   string credit_id = 1;                   // UUID кредита
   string user_id = 2;                     // UUID пользователя
-  double amount = 4;                      // Сумма кредита
-  double interest_rate = 5;               // Процентная ставка
-  double remaining_amount = 6;            // Остаток по кредиту
-  string status = 7;                // Статус кредита
+  int64 amount = 4;                       // Сумма кредита
+  int64 interest_rate = 5;                // Процентная ставка
+  int64 remaining_amount = 6;             // Остаток по кредиту
+  string status = 7;                      // Статус кредита
   string start_date = 8;                  // Дата начала кредита
   string end_date = 9;                    // Дата окончания кредита
   string description = 10;                // Дополнительное описание или комментарии
@@ -137,10 +137,10 @@ message ListUserCreditsResponse {
 message Credit {
   string credit_id = 1;                   // UUID кредита
   string user_id = 2;                     // UUID пользователя
-  double amount = 4;                      // Сумма кредита
-  double interest_rate = 5;               // Процентная ставка
-  double remaining_amount = 6;            // Остаток по кредиту
-  string status = 7;                // Статус кредита
+  int64 amount = 4;                       // Сумма кредита
+  int64 interest_rate = 5;                // Процентная ставка
+  int64 remaining_amount = 6;             // Остаток по кредиту
+  string status = 7;                      // Статус кредита
   string start_date = 8;                  // Дата начала кредита
   string end_date = 9;                    // Дата окончания кредита
   string description = 10;                // Дополнительное описание или комментарии
@@ -171,7 +171,7 @@ message GetPaymentScheduleResponse {
 // Сообщение графика платежей
 message PaymentSchedule {
   string payment_id = 1;                  // UUID платежа
-  double amount = 2;                      // Сумма платежа
+  int64 amount = 2;                       // Сумма платежа
   string due_date = 3;                    // Дата платежа
   PaymentStatus status = 4;               // Статус платежа
 }
