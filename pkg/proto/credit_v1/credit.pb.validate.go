@@ -2036,22 +2036,22 @@ var _ interface {
 	ErrorName() string
 } = PaymentScheduleValidationError{}
 
-// Validate checks the field values on UpdatePaymentScheduleRequest with the
+// Validate checks the field values on UpdatePaymentStatusRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UpdatePaymentScheduleRequest) Validate() error {
+func (m *UpdatePaymentStatusRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on UpdatePaymentScheduleRequest with the
+// ValidateAll checks the field values on UpdatePaymentStatusRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// UpdatePaymentScheduleRequestMultiError, or nil if none found.
-func (m *UpdatePaymentScheduleRequest) ValidateAll() error {
+// UpdatePaymentStatusRequestMultiError, or nil if none found.
+func (m *UpdatePaymentStatusRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *UpdatePaymentScheduleRequest) validate(all bool) error {
+func (m *UpdatePaymentStatusRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2063,19 +2063,19 @@ func (m *UpdatePaymentScheduleRequest) validate(all bool) error {
 	// no validation rules for Status
 
 	if len(errors) > 0 {
-		return UpdatePaymentScheduleRequestMultiError(errors)
+		return UpdatePaymentStatusRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// UpdatePaymentScheduleRequestMultiError is an error wrapping multiple
-// validation errors returned by UpdatePaymentScheduleRequest.ValidateAll() if
+// UpdatePaymentStatusRequestMultiError is an error wrapping multiple
+// validation errors returned by UpdatePaymentStatusRequest.ValidateAll() if
 // the designated constraints aren't met.
-type UpdatePaymentScheduleRequestMultiError []error
+type UpdatePaymentStatusRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m UpdatePaymentScheduleRequestMultiError) Error() string {
+func (m UpdatePaymentStatusRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2084,12 +2084,11 @@ func (m UpdatePaymentScheduleRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m UpdatePaymentScheduleRequestMultiError) AllErrors() []error { return m }
+func (m UpdatePaymentStatusRequestMultiError) AllErrors() []error { return m }
 
-// UpdatePaymentScheduleRequestValidationError is the validation error returned
-// by UpdatePaymentScheduleRequest.Validate if the designated constraints
-// aren't met.
-type UpdatePaymentScheduleRequestValidationError struct {
+// UpdatePaymentStatusRequestValidationError is the validation error returned
+// by UpdatePaymentStatusRequest.Validate if the designated constraints aren't met.
+type UpdatePaymentStatusRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2097,24 +2096,24 @@ type UpdatePaymentScheduleRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e UpdatePaymentScheduleRequestValidationError) Field() string { return e.field }
+func (e UpdatePaymentStatusRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e UpdatePaymentScheduleRequestValidationError) Reason() string { return e.reason }
+func (e UpdatePaymentStatusRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e UpdatePaymentScheduleRequestValidationError) Cause() error { return e.cause }
+func (e UpdatePaymentStatusRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e UpdatePaymentScheduleRequestValidationError) Key() bool { return e.key }
+func (e UpdatePaymentStatusRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e UpdatePaymentScheduleRequestValidationError) ErrorName() string {
-	return "UpdatePaymentScheduleRequestValidationError"
+func (e UpdatePaymentStatusRequestValidationError) ErrorName() string {
+	return "UpdatePaymentStatusRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e UpdatePaymentScheduleRequestValidationError) Error() string {
+func (e UpdatePaymentStatusRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2126,14 +2125,14 @@ func (e UpdatePaymentScheduleRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sUpdatePaymentScheduleRequest.%s: %s%s",
+		"invalid %sUpdatePaymentStatusRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = UpdatePaymentScheduleRequestValidationError{}
+var _ error = UpdatePaymentStatusRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -2141,24 +2140,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = UpdatePaymentScheduleRequestValidationError{}
+} = UpdatePaymentStatusRequestValidationError{}
 
-// Validate checks the field values on UpdatePaymentScheduleResponse with the
+// Validate checks the field values on UpdatePaymentStatusResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UpdatePaymentScheduleResponse) Validate() error {
+func (m *UpdatePaymentStatusResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on UpdatePaymentScheduleResponse with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the result is a list of violation errors wrapped in
-// UpdatePaymentScheduleResponseMultiError, or nil if none found.
-func (m *UpdatePaymentScheduleResponse) ValidateAll() error {
+// ValidateAll checks the field values on UpdatePaymentStatusResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UpdatePaymentStatusResponseMultiError, or nil if none found.
+func (m *UpdatePaymentStatusResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *UpdatePaymentScheduleResponse) validate(all bool) error {
+func (m *UpdatePaymentStatusResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2175,7 +2174,7 @@ func (m *UpdatePaymentScheduleResponse) validate(all bool) error {
 		switch v := interface{}(m.GetError()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdatePaymentScheduleResponseValidationError{
+				errors = append(errors, UpdatePaymentStatusResponseValidationError{
 					field:  "Error",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -2183,7 +2182,7 @@ func (m *UpdatePaymentScheduleResponse) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdatePaymentScheduleResponseValidationError{
+				errors = append(errors, UpdatePaymentStatusResponseValidationError{
 					field:  "Error",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -2192,7 +2191,7 @@ func (m *UpdatePaymentScheduleResponse) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return UpdatePaymentScheduleResponseValidationError{
+			return UpdatePaymentStatusResponseValidationError{
 				field:  "Error",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -2201,19 +2200,19 @@ func (m *UpdatePaymentScheduleResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return UpdatePaymentScheduleResponseMultiError(errors)
+		return UpdatePaymentStatusResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// UpdatePaymentScheduleResponseMultiError is an error wrapping multiple
-// validation errors returned by UpdatePaymentScheduleResponse.ValidateAll()
-// if the designated constraints aren't met.
-type UpdatePaymentScheduleResponseMultiError []error
+// UpdatePaymentStatusResponseMultiError is an error wrapping multiple
+// validation errors returned by UpdatePaymentStatusResponse.ValidateAll() if
+// the designated constraints aren't met.
+type UpdatePaymentStatusResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m UpdatePaymentScheduleResponseMultiError) Error() string {
+func (m UpdatePaymentStatusResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2222,12 +2221,12 @@ func (m UpdatePaymentScheduleResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m UpdatePaymentScheduleResponseMultiError) AllErrors() []error { return m }
+func (m UpdatePaymentStatusResponseMultiError) AllErrors() []error { return m }
 
-// UpdatePaymentScheduleResponseValidationError is the validation error
-// returned by UpdatePaymentScheduleResponse.Validate if the designated
-// constraints aren't met.
-type UpdatePaymentScheduleResponseValidationError struct {
+// UpdatePaymentStatusResponseValidationError is the validation error returned
+// by UpdatePaymentStatusResponse.Validate if the designated constraints
+// aren't met.
+type UpdatePaymentStatusResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2235,24 +2234,24 @@ type UpdatePaymentScheduleResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e UpdatePaymentScheduleResponseValidationError) Field() string { return e.field }
+func (e UpdatePaymentStatusResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e UpdatePaymentScheduleResponseValidationError) Reason() string { return e.reason }
+func (e UpdatePaymentStatusResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e UpdatePaymentScheduleResponseValidationError) Cause() error { return e.cause }
+func (e UpdatePaymentStatusResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e UpdatePaymentScheduleResponseValidationError) Key() bool { return e.key }
+func (e UpdatePaymentStatusResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e UpdatePaymentScheduleResponseValidationError) ErrorName() string {
-	return "UpdatePaymentScheduleResponseValidationError"
+func (e UpdatePaymentStatusResponseValidationError) ErrorName() string {
+	return "UpdatePaymentStatusResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e UpdatePaymentScheduleResponseValidationError) Error() string {
+func (e UpdatePaymentStatusResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2264,14 +2263,14 @@ func (e UpdatePaymentScheduleResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sUpdatePaymentScheduleResponse.%s: %s%s",
+		"invalid %sUpdatePaymentStatusResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = UpdatePaymentScheduleResponseValidationError{}
+var _ error = UpdatePaymentStatusResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -2279,4 +2278,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = UpdatePaymentScheduleResponseValidationError{}
+} = UpdatePaymentStatusResponseValidationError{}

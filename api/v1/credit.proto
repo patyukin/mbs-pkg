@@ -45,7 +45,7 @@ service CreditsServiceV1 {
   rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
 
   // Обновление статуса платежа в графике
-  rpc UpdatePaymentSchedule(UpdatePaymentScheduleRequest) returns (UpdatePaymentScheduleResponse);
+  rpc UpdatePaymentStatus(UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
 }
 
 // Сообщение запроса для создания новой заявки на кредит
@@ -176,14 +176,14 @@ enum PaymentStatus {
   REFUNDED = 5;
 }
 
-// Сообщение запроса для обновления графика платежей (например, отметка платежа как выполненного)
-message UpdatePaymentScheduleRequest {
+// Сообщение запроса для обновления графика платежей
+message UpdatePaymentStatusRequest {
   string payment_id = 1;                  // UUID платежа
   PaymentStatus status = 2;               // Новый статус платежа
 }
 
 // Сообщение ответа при обновлении графика платежей
-message UpdatePaymentScheduleResponse {
+message UpdatePaymentStatusResponse {
   string payment_id = 1;                  // UUID платежа
   PaymentStatus status = 2;               // Обновлённый статус платежа
   string message = 3;                     // Дополнительное сообщение
