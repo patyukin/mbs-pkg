@@ -22,7 +22,7 @@ var stringToCreditStatus = map[string]credit_v1.CreditStatus{
 func EnumToStringCreditStatus(status credit_v1.CreditStatus) (string, error) {
 	str, ok := creditStatusToString[status]
 	if !ok {
-		return "", fmt.Errorf("invalid CreditStatus enum value")
+		return "", fmt.Errorf("invalid CreditStatus")
 	}
 	return str, nil
 }
@@ -31,7 +31,17 @@ func EnumToStringCreditStatus(status credit_v1.CreditStatus) (string, error) {
 func StringToEnumCreditStatus(status string) (credit_v1.CreditStatus, error) {
 	enum, ok := stringToCreditStatus[status]
 	if !ok {
-		return 0, fmt.Errorf("invalid CreditStatus string value")
+		return 0, fmt.Errorf("invalid CreditStatus")
 	}
+
 	return enum, nil
+}
+
+// ValidateStringCreditStatus validates CreditStatus string
+func ValidateStringCreditStatus(status string) error {
+	if _, ok := stringToCreditStatus[status]; !ok {
+		return fmt.Errorf("invalid CreditStatus")
+	}
+
+	return nil
 }

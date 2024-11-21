@@ -43,3 +43,12 @@ func StringToEnumPaymentStatus(status string) (credit_v1.PaymentStatus, error) {
 
 	return enum, nil
 }
+
+// ValidateStringPaymentStatus validates PaymentStatus string
+func ValidateStringPaymentStatus(status string) error {
+	if _, ok := stringToPaymentStatus[status]; !ok {
+		return fmt.Errorf("invalid PaymentStatus value")
+	}
+
+	return nil
+}

@@ -1,7 +1,7 @@
 package mapping
 
 import (
-	"errors"
+	"fmt"
 	"github.com/patyukin/mbs-pkg/pkg/proto/credit_v1"
 )
 
@@ -24,7 +24,7 @@ var stringToCreditApplicationStatus = map[string]credit_v1.CreditApplicationStat
 func EnumToStringCreditApplicationStatus(status credit_v1.CreditApplicationStatus) (string, error) {
 	str, ok := creditApplicationStatusToString[status]
 	if !ok {
-		return "", errors.New("invalid CreditApplicationStatus enum value")
+		return "", fmt.Errorf("invalid CreditApplicationStatus")
 	}
 
 	return str, nil
@@ -34,8 +34,17 @@ func EnumToStringCreditApplicationStatus(status credit_v1.CreditApplicationStatu
 func StringToEnumCreditApplicationStatus(status string) (credit_v1.CreditApplicationStatus, error) {
 	enum, ok := stringToCreditApplicationStatus[status]
 	if !ok {
-		return 0, errors.New("invalid CreditApplicationStatus string value")
+		return 0, fmt.Errorf("invalid CreditApplicationStatus")
 	}
 
 	return enum, nil
+}
+
+// ValidateStringCreditApplicationStatus validates CreditApplicationStatus string
+func ValidateStringCreditApplicationStatus(status string) error {
+	if _, ok := stringToCreditApplicationStatus[status]; !ok {
+		return fmt.Errorf("invalid CreditApplicationStatus")
+	}
+
+	return nil
 }
