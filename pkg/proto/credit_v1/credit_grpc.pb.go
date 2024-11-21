@@ -26,7 +26,6 @@ const (
 	CreditsServiceV1_GetCredit_FullMethodName                     = "/credit_v1.CreditsServiceV1/GetCredit"
 	CreditsServiceV1_GetListUserCredits_FullMethodName            = "/credit_v1.CreditsServiceV1/GetListUserCredits"
 	CreditsServiceV1_GetPaymentSchedule_FullMethodName            = "/credit_v1.CreditsServiceV1/GetPaymentSchedule"
-	CreditsServiceV1_UpdatePaymentStatus_FullMethodName           = "/credit_v1.CreditsServiceV1/UpdatePaymentStatus"
 )
 
 // CreditsServiceV1Client is the client API for CreditsServiceV1 service.
@@ -49,8 +48,6 @@ type CreditsServiceV1Client interface {
 	GetListUserCredits(ctx context.Context, in *GetListUserCreditsRequest, opts ...grpc.CallOption) (*GetListUserCreditsResponse, error)
 	// Получение графика платежей по кредиту
 	GetPaymentSchedule(ctx context.Context, in *GetPaymentScheduleRequest, opts ...grpc.CallOption) (*GetPaymentScheduleResponse, error)
-	// Обновление статуса платежа в графике
-	UpdatePaymentStatus(ctx context.Context, in *UpdatePaymentStatusRequest, opts ...grpc.CallOption) (*UpdatePaymentStatusResponse, error)
 }
 
 type creditsServiceV1Client struct {
@@ -131,16 +128,6 @@ func (c *creditsServiceV1Client) GetPaymentSchedule(ctx context.Context, in *Get
 	return out, nil
 }
 
-func (c *creditsServiceV1Client) UpdatePaymentStatus(ctx context.Context, in *UpdatePaymentStatusRequest, opts ...grpc.CallOption) (*UpdatePaymentStatusResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdatePaymentStatusResponse)
-	err := c.cc.Invoke(ctx, CreditsServiceV1_UpdatePaymentStatus_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // CreditsServiceV1Server is the server API for CreditsServiceV1 service.
 // All implementations must embed UnimplementedCreditsServiceV1Server
 // for forward compatibility.
@@ -161,8 +148,6 @@ type CreditsServiceV1Server interface {
 	GetListUserCredits(context.Context, *GetListUserCreditsRequest) (*GetListUserCreditsResponse, error)
 	// Получение графика платежей по кредиту
 	GetPaymentSchedule(context.Context, *GetPaymentScheduleRequest) (*GetPaymentScheduleResponse, error)
-	// Обновление статуса платежа в графике
-	UpdatePaymentStatus(context.Context, *UpdatePaymentStatusRequest) (*UpdatePaymentStatusResponse, error)
 	mustEmbedUnimplementedCreditsServiceV1Server()
 }
 
@@ -193,9 +178,6 @@ func (UnimplementedCreditsServiceV1Server) GetListUserCredits(context.Context, *
 }
 func (UnimplementedCreditsServiceV1Server) GetPaymentSchedule(context.Context, *GetPaymentScheduleRequest) (*GetPaymentScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPaymentSchedule not implemented")
-}
-func (UnimplementedCreditsServiceV1Server) UpdatePaymentStatus(context.Context, *UpdatePaymentStatusRequest) (*UpdatePaymentStatusResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdatePaymentStatus not implemented")
 }
 func (UnimplementedCreditsServiceV1Server) mustEmbedUnimplementedCreditsServiceV1Server() {}
 func (UnimplementedCreditsServiceV1Server) testEmbeddedByValue()                          {}
@@ -344,24 +326,6 @@ func _CreditsServiceV1_GetPaymentSchedule_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CreditsServiceV1_UpdatePaymentStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePaymentStatusRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CreditsServiceV1Server).UpdatePaymentStatus(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CreditsServiceV1_UpdatePaymentStatus_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CreditsServiceV1Server).UpdatePaymentStatus(ctx, req.(*UpdatePaymentStatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // CreditsServiceV1_ServiceDesc is the grpc.ServiceDesc for CreditsServiceV1 service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -396,10 +360,6 @@ var CreditsServiceV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPaymentSchedule",
 			Handler:    _CreditsServiceV1_GetPaymentSchedule_Handler,
-		},
-		{
-			MethodName: "UpdatePaymentStatus",
-			Handler:    _CreditsServiceV1_UpdatePaymentStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
