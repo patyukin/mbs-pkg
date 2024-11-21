@@ -87,16 +87,16 @@ message GetCreditApplicationRequest {
 message GetCreditApplicationResponse {
   string application_id = 1;             // UUID заявки
   CreditApplicationStatus status = 2;    // Текущий статус заявки
-  int64 approved_amount = 3;             // Одобренная сумма (если применимо)
+  int64 approved_amount = 3;             // Одобренная сумма
   string decision_date = 4;              // Дата принятия решения
   string message = 5;                    // Дополнительное сообщение
-  error_v1.ErrorResponse error = 6;
+  error_v1.ErrorResponse error = 6;      // Сообщение об ошибке
 }
 
 // Сообщение запроса для обновления статуса заявки (например, одобрение или отклонение)
 message UpdateCreditApplicationStatusRequest {
   string application_id = 1;              // UUID заявки
-  string new_status = 2;                  // Новый статус заявки (APPROVED или REJECTED)
+  CreditApplicationStatus status = 2;     // Новый статус заявки (APPROVED или REJECTED)
   string decision_notes = 3;              // Примечания к решению
 }
 

@@ -778,7 +778,7 @@ func (m *UpdateCreditApplicationStatusRequest) validate(all bool) error {
 
 	// no validation rules for ApplicationId
 
-	// no validation rules for NewStatus
+	// no validation rules for Status
 
 	// no validation rules for DecisionNotes
 
