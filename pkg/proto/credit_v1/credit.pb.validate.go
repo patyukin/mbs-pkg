@@ -2051,7 +2051,7 @@ func (m *UpdatePaymentScheduleRequest) validate(all bool) error {
 
 	// no validation rules for PaymentId
 
-	// no validation rules for NewStatus
+	// no validation rules for Status
 
 	if len(errors) > 0 {
 		return UpdatePaymentScheduleRequestMultiError(errors)
