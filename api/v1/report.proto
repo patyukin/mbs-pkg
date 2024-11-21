@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package report_v1;
+
+import "error.proto";
+
+option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/report_v1;report_v1";
+
+service ReportService {
+  rpc GetUserReport(GetUserReportRequest) returns (GetUserReportResponse);
+}
+
+message GetUserReportRequest {
+  string user_id = 1;
+  string start_date = 2;
+  string end_date = 3;
+}
+
+message GetUserReportResponse {
+  string message = 1;
+  error_v1.ErrorResponse error = 2;
+}

@@ -1,4 +1,4 @@
-package mapping
+package creditmapper
 
 import (
 	"fmt"

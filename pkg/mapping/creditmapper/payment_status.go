@@ -1,4 +1,4 @@
-package mapping
+package creditmapper
 
 import (
 	"fmt"
@@ -28,7 +28,7 @@ var stringToPaymentStatus = map[string]credit_v1.PaymentStatus{
 func EnumToStringPaymentStatus(status credit_v1.PaymentStatus) (string, error) {
 	str, ok := paymentStatusToString[status]
 	if !ok {
-		return "", fmt.Errorf("invalid PaymentStatus enum value")
+		return "", fmt.Errorf("invalid PaymentStatus")
 	}
 
 	return str, nil
@@ -38,7 +38,7 @@ func EnumToStringPaymentStatus(status credit_v1.PaymentStatus) (string, error) {
 func StringToEnumPaymentStatus(status string) (credit_v1.PaymentStatus, error) {
 	enum, ok := stringToPaymentStatus[status]
 	if !ok {
-		return 0, fmt.Errorf("invalid PaymentStatus string value")
+		return 0, fmt.Errorf("invalid PaymentStatus")
 	}
 
 	return enum, nil
@@ -47,7 +47,7 @@ func StringToEnumPaymentStatus(status string) (credit_v1.PaymentStatus, error) {
 // ValidateStringPaymentStatus validates PaymentStatus string
 func ValidateStringPaymentStatus(status string) error {
 	if _, ok := stringToPaymentStatus[status]; !ok {
-		return fmt.Errorf("invalid PaymentStatus value")
+		return fmt.Errorf("invalid PaymentStatus")
 	}
 
 	return nil

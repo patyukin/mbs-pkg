@@ -21,12 +21,12 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	AuthService_SignUp_FullMethodName               = "/auth_v1.AuthService/SignUp"
 	AuthService_SignIn_FullMethodName               = "/auth_v1.AuthService/SignIn"
-	AuthService_SignInVerify_FullMethodName         = "/auth_v1.AuthService/SignInVerify"
+	AuthService_SignInConfirmation_FullMethodName   = "/auth_v1.AuthService/SignInConfirmation"
 	AuthService_GetUserByUUID_FullMethodName        = "/auth_v1.AuthService/GetUserByUUID"
 	AuthService_GetUsersWithTokens_FullMethodName   = "/auth_v1.AuthService/GetUsersWithTokens"
 	AuthService_GetUsersWithProfiles_FullMethodName = "/auth_v1.AuthService/GetUsersWithProfiles"
 	AuthService_AddUserRole_FullMethodName          = "/auth_v1.AuthService/AddUserRole"
-	AuthService_Authorize_FullMethodName            = "/auth_v1.AuthService/Authorize"
+	AuthService_AuthorizeUser_FullMethodName        = "/auth_v1.AuthService/AuthorizeUser"
 	AuthService_RefreshToken_FullMethodName         = "/auth_v1.AuthService/RefreshToken"
 	AuthService_GetUserInfo_FullMethodName          = "/auth_v1.AuthService/GetUserInfo"
 )
@@ -37,12 +37,12 @@ const (
 type AuthServiceClient interface {
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
-	SignInVerify(ctx context.Context, in *SignInVerifyRequest, opts ...grpc.CallOption) (*SignInVerifyResponse, error)
+	SignInConfirmation(ctx context.Context, in *SignInConfirmationRequest, opts ...grpc.CallOption) (*SignInConfirmationResponse, error)
 	GetUserByUUID(ctx context.Context, in *GetUserByUUIDRequest, opts ...grpc.CallOption) (*GetUserByUUIDResponse, error)
 	GetUsersWithTokens(ctx context.Context, in *GetUsersWithTokensRequest, opts ...grpc.CallOption) (*GetUsersWithTokensResponse, error)
 	GetUsersWithProfiles(ctx context.Context, in *GetUsersWithProfilesRequest, opts ...grpc.CallOption) (*GetUsersWithProfilesResponse, error)
 	AddUserRole(ctx context.Context, in *AddUserRoleRequest, opts ...grpc.CallOption) (*AddUserRoleResponse, error)
-	Authorize(ctx context.Context, in *AuthorizeRequest, opts ...grpc.CallOption) (*AuthorizeResponse, error)
+	AuthorizeUser(ctx context.Context, in *AuthorizeUserRequest, opts ...grpc.CallOption) (*AuthorizeUserResponse, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
 }
@@ -75,10 +75,10 @@ func (c *authServiceClient) SignIn(ctx context.Context, in *SignInRequest, opts 
 	return out, nil
 }
 
-func (c *authServiceClient) SignInVerify(ctx context.Context, in *SignInVerifyRequest, opts ...grpc.CallOption) (*SignInVerifyResponse, error) {
+func (c *authServiceClient) SignInConfirmation(ctx context.Context, in *SignInConfirmationRequest, opts ...grpc.CallOption) (*SignInConfirmationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SignInVerifyResponse)
-	err := c.cc.Invoke(ctx, AuthService_SignInVerify_FullMethodName, in, out, cOpts...)
+	out := new(SignInConfirmationResponse)
+	err := c.cc.Invoke(ctx, AuthService_SignInConfirmation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -125,10 +125,10 @@ func (c *authServiceClient) AddUserRole(ctx context.Context, in *AddUserRoleRequ
 	return out, nil
 }
 
-func (c *authServiceClient) Authorize(ctx context.Context, in *AuthorizeRequest, opts ...grpc.CallOption) (*AuthorizeResponse, error) {
+func (c *authServiceClient) AuthorizeUser(ctx context.Context, in *AuthorizeUserRequest, opts ...grpc.CallOption) (*AuthorizeUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AuthorizeResponse)
-	err := c.cc.Invoke(ctx, AuthService_Authorize_FullMethodName, in, out, cOpts...)
+	out := new(AuthorizeUserResponse)
+	err := c.cc.Invoke(ctx, AuthService_AuthorizeUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -161,12 +161,12 @@ func (c *authServiceClient) GetUserInfo(ctx context.Context, in *GetUserInfoRequ
 type AuthServiceServer interface {
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
-	SignInVerify(context.Context, *SignInVerifyRequest) (*SignInVerifyResponse, error)
+	SignInConfirmation(context.Context, *SignInConfirmationRequest) (*SignInConfirmationResponse, error)
 	GetUserByUUID(context.Context, *GetUserByUUIDRequest) (*GetUserByUUIDResponse, error)
 	GetUsersWithTokens(context.Context, *GetUsersWithTokensRequest) (*GetUsersWithTokensResponse, error)
 	GetUsersWithProfiles(context.Context, *GetUsersWithProfilesRequest) (*GetUsersWithProfilesResponse, error)
 	AddUserRole(context.Context, *AddUserRoleRequest) (*AddUserRoleResponse, error)
-	Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error)
+	AuthorizeUser(context.Context, *AuthorizeUserRequest) (*AuthorizeUserResponse, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
@@ -185,8 +185,8 @@ func (UnimplementedAuthServiceServer) SignUp(context.Context, *SignUpRequest) (*
 func (UnimplementedAuthServiceServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
 }
-func (UnimplementedAuthServiceServer) SignInVerify(context.Context, *SignInVerifyRequest) (*SignInVerifyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignInVerify not implemented")
+func (UnimplementedAuthServiceServer) SignInConfirmation(context.Context, *SignInConfirmationRequest) (*SignInConfirmationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignInConfirmation not implemented")
 }
 func (UnimplementedAuthServiceServer) GetUserByUUID(context.Context, *GetUserByUUIDRequest) (*GetUserByUUIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserByUUID not implemented")
@@ -200,8 +200,8 @@ func (UnimplementedAuthServiceServer) GetUsersWithProfiles(context.Context, *Get
 func (UnimplementedAuthServiceServer) AddUserRole(context.Context, *AddUserRoleRequest) (*AddUserRoleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUserRole not implemented")
 }
-func (UnimplementedAuthServiceServer) Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Authorize not implemented")
+func (UnimplementedAuthServiceServer) AuthorizeUser(context.Context, *AuthorizeUserRequest) (*AuthorizeUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AuthorizeUser not implemented")
 }
 func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
@@ -266,20 +266,20 @@ func _AuthService_SignIn_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_SignInVerify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SignInVerifyRequest)
+func _AuthService_SignInConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignInConfirmationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).SignInVerify(ctx, in)
+		return srv.(AuthServiceServer).SignInConfirmation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_SignInVerify_FullMethodName,
+		FullMethod: AuthService_SignInConfirmation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).SignInVerify(ctx, req.(*SignInVerifyRequest))
+		return srv.(AuthServiceServer).SignInConfirmation(ctx, req.(*SignInConfirmationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -356,20 +356,20 @@ func _AuthService_AddUserRole_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_Authorize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthorizeRequest)
+func _AuthService_AuthorizeUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthorizeUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).Authorize(ctx, in)
+		return srv.(AuthServiceServer).AuthorizeUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_Authorize_FullMethodName,
+		FullMethod: AuthService_AuthorizeUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Authorize(ctx, req.(*AuthorizeRequest))
+		return srv.(AuthServiceServer).AuthorizeUser(ctx, req.(*AuthorizeUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -426,8 +426,8 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_SignIn_Handler,
 		},
 		{
-			MethodName: "SignInVerify",
-			Handler:    _AuthService_SignInVerify_Handler,
+			MethodName: "SignInConfirmation",
+			Handler:    _AuthService_SignInConfirmation_Handler,
 		},
 		{
 			MethodName: "GetUserByUUID",
@@ -446,8 +446,8 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_AddUserRole_Handler,
 		},
 		{
-			MethodName: "Authorize",
-			Handler:    _AuthService_Authorize_Handler,
+			MethodName: "AuthorizeUser",
+			Handler:    _AuthService_AuthorizeUser_Handler,
 		},
 		{
 			MethodName: "RefreshToken",

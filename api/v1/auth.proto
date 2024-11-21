@@ -3,21 +3,20 @@ syntax = "proto3";
 package auth_v1;
 
 import "error.proto";
-import "google/protobuf/empty.proto";
 
 option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/auth_v1;auth_v1";
 
 service AuthService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
   rpc SignIn(SignInRequest) returns (SignInResponse);
-  rpc SignInVerify(SignInVerifyRequest) returns (SignInVerifyResponse);
+  rpc SignInConfirmation(SignInConfirmationRequest) returns (SignInConfirmationResponse);
   rpc GetUserByUUID(GetUserByUUIDRequest) returns (GetUserByUUIDResponse);
-  rpc GetUsersWithTokens (GetUsersWithTokensRequest) returns (GetUsersWithTokensResponse);
-  rpc GetUsersWithProfiles (GetUsersWithProfilesRequest) returns (GetUsersWithProfilesResponse);
-  rpc AddUserRole (AddUserRoleRequest) returns (AddUserRoleResponse);
-  rpc Authorize (AuthorizeRequest) returns (AuthorizeResponse);
-  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
-  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
+  rpc GetUsersWithTokens(GetUsersWithTokensRequest) returns (GetUsersWithTokensResponse);
+  rpc GetUsersWithProfiles(GetUsersWithProfilesRequest) returns (GetUsersWithProfilesResponse);
+  rpc AddUserRole(AddUserRoleRequest) returns (AddUserRoleResponse);
+  rpc AuthorizeUser(AuthorizeUserRequest) returns (AuthorizeUserResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
 }
 
 message SignUpRequest {
@@ -44,7 +43,7 @@ message SignInRequest {
 }
 
 message SignInResponse {
-  google.protobuf.Empty result = 1;
+  string message = 1;
   error_v1.ErrorResponse error = 2;
 }
 
@@ -118,11 +117,11 @@ message GetUsersWithProfilesResponse {
   error_v1.ErrorResponse error = 3;
 }
 
-message SignInVerifyRequest {
+message SignInConfirmationRequest {
   string code = 1;
 }
 
-message SignInVerifyResponse {
+message SignInConfirmationResponse {
   string access_token = 1;
   string refresh_token = 2;
   error_v1.ErrorResponse error = 3;
@@ -134,18 +133,18 @@ message AddUserRoleRequest {
 }
 
 message AddUserRoleResponse {
-  google.protobuf.Empty result = 1;
+  string message = 1;
   error_v1.ErrorResponse error = 2;
 }
 
-message AuthorizeRequest {
+message AuthorizeUserRequest {
   string user_id = 1;
   string route_path = 2;
   string method = 3;
 }
 
-message AuthorizeResponse {
-  google.protobuf.Empty result = 1;
+message AuthorizeUserResponse {
+  string message = 1;
   error_v1.ErrorResponse error = 2;
 }
 

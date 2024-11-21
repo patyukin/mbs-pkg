@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	PaymentService_CreateAccount_FullMethodName            = "/payment_v1.PaymentService/CreateAccount"
 	PaymentService_CreatePayment_FullMethodName            = "/payment_v1.PaymentService/CreatePayment"
-	PaymentService_VerifyPayment_FullMethodName            = "/payment_v1.PaymentService/VerifyPayment"
+	PaymentService_ConfirmationPayment_FullMethodName      = "/payment_v1.PaymentService/ConfirmationPayment"
 	PaymentService_GetPayment_FullMethodName               = "/payment_v1.PaymentService/GetPayment"
 	PaymentService_UpdatePaymentStatus_FullMethodName      = "/payment_v1.PaymentService/UpdatePaymentStatus"
 	PaymentService_GetTransactionsByPayment_FullMethodName = "/payment_v1.PaymentService/GetTransactionsByPayment"
@@ -33,7 +33,7 @@ const (
 type PaymentServiceClient interface {
 	CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
 	CreatePayment(ctx context.Context, in *CreatePaymentRequest, opts ...grpc.CallOption) (*CreatePaymentResponse, error)
-	VerifyPayment(ctx context.Context, in *VerifyPaymentRequest, opts ...grpc.CallOption) (*VerifyPaymentResponse, error)
+	ConfirmationPayment(ctx context.Context, in *ConfirmationPaymentRequest, opts ...grpc.CallOption) (*ConfirmationPaymentResponse, error)
 	GetPayment(ctx context.Context, in *GetPaymentRequest, opts ...grpc.CallOption) (*GetPaymentResponse, error)
 	UpdatePaymentStatus(ctx context.Context, in *UpdatePaymentStatusRequest, opts ...grpc.CallOption) (*UpdatePaymentStatusResponse, error)
 	GetTransactionsByPayment(ctx context.Context, in *GetTransactionsByPaymentRequest, opts ...grpc.CallOption) (*GetTransactionsByPaymentResponse, error)
@@ -67,10 +67,10 @@ func (c *paymentServiceClient) CreatePayment(ctx context.Context, in *CreatePaym
 	return out, nil
 }
 
-func (c *paymentServiceClient) VerifyPayment(ctx context.Context, in *VerifyPaymentRequest, opts ...grpc.CallOption) (*VerifyPaymentResponse, error) {
+func (c *paymentServiceClient) ConfirmationPayment(ctx context.Context, in *ConfirmationPaymentRequest, opts ...grpc.CallOption) (*ConfirmationPaymentResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(VerifyPaymentResponse)
-	err := c.cc.Invoke(ctx, PaymentService_VerifyPayment_FullMethodName, in, out, cOpts...)
+	out := new(ConfirmationPaymentResponse)
+	err := c.cc.Invoke(ctx, PaymentService_ConfirmationPayment_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func (c *paymentServiceClient) GetTransactionsByPayment(ctx context.Context, in 
 type PaymentServiceServer interface {
 	CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
 	CreatePayment(context.Context, *CreatePaymentRequest) (*CreatePaymentResponse, error)
-	VerifyPayment(context.Context, *VerifyPaymentRequest) (*VerifyPaymentResponse, error)
+	ConfirmationPayment(context.Context, *ConfirmationPaymentRequest) (*ConfirmationPaymentResponse, error)
 	GetPayment(context.Context, *GetPaymentRequest) (*GetPaymentResponse, error)
 	UpdatePaymentStatus(context.Context, *UpdatePaymentStatusRequest) (*UpdatePaymentStatusResponse, error)
 	GetTransactionsByPayment(context.Context, *GetTransactionsByPaymentRequest) (*GetTransactionsByPaymentResponse, error)
@@ -133,8 +133,8 @@ func (UnimplementedPaymentServiceServer) CreateAccount(context.Context, *CreateA
 func (UnimplementedPaymentServiceServer) CreatePayment(context.Context, *CreatePaymentRequest) (*CreatePaymentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePayment not implemented")
 }
-func (UnimplementedPaymentServiceServer) VerifyPayment(context.Context, *VerifyPaymentRequest) (*VerifyPaymentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method VerifyPayment not implemented")
+func (UnimplementedPaymentServiceServer) ConfirmationPayment(context.Context, *ConfirmationPaymentRequest) (*ConfirmationPaymentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmationPayment not implemented")
 }
 func (UnimplementedPaymentServiceServer) GetPayment(context.Context, *GetPaymentRequest) (*GetPaymentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPayment not implemented")
@@ -202,20 +202,20 @@ func _PaymentService_CreatePayment_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PaymentService_VerifyPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(VerifyPaymentRequest)
+func _PaymentService_ConfirmationPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmationPaymentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServiceServer).VerifyPayment(ctx, in)
+		return srv.(PaymentServiceServer).ConfirmationPayment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PaymentService_VerifyPayment_FullMethodName,
+		FullMethod: PaymentService_ConfirmationPayment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).VerifyPayment(ctx, req.(*VerifyPaymentRequest))
+		return srv.(PaymentServiceServer).ConfirmationPayment(ctx, req.(*ConfirmationPaymentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -290,8 +290,8 @@ var PaymentService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PaymentService_CreatePayment_Handler,
 		},
 		{
-			MethodName: "VerifyPayment",
-			Handler:    _PaymentService_VerifyPayment_Handler,
+			MethodName: "ConfirmationPayment",
+			Handler:    _PaymentService_ConfirmationPayment_Handler,
 		},
 		{
 			MethodName: "GetPayment",

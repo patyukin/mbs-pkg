@@ -5,16 +5,28 @@ package payment_v1;
 option go_package = "github.com/patyukin/mbs-pkg/pkg/proto/payment_v1;payment_v1";
 
 import "error.proto";
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
+
+enum PaymentStatus {
+  UNKNOWN_PAYMENT_STATUS = 0;
+  DRAFT = 1;
+  PENDING = 2;
+  COMPLETED = 3;
+  FAILED = 4;
+}
+
+enum TransactionType {
+  UNKNOWN_TRANSACTION_TYPE = 0;
+  DEBIT = 1;
+  CREDIT = 2;
+}
 
 service PaymentService {
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
-  rpc CreatePayment (CreatePaymentRequest) returns (CreatePaymentResponse);
-  rpc VerifyPayment (VerifyPaymentRequest) returns (VerifyPaymentResponse);
-  rpc GetPayment (GetPaymentRequest) returns (GetPaymentResponse);
-  rpc UpdatePaymentStatus (UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
-  rpc GetTransactionsByPayment (GetTransactionsByPaymentRequest) returns (GetTransactionsByPaymentResponse);
+  rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+  rpc ConfirmationPayment(ConfirmationPaymentRequest) returns (ConfirmationPaymentResponse);
+  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
+  rpc UpdatePaymentStatus(UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
+  rpc GetTransactionsByPayment(GetTransactionsByPaymentRequest) returns (GetTransactionsByPaymentResponse);
 }
 
 message CreateAccountRequest {
@@ -24,16 +36,17 @@ message CreateAccountRequest {
 }
 
 message CreateAccountResponse {
-  google.protobuf.Empty result = 1;
+  string message = 1;
   error_v1.ErrorResponse error = 2;
 }
 
-message VerifyPaymentRequest {
+message ConfirmationPaymentRequest {
   string code = 1;
   string user_id = 2;
 }
 
-message VerifyPaymentResponse {
+message ConfirmationPaymentResponse {
+  string message = 1;
   error_v1.ErrorResponse error = 2;
 }
 
@@ -58,8 +71,8 @@ message Payment {
   int64 amount = 4;
   string currency = 5;
   string description = 6;
-  string status = 7;
-  google.protobuf.Timestamp created_at = 8;
+  PaymentStatus status = 7;
+  string created_at = 8;
 }
 
 message GetPaymentRequest {
@@ -73,7 +86,7 @@ message GetPaymentResponse {
 
 message UpdatePaymentStatusRequest {
   string id = 1;
-  string status = 2;
+  PaymentStatus status = 2;
 }
 
 message UpdatePaymentStatusResponse {
@@ -85,12 +98,12 @@ message Transaction {
   string id = 1;
   string payment_id = 2;
   string account_id = 3;
-  string type = 4; // 'DEBIT' или 'CREDIT'
+  TransactionType type = 4;
   int64 amount = 5;
   string currency = 6;
   string description = 7;
   string status = 8;
-  google.protobuf.Timestamp created_at = 9;
+  string created_at = 9;
 }
 
 message GetTransactionsByPaymentRequest {
