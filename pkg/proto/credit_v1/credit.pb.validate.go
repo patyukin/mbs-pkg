@@ -1253,22 +1253,22 @@ var _ interface {
 	ErrorName() string
 } = GetCreditResponseValidationError{}
 
-// Validate checks the field values on ListUserCreditsRequest with the rules
+// Validate checks the field values on GetListUserCreditsRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListUserCreditsRequest) Validate() error {
+func (m *GetListUserCreditsRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListUserCreditsRequest with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on GetListUserCreditsRequest with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListUserCreditsRequestMultiError, or nil if none found.
-func (m *ListUserCreditsRequest) ValidateAll() error {
+// GetListUserCreditsRequestMultiError, or nil if none found.
+func (m *GetListUserCreditsRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListUserCreditsRequest) validate(all bool) error {
+func (m *GetListUserCreditsRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1282,19 +1282,19 @@ func (m *ListUserCreditsRequest) validate(all bool) error {
 	// no validation rules for Limit
 
 	if len(errors) > 0 {
-		return ListUserCreditsRequestMultiError(errors)
+		return GetListUserCreditsRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListUserCreditsRequestMultiError is an error wrapping multiple validation
-// errors returned by ListUserCreditsRequest.ValidateAll() if the designated
-// constraints aren't met.
-type ListUserCreditsRequestMultiError []error
+// GetListUserCreditsRequestMultiError is an error wrapping multiple validation
+// errors returned by GetListUserCreditsRequest.ValidateAll() if the
+// designated constraints aren't met.
+type GetListUserCreditsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListUserCreditsRequestMultiError) Error() string {
+func (m GetListUserCreditsRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1303,11 +1303,11 @@ func (m ListUserCreditsRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListUserCreditsRequestMultiError) AllErrors() []error { return m }
+func (m GetListUserCreditsRequestMultiError) AllErrors() []error { return m }
 
-// ListUserCreditsRequestValidationError is the validation error returned by
-// ListUserCreditsRequest.Validate if the designated constraints aren't met.
-type ListUserCreditsRequestValidationError struct {
+// GetListUserCreditsRequestValidationError is the validation error returned by
+// GetListUserCreditsRequest.Validate if the designated constraints aren't met.
+type GetListUserCreditsRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1315,24 +1315,24 @@ type ListUserCreditsRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListUserCreditsRequestValidationError) Field() string { return e.field }
+func (e GetListUserCreditsRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListUserCreditsRequestValidationError) Reason() string { return e.reason }
+func (e GetListUserCreditsRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListUserCreditsRequestValidationError) Cause() error { return e.cause }
+func (e GetListUserCreditsRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListUserCreditsRequestValidationError) Key() bool { return e.key }
+func (e GetListUserCreditsRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListUserCreditsRequestValidationError) ErrorName() string {
-	return "ListUserCreditsRequestValidationError"
+func (e GetListUserCreditsRequestValidationError) ErrorName() string {
+	return "GetListUserCreditsRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListUserCreditsRequestValidationError) Error() string {
+func (e GetListUserCreditsRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1344,14 +1344,14 @@ func (e ListUserCreditsRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListUserCreditsRequest.%s: %s%s",
+		"invalid %sGetListUserCreditsRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListUserCreditsRequestValidationError{}
+var _ error = GetListUserCreditsRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1359,24 +1359,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListUserCreditsRequestValidationError{}
+} = GetListUserCreditsRequestValidationError{}
 
-// Validate checks the field values on ListUserCreditsResponse with the rules
-// defined in the proto definition for this message. If any rules are
+// Validate checks the field values on GetListUserCreditsResponse with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListUserCreditsResponse) Validate() error {
+func (m *GetListUserCreditsResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListUserCreditsResponse with the
+// ValidateAll checks the field values on GetListUserCreditsResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListUserCreditsResponseMultiError, or nil if none found.
-func (m *ListUserCreditsResponse) ValidateAll() error {
+// GetListUserCreditsResponseMultiError, or nil if none found.
+func (m *GetListUserCreditsResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListUserCreditsResponse) validate(all bool) error {
+func (m *GetListUserCreditsResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1390,7 +1390,7 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListUserCreditsResponseValidationError{
+					errors = append(errors, GetListUserCreditsResponseValidationError{
 						field:  fmt.Sprintf("CreditList[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1398,7 +1398,7 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ListUserCreditsResponseValidationError{
+					errors = append(errors, GetListUserCreditsResponseValidationError{
 						field:  fmt.Sprintf("CreditList[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1407,7 +1407,7 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ListUserCreditsResponseValidationError{
+				return GetListUserCreditsResponseValidationError{
 					field:  fmt.Sprintf("CreditList[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1427,7 +1427,7 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 		switch v := interface{}(m.GetError()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ListUserCreditsResponseValidationError{
+				errors = append(errors, GetListUserCreditsResponseValidationError{
 					field:  "Error",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1435,7 +1435,7 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ListUserCreditsResponseValidationError{
+				errors = append(errors, GetListUserCreditsResponseValidationError{
 					field:  "Error",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1444,7 +1444,7 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return ListUserCreditsResponseValidationError{
+			return GetListUserCreditsResponseValidationError{
 				field:  "Error",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -1453,19 +1453,19 @@ func (m *ListUserCreditsResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ListUserCreditsResponseMultiError(errors)
+		return GetListUserCreditsResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListUserCreditsResponseMultiError is an error wrapping multiple validation
-// errors returned by ListUserCreditsResponse.ValidateAll() if the designated
-// constraints aren't met.
-type ListUserCreditsResponseMultiError []error
+// GetListUserCreditsResponseMultiError is an error wrapping multiple
+// validation errors returned by GetListUserCreditsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type GetListUserCreditsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListUserCreditsResponseMultiError) Error() string {
+func (m GetListUserCreditsResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1474,11 +1474,11 @@ func (m ListUserCreditsResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListUserCreditsResponseMultiError) AllErrors() []error { return m }
+func (m GetListUserCreditsResponseMultiError) AllErrors() []error { return m }
 
-// ListUserCreditsResponseValidationError is the validation error returned by
-// ListUserCreditsResponse.Validate if the designated constraints aren't met.
-type ListUserCreditsResponseValidationError struct {
+// GetListUserCreditsResponseValidationError is the validation error returned
+// by GetListUserCreditsResponse.Validate if the designated constraints aren't met.
+type GetListUserCreditsResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1486,24 +1486,24 @@ type ListUserCreditsResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListUserCreditsResponseValidationError) Field() string { return e.field }
+func (e GetListUserCreditsResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListUserCreditsResponseValidationError) Reason() string { return e.reason }
+func (e GetListUserCreditsResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListUserCreditsResponseValidationError) Cause() error { return e.cause }
+func (e GetListUserCreditsResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListUserCreditsResponseValidationError) Key() bool { return e.key }
+func (e GetListUserCreditsResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListUserCreditsResponseValidationError) ErrorName() string {
-	return "ListUserCreditsResponseValidationError"
+func (e GetListUserCreditsResponseValidationError) ErrorName() string {
+	return "GetListUserCreditsResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListUserCreditsResponseValidationError) Error() string {
+func (e GetListUserCreditsResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1515,14 +1515,14 @@ func (e ListUserCreditsResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListUserCreditsResponse.%s: %s%s",
+		"invalid %sGetListUserCreditsResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListUserCreditsResponseValidationError{}
+var _ error = GetListUserCreditsResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -1530,7 +1530,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListUserCreditsResponseValidationError{}
+} = GetListUserCreditsResponseValidationError{}
 
 // Validate checks the field values on Credit with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

@@ -39,7 +39,7 @@ service CreditsServiceV1 {
   rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
 
   // Получение списка кредитов пользователя с пагинацией
-  rpc ListUserCredits(ListUserCreditsRequest) returns (ListUserCreditsResponse);
+  rpc GetListUserCredits(GetListUserCreditsRequest) returns (GetListUserCreditsResponse);
 
   // Получение графика платежей по кредиту
   rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
@@ -127,14 +127,14 @@ message GetCreditResponse {
 }
 
 // Сообщение запроса для получения всех кредитов пользователя
-message ListUserCreditsRequest {
+message GetListUserCreditsRequest {
   string user_id = 1;                     // UUID пользователя
   int32 page = 2;                         // Номер страницы (для пагинации)
   int32 limit = 3;                        // Размер страницы
 }
 
 // Сообщение ответа при получении списка кредитов пользователя
-message ListUserCreditsResponse {
+message GetListUserCreditsResponse {
   repeated Credit credit_list = 1;        // Список кредитов пользователя
   int32 total_credits = 2;                // Общее количество кредитов
   int32 current_page = 3;                 // Текущий номер страницы

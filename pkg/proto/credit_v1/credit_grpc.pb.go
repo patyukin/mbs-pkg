@@ -24,7 +24,7 @@ const (
 	CreditsServiceV1_GetCreditApplication_FullMethodName          = "/credit_v1.CreditsServiceV1/GetCreditApplication"
 	CreditsServiceV1_UpdateCreditApplicationStatus_FullMethodName = "/credit_v1.CreditsServiceV1/UpdateCreditApplicationStatus"
 	CreditsServiceV1_GetCredit_FullMethodName                     = "/credit_v1.CreditsServiceV1/GetCredit"
-	CreditsServiceV1_ListUserCredits_FullMethodName               = "/credit_v1.CreditsServiceV1/ListUserCredits"
+	CreditsServiceV1_GetListUserCredits_FullMethodName            = "/credit_v1.CreditsServiceV1/GetListUserCredits"
 	CreditsServiceV1_GetPaymentSchedule_FullMethodName            = "/credit_v1.CreditsServiceV1/GetPaymentSchedule"
 	CreditsServiceV1_UpdatePaymentSchedule_FullMethodName         = "/credit_v1.CreditsServiceV1/UpdatePaymentSchedule"
 )
@@ -46,7 +46,7 @@ type CreditsServiceV1Client interface {
 	// Получение информации о кредите
 	GetCredit(ctx context.Context, in *GetCreditRequest, opts ...grpc.CallOption) (*GetCreditResponse, error)
 	// Получение списка кредитов пользователя с пагинацией
-	ListUserCredits(ctx context.Context, in *ListUserCreditsRequest, opts ...grpc.CallOption) (*ListUserCreditsResponse, error)
+	GetListUserCredits(ctx context.Context, in *GetListUserCreditsRequest, opts ...grpc.CallOption) (*GetListUserCreditsResponse, error)
 	// Получение графика платежей по кредиту
 	GetPaymentSchedule(ctx context.Context, in *GetPaymentScheduleRequest, opts ...grpc.CallOption) (*GetPaymentScheduleResponse, error)
 	// Обновление статуса платежа в графике
@@ -111,10 +111,10 @@ func (c *creditsServiceV1Client) GetCredit(ctx context.Context, in *GetCreditReq
 	return out, nil
 }
 
-func (c *creditsServiceV1Client) ListUserCredits(ctx context.Context, in *ListUserCreditsRequest, opts ...grpc.CallOption) (*ListUserCreditsResponse, error) {
+func (c *creditsServiceV1Client) GetListUserCredits(ctx context.Context, in *GetListUserCreditsRequest, opts ...grpc.CallOption) (*GetListUserCreditsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListUserCreditsResponse)
-	err := c.cc.Invoke(ctx, CreditsServiceV1_ListUserCredits_FullMethodName, in, out, cOpts...)
+	out := new(GetListUserCreditsResponse)
+	err := c.cc.Invoke(ctx, CreditsServiceV1_GetListUserCredits_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +158,7 @@ type CreditsServiceV1Server interface {
 	// Получение информации о кредите
 	GetCredit(context.Context, *GetCreditRequest) (*GetCreditResponse, error)
 	// Получение списка кредитов пользователя с пагинацией
-	ListUserCredits(context.Context, *ListUserCreditsRequest) (*ListUserCreditsResponse, error)
+	GetListUserCredits(context.Context, *GetListUserCreditsRequest) (*GetListUserCreditsResponse, error)
 	// Получение графика платежей по кредиту
 	GetPaymentSchedule(context.Context, *GetPaymentScheduleRequest) (*GetPaymentScheduleResponse, error)
 	// Обновление статуса платежа в графике
@@ -188,8 +188,8 @@ func (UnimplementedCreditsServiceV1Server) UpdateCreditApplicationStatus(context
 func (UnimplementedCreditsServiceV1Server) GetCredit(context.Context, *GetCreditRequest) (*GetCreditResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCredit not implemented")
 }
-func (UnimplementedCreditsServiceV1Server) ListUserCredits(context.Context, *ListUserCreditsRequest) (*ListUserCreditsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListUserCredits not implemented")
+func (UnimplementedCreditsServiceV1Server) GetListUserCredits(context.Context, *GetListUserCreditsRequest) (*GetListUserCreditsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListUserCredits not implemented")
 }
 func (UnimplementedCreditsServiceV1Server) GetPaymentSchedule(context.Context, *GetPaymentScheduleRequest) (*GetPaymentScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPaymentSchedule not implemented")
@@ -308,20 +308,20 @@ func _CreditsServiceV1_GetCredit_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CreditsServiceV1_ListUserCredits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUserCreditsRequest)
+func _CreditsServiceV1_GetListUserCredits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListUserCreditsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CreditsServiceV1Server).ListUserCredits(ctx, in)
+		return srv.(CreditsServiceV1Server).GetListUserCredits(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CreditsServiceV1_ListUserCredits_FullMethodName,
+		FullMethod: CreditsServiceV1_GetListUserCredits_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CreditsServiceV1Server).ListUserCredits(ctx, req.(*ListUserCreditsRequest))
+		return srv.(CreditsServiceV1Server).GetListUserCredits(ctx, req.(*GetListUserCreditsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -390,8 +390,8 @@ var CreditsServiceV1_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _CreditsServiceV1_GetCredit_Handler,
 		},
 		{
-			MethodName: "ListUserCredits",
-			Handler:    _CreditsServiceV1_ListUserCredits_Handler,
+			MethodName: "GetListUserCredits",
+			Handler:    _CreditsServiceV1_GetListUserCredits_Handler,
 		},
 		{
 			MethodName: "GetPaymentSchedule",
