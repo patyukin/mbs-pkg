@@ -5,12 +5,27 @@ package credit_v1;
 option go_package = "github.com/yourusername/yourrepo/creditspb";
 
 import "error.proto";
-import "google/protobuf/empty.proto";
+
+// Статус заявки на кредит
+enum CreditApplicationStatus {
+  UNKNOWN_STATUS = 0;
+  PENDING = 1;
+  APPROVED = 2;
+  REJECTED = 3;
+}
+
+// Статус кредита
+enum CreditStatus {
+  UNKNOWN_CREDIT_STATUS = 0;
+  ACTIVE = 1;
+  CLOSED = 2;
+}
 
 // Сервис кредитов
 service CreditsServiceV1 {
   // Создание новой заявки на кредит
   rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
+
   // Подтверждение новой заявки на кредит
   rpc CreditApplicationConfirmation(CreditApplicationConfirmationRequest) returns (CreditApplicationConfirmationResponse);
 
@@ -26,16 +41,12 @@ service CreditsServiceV1 {
   // Получение списка кредитов пользователя с пагинацией
   rpc ListUserCredits(ListUserCreditsRequest) returns (ListUserCreditsResponse);
 
-  // Создание графика платежей по кредиту
-  rpc CreatePaymentSchedule(CreatePaymentScheduleRequest) returns (CreatePaymentScheduleResponse);
-
   // Получение графика платежей по кредиту
   rpc GetPaymentSchedule(GetPaymentScheduleRequest) returns (GetPaymentScheduleResponse);
 
   // Обновление статуса платежа в графике
   rpc UpdatePaymentSchedule(UpdatePaymentScheduleRequest) returns (UpdatePaymentScheduleResponse);
 }
-
 
 // Сообщение запроса для создания новой заявки на кредит
 message CreateCreditApplicationRequest {
@@ -49,8 +60,8 @@ message CreateCreditApplicationRequest {
 
 // Сообщение ответа при создании заявки на кредит
 message CreateCreditApplicationResponse {
-  google.protobuf.Empty result = 1;
-  error_v1.ErrorResponse error = 2;
+  string message = 1;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 2;      // Сообщение об ошибке
 }
 
 // Сообщение запроса для подтверждения заявки на кредит
@@ -62,7 +73,7 @@ message CreditApplicationConfirmationRequest {
 // Сообщение ответа при подтверждении заявки на кредит
 message CreditApplicationConfirmationResponse {
   string application_id = 1;             // UUID заявки
-  string status = 2;                     // Статус заявки (обычно PENDING)
+  CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
   string message = 3;                    // Дополнительное сообщение
 }
 
@@ -75,7 +86,7 @@ message GetCreditApplicationRequest {
 // Сообщение ответа при получении статуса заявки на кредит
 message GetCreditApplicationResponse {
   string application_id = 1;             // UUID заявки
-  string status = 2;                     // Текущий статус заявки
+  CreditApplicationStatus status = 2;    // Текущий статус заявки
   int64 approved_amount = 3;             // Одобренная сумма (если применимо)
   string decision_date = 4;              // Дата принятия решения
   string message = 5;                    // Дополнительное сообщение
@@ -92,15 +103,14 @@ message UpdateCreditApplicationStatusRequest {
 
 // Сообщение ответа при обновлении статуса заявки
 message UpdateCreditApplicationStatusResponse {
-  string application_id = 1;             // UUID заявки
-  string status = 2;                     // Обновлённый статус заявки
-  string message = 3;                    // Дополнительное сообщение
-  error_v1.ErrorResponse error = 4;
+  string message = 1;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 2;      // Сообщение об ошибке
 }
 
 // Сообщение запроса для получения информации о кредите
 message GetCreditRequest {
   string credit_id = 1;                   // UUID кредита
+  string user_id = 2;                     // UUID пользователя
 }
 
 // Сообщение ответа при получении информации о кредите
@@ -110,18 +120,18 @@ message GetCreditResponse {
   int64 amount = 4;                       // Сумма кредита
   int64 interest_rate = 5;                // Процентная ставка
   int64 remaining_amount = 6;             // Остаток по кредиту
-  string status = 7;                      // Статус кредита
+  CreditStatus status = 7;                // Статус кредита
   string start_date = 8;                  // Дата начала кредита
   string end_date = 9;                    // Дата окончания кредита
   string description = 10;                // Дополнительное описание или комментарии
-  error_v1.ErrorResponse error = 11;
+  error_v1.ErrorResponse error = 11;      // Сообщение об ошибке
 }
 
 // Сообщение запроса для получения всех кредитов пользователя
 message ListUserCreditsRequest {
   string user_id = 1;                     // UUID пользователя
   int32 page = 2;                         // Номер страницы (для пагинации)
-  int32 page_size = 3;                    // Размер страницы
+  int32 limit = 3;                        // Размер страницы
 }
 
 // Сообщение ответа при получении списка кредитов пользователя
@@ -130,7 +140,7 @@ message ListUserCreditsResponse {
   int32 total_credits = 2;                // Общее количество кредитов
   int32 current_page = 3;                 // Текущий номер страницы
   int32 total_pages = 4;                  // Общее количество страниц
-  error_v1.ErrorResponse error = 5;
+  error_v1.ErrorResponse error = 5;       // Сообщение об ошибке
 }
 
 // Сообщение кредита
@@ -146,26 +156,16 @@ message Credit {
   string description = 10;                // Дополнительное описание или комментарии
 }
 
-// Сообщение запроса для создания графика платежей
-message CreatePaymentScheduleRequest {
-  string credit_id = 1;                   // UUID кредита
-}
-
-// Сообщение ответа при создании графика платежей
-message CreatePaymentScheduleResponse {
-  string message = 1;                     // Сообщение о результате операции
-  error_v1.ErrorResponse error = 2;
-}
-
 // Сообщение запроса для получения графика платежей
 message GetPaymentScheduleRequest {
   string credit_id = 1;                   // UUID кредита
+  string user_id = 2;                     // UUID пользователя
 }
 
 // Сообщение ответа при получении графика платежей
 message GetPaymentScheduleResponse {
   repeated PaymentSchedule schedules = 1; // Список платежей по графику
-  error_v1.ErrorResponse error = 2;
+  error_v1.ErrorResponse error = 2;       // Сообщение об ошибке
 }
 
 // Сообщение графика платежей
@@ -197,5 +197,5 @@ message UpdatePaymentScheduleResponse {
   string payment_id = 1;                  // UUID платежа
   PaymentStatus status = 2;               // Обновлённый статус платежа
   string message = 3;                     // Дополнительное сообщение
-  error_v1.ErrorResponse error = 4;
+  error_v1.ErrorResponse error = 4;       // Сообщение об ошибке
 }
