@@ -10,13 +10,11 @@ service AuthService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
   rpc SignIn(SignInRequest) returns (SignInResponse);
   rpc SignInConfirmation(SignInConfirmationRequest) returns (SignInConfirmationResponse);
-  rpc GetUserByUUID(GetUserByUUIDRequest) returns (GetUserByUUIDResponse);
-  rpc GetUsersWithTokens(GetUsersWithTokensRequest) returns (GetUsersWithTokensResponse);
-  rpc GetUsersWithProfiles(GetUsersWithProfilesRequest) returns (GetUsersWithProfilesResponse);
+  rpc GetUserByID(GetUserByIDRequest) returns (GetUserByIDResponse);
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
   rpc AddUserRole(AddUserRoleRequest) returns (AddUserRoleResponse);
   rpc AuthorizeUser(AuthorizeUserRequest) returns (AuthorizeUserResponse);
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
-  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
 }
 
 message SignUpRequest {
@@ -47,11 +45,11 @@ message SignInResponse {
   error_v1.ErrorResponse error = 2;
 }
 
-message GetUserByUUIDRequest {
+message GetUserByIDRequest {
   string user_id = 1;
 }
 
-message GetUserByUUIDResponse {
+message User {
   string user_id = 1;
   string email = 2;
   string first_name = 3;
@@ -65,32 +63,19 @@ message GetUserByUUIDResponse {
   string chat_id = 11;
   string created_at = 12;
   string updated_at = 13;
-  error_v1.ErrorResponse error = 14;
 }
 
-message TokenGUWR {
-  string token = 1;
-  string expires_at = 2;
+message GetUserByIDResponse {
+  User user = 1;
+  error_v1.ErrorResponse error = 2;
 }
 
-message UserGUWR {
-  string id = 1;
-  string email = 2;
-  repeated TokenGUWR tokens = 3;
-}
-
-message GetUsersWithTokensRequest {
+message GetUsersRequest {
   int32 page = 1;
   int32 limit = 2;
 }
 
-message GetUsersWithTokensResponse {
-  repeated UserGUWR users = 1;
-  int32 total = 2;
-  error_v1.ErrorResponse error = 3;
-}
-
-message ProfileGUWP {
+message Profile {
   string first_name = 1;
   string last_name = 2;
   string patronymic = 3;
@@ -100,19 +85,14 @@ message ProfileGUWP {
   string address = 7;
 }
 
-message UserGUWP {
+message UserInfo {
   string id = 1;
   string email = 2;
-  ProfileGUWP profile = 3;
+  Profile profile = 3;
 }
 
-message GetUsersWithProfilesRequest {
-  int32 page = 1;
-  int32 limit = 2;
-}
-
-message GetUsersWithProfilesResponse {
-  repeated UserGUWP users = 1;
+message GetUsersResponse {
+  repeated UserInfo users = 1;
   int32 total = 2;
   error_v1.ErrorResponse error = 3;
 }
@@ -154,29 +134,5 @@ message RefreshTokenRequest {
 
 message RefreshTokenResponse {
   string access_token = 1;
-  error_v1.ErrorResponse error = 2;
-}
-
-message GetUserInfoRequest {
-  string user_id = 1;
-}
-
-message UserInfo {
-  string user_id = 1;
-  string email = 2;
-  string first_name = 3;
-  string last_name = 4;
-  string patronymic = 5;
-  string date_of_birth = 6;
-  string phone = 7;
-  string address = 8;
-  string telegram_login = 9;
-  int64 telegram_id = 10;
-  int64 chat_id = 11;
-  string created_at = 13;
-}
-
-message GetUserInfoResponse {
-  UserInfo user = 1;
   error_v1.ErrorResponse error = 2;
 }

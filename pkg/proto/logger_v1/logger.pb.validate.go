@@ -163,7 +163,7 @@ func (m *LogReportResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for FileUrl
+	// no validation rules for Message
 
 	if all {
 		switch v := interface{}(m.GetError()).(type) {
