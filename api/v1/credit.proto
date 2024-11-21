@@ -135,11 +135,10 @@ message GetListUserCreditsRequest {
 
 // Сообщение ответа при получении списка кредитов пользователя
 message GetListUserCreditsResponse {
-  repeated Credit credit_list = 1;        // Список кредитов пользователя
-  int32 total_credits = 2;                // Общее количество кредитов
-  int32 current_page = 3;                 // Текущий номер страницы
-  int32 total_pages = 4;                  // Общее количество страниц
-  error_v1.ErrorResponse error = 5;       // Сообщение об ошибке
+  repeated Credit credits = 1;            // Список кредитов пользователя
+  int32 current_page = 2;                 // Текущий номер страницы
+  int32 total_pages = 3;                  // Общее количество страниц
+  error_v1.ErrorResponse error = 4;       // Сообщение об ошибке
 }
 
 // Сообщение кредита
@@ -188,7 +187,7 @@ enum PaymentStatus {
 // Сообщение запроса для обновления графика платежей (например, отметка платежа как выполненного)
 message UpdatePaymentScheduleRequest {
   string payment_id = 1;                  // UUID платежа
-  PaymentStatus status = 2;           // Новый статус платежа
+  PaymentStatus status = 2;               // Новый статус платежа
 }
 
 // Сообщение ответа при обновлении графика платежей
