@@ -30,9 +30,8 @@ message SignUpRequest {
 }
 
 message SignUpResponse {
-  string user_id = 1;
-  string message = 2;
-  error_v1.ErrorResponse error = 3;
+  string message = 1;
+  error_v1.ErrorResponse error = 2;
 }
 
 message SignInRequest {
@@ -80,9 +79,8 @@ message Profile {
   string last_name = 2;
   string patronymic = 3;
   string date_of_birth = 4;
-  string email = 5;
-  string phone = 6;
-  string address = 7;
+  string phone = 5;
+  string address = 6;
 }
 
 message UserInfo {

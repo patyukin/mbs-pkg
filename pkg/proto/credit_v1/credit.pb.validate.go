@@ -1428,9 +1428,7 @@ func (m *GetListUserCreditsResponse) validate(all bool) error {
 
 	}
 
-	// no validation rules for CurrentPage
-
-	// no validation rules for TotalPages
+	// no validation rules for Total
 
 	if all {
 		switch v := interface{}(m.GetError()).(type) {

@@ -21,6 +21,16 @@ enum CreditStatus {
   CLOSED = 2;
 }
 
+// Перечисление статусов платежей
+enum PaymentStatus {
+  UNKNOWN_PAYMENT_STATUS = 0;
+  SCHEDULED = 1;
+  PAID = 2;
+  MISSED = 3;
+  OVERPAID = 4;
+  REFUNDED = 5;
+}
+
 // Сервис кредитов
 service CreditsServiceV1 {
   // Создание новой заявки на кредит
@@ -125,9 +135,8 @@ message GetListUserCreditsRequest {
 // Сообщение ответа при получении списка кредитов пользователя
 message GetListUserCreditsResponse {
   repeated Credit credits = 1;            // Список кредитов пользователя
-  int32 current_page = 2;                 // Текущий номер страницы
-  int32 total_pages = 3;                  // Общее количество страниц
-  error_v1.ErrorResponse error = 4;       // Сообщение об ошибке
+  int32 total = 2;                        // Общее количество страниц
+  error_v1.ErrorResponse error = 3;       // Сообщение об ошибке
 }
 
 // Сообщение кредита
@@ -161,14 +170,4 @@ message PaymentSchedule {
   int64 amount = 2;                       // Сумма платежа
   string due_date = 3;                    // Дата платежа
   PaymentStatus status = 4;               // Статус платежа
-}
-
-// Перечисление статусов платежей
-enum PaymentStatus {
-  UNKNOWN_PAYMENT_STATUS = 0;
-  SCHEDULED = 1;
-  PAID = 2;
-  MISSED = 3;
-  OVERPAID = 4;
-  REFUNDED = 5;
 }

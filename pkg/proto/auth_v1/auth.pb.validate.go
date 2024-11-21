@@ -175,8 +175,6 @@ func (m *SignUpResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserId
-
 	// no validation rules for Message
 
 	if all {
@@ -1041,8 +1039,6 @@ func (m *Profile) validate(all bool) error {
 	// no validation rules for Patronymic
 
 	// no validation rules for DateOfBirth
-
-	// no validation rules for Email
 
 	// no validation rules for Phone
 
