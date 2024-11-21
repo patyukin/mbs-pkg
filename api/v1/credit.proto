@@ -114,15 +114,7 @@ message GetCreditRequest {
 
 // Сообщение ответа при получении информации о кредите
 message GetCreditResponse {
-  string credit_id = 1;                   // UUID кредита
-  string user_id = 2;                     // UUID пользователя
-  int64 amount = 4;                       // Сумма кредита
-  int64 interest_rate = 5;                // Процентная ставка
-  int64 remaining_amount = 6;             // Остаток по кредиту
-  CreditStatus status = 7;                // Статус кредита
-  string start_date = 8;                  // Дата начала кредита
-  string end_date = 9;                    // Дата окончания кредита
-  string description = 10;                // Дополнительное описание или комментарии
+  Credit credit = 1;                      // Информация о кредите
   error_v1.ErrorResponse error = 11;      // Сообщение об ошибке
 }
 

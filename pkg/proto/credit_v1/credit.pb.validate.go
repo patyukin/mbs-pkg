@@ -1126,23 +1126,34 @@ func (m *GetCreditResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for CreditId
-
-	// no validation rules for UserId
-
-	// no validation rules for Amount
-
-	// no validation rules for InterestRate
-
-	// no validation rules for RemainingAmount
-
-	// no validation rules for Status
-
-	// no validation rules for StartDate
-
-	// no validation rules for EndDate
-
-	// no validation rules for Description
+	if all {
+		switch v := interface{}(m.GetCredit()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetCreditResponseValidationError{
+					field:  "Credit",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetCreditResponseValidationError{
+					field:  "Credit",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCredit()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetCreditResponseValidationError{
+				field:  "Credit",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if all {
 		switch v := interface{}(m.GetError()).(type) {
