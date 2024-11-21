@@ -780,8 +780,6 @@ func (m *UpdateCreditApplicationStatusRequest) validate(all bool) error {
 
 	// no validation rules for NewStatus
 
-	// no validation rules for ApprovedAmount
-
 	// no validation rules for DecisionNotes
 
 	if len(errors) > 0 {

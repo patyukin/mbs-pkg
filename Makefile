@@ -1,4 +1,4 @@
-.PHONY: install-deps gen gen-auth-api vendor-proto
+.PHONY: gen install-deps gen-pb vendor-proto
 
 LOCAL_BIN:=$(CURDIR)/bin
 
