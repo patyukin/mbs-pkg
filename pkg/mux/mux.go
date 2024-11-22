@@ -2,6 +2,7 @@ package mux
 
 import (
 	"context"
+	"fmt"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog/log"
 	"net/http"
@@ -16,7 +17,7 @@ func New() *Server {
 	return &Server{}
 }
 
-func (s *Server) Run(addr string) error {
+func (s *Server) Run(port int) error {
 	mux := http.NewServeMux()
 	// metrics
 	mux.Handle("/metrics", promhttp.Handler())
@@ -32,6 +33,7 @@ func (s *Server) Run(addr string) error {
 	mux.Handle("/debug/pprof/goroutine", pprof.Handler("goroutine"))
 	mux.Handle("/debug/pprof/threadcreate", pprof.Handler("goroutine"))
 
+	addr := fmt.Sprintf("0.0.0.0:%d", port)
 	s.httpServer = &http.Server{
 		Addr:           addr,
 		Handler:        mux,

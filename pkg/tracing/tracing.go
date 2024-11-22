@@ -27,6 +27,8 @@ func InitJaeger(jaegerURL, serviceName string) (opentracing.Tracer, func(), erro
 
 	opentracing.SetGlobalTracer(tracer)
 
+	log.Info().Msg("Jaeger connected with service: " + serviceName)
+
 	return tracer, func() {
 		if err = closer.Close(); err != nil {
 			log.Error().Msgf("failed to close tracer, error: %v", err)
