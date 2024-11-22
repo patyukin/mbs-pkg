@@ -7,6 +7,8 @@ import (
 	"github.com/uber/jaeger-client-go/config"
 )
 
+const TraceID = "x-trace-id"
+
 func InitJaeger(jaegerURL, serviceName string) (opentracing.Tracer, func(), error) {
 	cfg := config.Configuration{
 		ServiceName: serviceName,
