@@ -10,6 +10,7 @@ import (
 
 var (
 	ErrUserNotFound   = fmt.Errorf("user not found")
+	ErrUserExists     = fmt.Errorf("user exists")
 	ErrInvalidRequest = fmt.Errorf("invalid request")
 	ErrDatabaseError  = fmt.Errorf("database connection error")
 )
@@ -17,6 +18,12 @@ var (
 // ToErrorResponse преобразует предопределенные ошибки в error_v1.ErrorResponse
 func ToErrorResponse(err error) *error_v1.ErrorResponse {
 	switch {
+	case errors.Is(err, ErrUserExists):
+		return &error_v1.ErrorResponse{
+			Code:        http.StatusBadRequest,
+			Message:     "User exists",
+			Description: err.Error(),
+		}
 	case errors.Is(err, ErrUserNotFound):
 		return &error_v1.ErrorResponse{
 			Code:        http.StatusNotFound,
