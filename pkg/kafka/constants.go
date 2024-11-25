@@ -10,9 +10,8 @@ const (
 )
 
 const (
-	DeadLetterTopic = "dead_letter_topic"
-)
-
-const (
-	LogReportTopic = "log_report_topic"
+	DeadLetterTopic    = "dead_letter_topic"
+	LogReportTopic     = "log_report_topic"
+	ReportTopic        = "report_topic"
+	CreditCreatedTopic = "credit_created_topic"
 )

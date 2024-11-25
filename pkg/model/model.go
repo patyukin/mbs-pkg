@@ -26,3 +26,8 @@ type PaymentStatusChangedMessage struct {
 	PaymentID string `json:"payment_id"`
 	Status    string `json:"status"`
 }
+
+type CreditCreatedMessage struct {
+	AccountID string `json:"account_id"`
+	Amount    int64  `json:"amount"`
+}
