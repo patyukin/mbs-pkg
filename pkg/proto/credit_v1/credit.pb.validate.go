@@ -530,6 +530,8 @@ func (m *CreateCreditRequest) validate(all bool) error {
 
 	// no validation rules for UserId
 
+	// no validation rules for CreditTermMonths
+
 	if len(errors) > 0 {
 		return CreateCreditRequestMultiError(errors)
 	}
