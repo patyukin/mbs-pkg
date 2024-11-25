@@ -84,7 +84,7 @@ message CreateCreditRequest {
   string application_id = 1;             // UUID заявки
   string user_id = 2;                    // UUID пользователя
   int64 credit_term_months = 3;          // Срок кредита в месяцах
-  int64 account_id = 4;                  // UUID аккаунта
+  string account_id = 4;                  // UUID аккаунта
 }
 
 message CreateCreditResponse {
