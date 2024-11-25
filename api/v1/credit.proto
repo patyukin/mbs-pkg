@@ -37,12 +37,12 @@ service CreditsServiceV1 {
   rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
   // Создание нового кредита
   rpc CreateCredit(CreateCreditRequest) returns (CreateCreditResponse);
-  // Решение по заявки на кредит
-  rpc CreditApplicationSolution(CreditApplicationSolutionRequest) returns (CreditApplicationSolutionResponse);
+  // Подтверждение новой заявки на кредит
+  rpc CreditApplicationConfirmation(CreditApplicationConfirmationRequest) returns (CreditApplicationConfirmationResponse);
   // Получение статуса заявки на кредит
   rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
   // Обновление статуса заявки на кредит (например, одобрение или отклонение)
-  rpc UpdateCreditApplicationStatus(UpdateCreditApplicationStatusRequest) returns (UpdateCreditApplicationStatusResponse);
+  rpc UpdateCreditApplicationSolution(UpdateCreditApplicationSolutionRequest) returns (UpdateCreditApplicationSolutionResponse);
   // Получение информации о кредите
   rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
   // Получение списка кредитов пользователя с пагинацией
@@ -68,13 +68,13 @@ message CreateCreditApplicationResponse {
 }
 
 // Сообщение запроса для подтверждения заявки на кредит
-message CreditApplicationSolutionRequest {
+message CreditApplicationConfirmationRequest {
   string code = 1;                       // код для подтверждения заявки
   string user_id = 2;                    // UUID пользователя
 }
 
 // Сообщение ответа при подтверждении заявки на кредит
-message CreditApplicationSolutionResponse {
+message CreditApplicationConfirmationResponse {
   string application_id = 1;             // UUID заявки
   CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
   string message = 3;                    // Дополнительное сообщение
@@ -109,14 +109,16 @@ message GetCreditApplicationResponse {
 }
 
 // Сообщение запроса для обновления статуса заявки (например, одобрение или отклонение)
-message UpdateCreditApplicationStatusRequest {
+message UpdateCreditApplicationSolutionRequest {
   string application_id = 1;              // UUID заявки
   CreditApplicationStatus status = 2;     // Новый статус заявки (APPROVED или REJECTED)
-  string decision_notes = 3;              // Примечания к решению
+  string decision_date = 3;               // Дата принятия решения
+  int64 approved_amount = 4;              // Одобренная сумма
+  string decision_notes = 5;              // Примечания к решению
 }
 
 // Сообщение ответа при обновлении статуса заявки
-message UpdateCreditApplicationStatusResponse {
+message UpdateCreditApplicationSolutionResponse {
   string message = 1;                    // Дополнительное сообщение
   error_v1.ErrorResponse error = 2;      // Сообщение об ошибке
 }

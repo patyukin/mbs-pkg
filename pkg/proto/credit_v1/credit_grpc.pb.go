@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CreditsServiceV1_CreateCreditApplication_FullMethodName       = "/credit_v1.CreditsServiceV1/CreateCreditApplication"
-	CreditsServiceV1_CreateCredit_FullMethodName                  = "/credit_v1.CreditsServiceV1/CreateCredit"
-	CreditsServiceV1_CreditApplicationSolution_FullMethodName     = "/credit_v1.CreditsServiceV1/CreditApplicationSolution"
-	CreditsServiceV1_GetCreditApplication_FullMethodName          = "/credit_v1.CreditsServiceV1/GetCreditApplication"
-	CreditsServiceV1_UpdateCreditApplicationStatus_FullMethodName = "/credit_v1.CreditsServiceV1/UpdateCreditApplicationStatus"
-	CreditsServiceV1_GetCredit_FullMethodName                     = "/credit_v1.CreditsServiceV1/GetCredit"
-	CreditsServiceV1_GetListUserCredits_FullMethodName            = "/credit_v1.CreditsServiceV1/GetListUserCredits"
-	CreditsServiceV1_GetPaymentSchedule_FullMethodName            = "/credit_v1.CreditsServiceV1/GetPaymentSchedule"
+	CreditsServiceV1_CreateCreditApplication_FullMethodName         = "/credit_v1.CreditsServiceV1/CreateCreditApplication"
+	CreditsServiceV1_CreateCredit_FullMethodName                    = "/credit_v1.CreditsServiceV1/CreateCredit"
+	CreditsServiceV1_CreditApplicationConfirmation_FullMethodName   = "/credit_v1.CreditsServiceV1/CreditApplicationConfirmation"
+	CreditsServiceV1_GetCreditApplication_FullMethodName            = "/credit_v1.CreditsServiceV1/GetCreditApplication"
+	CreditsServiceV1_UpdateCreditApplicationSolution_FullMethodName = "/credit_v1.CreditsServiceV1/UpdateCreditApplicationSolution"
+	CreditsServiceV1_GetCredit_FullMethodName                       = "/credit_v1.CreditsServiceV1/GetCredit"
+	CreditsServiceV1_GetListUserCredits_FullMethodName              = "/credit_v1.CreditsServiceV1/GetListUserCredits"
+	CreditsServiceV1_GetPaymentSchedule_FullMethodName              = "/credit_v1.CreditsServiceV1/GetPaymentSchedule"
 )
 
 // CreditsServiceV1Client is the client API for CreditsServiceV1 service.
@@ -39,12 +39,12 @@ type CreditsServiceV1Client interface {
 	CreateCreditApplication(ctx context.Context, in *CreateCreditApplicationRequest, opts ...grpc.CallOption) (*CreateCreditApplicationResponse, error)
 	// Создание нового кредита
 	CreateCredit(ctx context.Context, in *CreateCreditRequest, opts ...grpc.CallOption) (*CreateCreditResponse, error)
-	// Решение по заявки на кредит
-	CreditApplicationSolution(ctx context.Context, in *CreditApplicationSolutionRequest, opts ...grpc.CallOption) (*CreditApplicationSolutionResponse, error)
+	// Подтверждение новой заявки на кредит
+	CreditApplicationConfirmation(ctx context.Context, in *CreditApplicationConfirmationRequest, opts ...grpc.CallOption) (*CreditApplicationConfirmationResponse, error)
 	// Получение статуса заявки на кредит
 	GetCreditApplication(ctx context.Context, in *GetCreditApplicationRequest, opts ...grpc.CallOption) (*GetCreditApplicationResponse, error)
 	// Обновление статуса заявки на кредит (например, одобрение или отклонение)
-	UpdateCreditApplicationStatus(ctx context.Context, in *UpdateCreditApplicationStatusRequest, opts ...grpc.CallOption) (*UpdateCreditApplicationStatusResponse, error)
+	UpdateCreditApplicationSolution(ctx context.Context, in *UpdateCreditApplicationSolutionRequest, opts ...grpc.CallOption) (*UpdateCreditApplicationSolutionResponse, error)
 	// Получение информации о кредите
 	GetCredit(ctx context.Context, in *GetCreditRequest, opts ...grpc.CallOption) (*GetCreditResponse, error)
 	// Получение списка кредитов пользователя с пагинацией
@@ -81,10 +81,10 @@ func (c *creditsServiceV1Client) CreateCredit(ctx context.Context, in *CreateCre
 	return out, nil
 }
 
-func (c *creditsServiceV1Client) CreditApplicationSolution(ctx context.Context, in *CreditApplicationSolutionRequest, opts ...grpc.CallOption) (*CreditApplicationSolutionResponse, error) {
+func (c *creditsServiceV1Client) CreditApplicationConfirmation(ctx context.Context, in *CreditApplicationConfirmationRequest, opts ...grpc.CallOption) (*CreditApplicationConfirmationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreditApplicationSolutionResponse)
-	err := c.cc.Invoke(ctx, CreditsServiceV1_CreditApplicationSolution_FullMethodName, in, out, cOpts...)
+	out := new(CreditApplicationConfirmationResponse)
+	err := c.cc.Invoke(ctx, CreditsServiceV1_CreditApplicationConfirmation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -101,10 +101,10 @@ func (c *creditsServiceV1Client) GetCreditApplication(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *creditsServiceV1Client) UpdateCreditApplicationStatus(ctx context.Context, in *UpdateCreditApplicationStatusRequest, opts ...grpc.CallOption) (*UpdateCreditApplicationStatusResponse, error) {
+func (c *creditsServiceV1Client) UpdateCreditApplicationSolution(ctx context.Context, in *UpdateCreditApplicationSolutionRequest, opts ...grpc.CallOption) (*UpdateCreditApplicationSolutionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateCreditApplicationStatusResponse)
-	err := c.cc.Invoke(ctx, CreditsServiceV1_UpdateCreditApplicationStatus_FullMethodName, in, out, cOpts...)
+	out := new(UpdateCreditApplicationSolutionResponse)
+	err := c.cc.Invoke(ctx, CreditsServiceV1_UpdateCreditApplicationSolution_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -151,12 +151,12 @@ type CreditsServiceV1Server interface {
 	CreateCreditApplication(context.Context, *CreateCreditApplicationRequest) (*CreateCreditApplicationResponse, error)
 	// Создание нового кредита
 	CreateCredit(context.Context, *CreateCreditRequest) (*CreateCreditResponse, error)
-	// Решение по заявки на кредит
-	CreditApplicationSolution(context.Context, *CreditApplicationSolutionRequest) (*CreditApplicationSolutionResponse, error)
+	// Подтверждение новой заявки на кредит
+	CreditApplicationConfirmation(context.Context, *CreditApplicationConfirmationRequest) (*CreditApplicationConfirmationResponse, error)
 	// Получение статуса заявки на кредит
 	GetCreditApplication(context.Context, *GetCreditApplicationRequest) (*GetCreditApplicationResponse, error)
 	// Обновление статуса заявки на кредит (например, одобрение или отклонение)
-	UpdateCreditApplicationStatus(context.Context, *UpdateCreditApplicationStatusRequest) (*UpdateCreditApplicationStatusResponse, error)
+	UpdateCreditApplicationSolution(context.Context, *UpdateCreditApplicationSolutionRequest) (*UpdateCreditApplicationSolutionResponse, error)
 	// Получение информации о кредите
 	GetCredit(context.Context, *GetCreditRequest) (*GetCreditResponse, error)
 	// Получение списка кредитов пользователя с пагинацией
@@ -179,14 +179,14 @@ func (UnimplementedCreditsServiceV1Server) CreateCreditApplication(context.Conte
 func (UnimplementedCreditsServiceV1Server) CreateCredit(context.Context, *CreateCreditRequest) (*CreateCreditResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCredit not implemented")
 }
-func (UnimplementedCreditsServiceV1Server) CreditApplicationSolution(context.Context, *CreditApplicationSolutionRequest) (*CreditApplicationSolutionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreditApplicationSolution not implemented")
+func (UnimplementedCreditsServiceV1Server) CreditApplicationConfirmation(context.Context, *CreditApplicationConfirmationRequest) (*CreditApplicationConfirmationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreditApplicationConfirmation not implemented")
 }
 func (UnimplementedCreditsServiceV1Server) GetCreditApplication(context.Context, *GetCreditApplicationRequest) (*GetCreditApplicationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCreditApplication not implemented")
 }
-func (UnimplementedCreditsServiceV1Server) UpdateCreditApplicationStatus(context.Context, *UpdateCreditApplicationStatusRequest) (*UpdateCreditApplicationStatusResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateCreditApplicationStatus not implemented")
+func (UnimplementedCreditsServiceV1Server) UpdateCreditApplicationSolution(context.Context, *UpdateCreditApplicationSolutionRequest) (*UpdateCreditApplicationSolutionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCreditApplicationSolution not implemented")
 }
 func (UnimplementedCreditsServiceV1Server) GetCredit(context.Context, *GetCreditRequest) (*GetCreditResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCredit not implemented")
@@ -254,20 +254,20 @@ func _CreditsServiceV1_CreateCredit_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CreditsServiceV1_CreditApplicationSolution_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreditApplicationSolutionRequest)
+func _CreditsServiceV1_CreditApplicationConfirmation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreditApplicationConfirmationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CreditsServiceV1Server).CreditApplicationSolution(ctx, in)
+		return srv.(CreditsServiceV1Server).CreditApplicationConfirmation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CreditsServiceV1_CreditApplicationSolution_FullMethodName,
+		FullMethod: CreditsServiceV1_CreditApplicationConfirmation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CreditsServiceV1Server).CreditApplicationSolution(ctx, req.(*CreditApplicationSolutionRequest))
+		return srv.(CreditsServiceV1Server).CreditApplicationConfirmation(ctx, req.(*CreditApplicationConfirmationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -290,20 +290,20 @@ func _CreditsServiceV1_GetCreditApplication_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CreditsServiceV1_UpdateCreditApplicationStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateCreditApplicationStatusRequest)
+func _CreditsServiceV1_UpdateCreditApplicationSolution_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCreditApplicationSolutionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CreditsServiceV1Server).UpdateCreditApplicationStatus(ctx, in)
+		return srv.(CreditsServiceV1Server).UpdateCreditApplicationSolution(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CreditsServiceV1_UpdateCreditApplicationStatus_FullMethodName,
+		FullMethod: CreditsServiceV1_UpdateCreditApplicationSolution_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CreditsServiceV1Server).UpdateCreditApplicationStatus(ctx, req.(*UpdateCreditApplicationStatusRequest))
+		return srv.(CreditsServiceV1Server).UpdateCreditApplicationSolution(ctx, req.(*UpdateCreditApplicationSolutionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -378,16 +378,16 @@ var CreditsServiceV1_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _CreditsServiceV1_CreateCredit_Handler,
 		},
 		{
-			MethodName: "CreditApplicationSolution",
-			Handler:    _CreditsServiceV1_CreditApplicationSolution_Handler,
+			MethodName: "CreditApplicationConfirmation",
+			Handler:    _CreditsServiceV1_CreditApplicationConfirmation_Handler,
 		},
 		{
 			MethodName: "GetCreditApplication",
 			Handler:    _CreditsServiceV1_GetCreditApplication_Handler,
 		},
 		{
-			MethodName: "UpdateCreditApplicationStatus",
-			Handler:    _CreditsServiceV1_UpdateCreditApplicationStatus_Handler,
+			MethodName: "UpdateCreditApplicationSolution",
+			Handler:    _CreditsServiceV1_UpdateCreditApplicationSolution_Handler,
 		},
 		{
 			MethodName: "GetCredit",
