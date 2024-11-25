@@ -37,3 +37,8 @@ type CreditPaymentMessage struct {
 	AccountID         string `json:"account_id"`
 	Amount            int64  `json:"amount"`
 }
+
+type CreditPaymentSolutionMessage struct {
+	PaymentScheduleID string `json:"payment_schedule_id"`
+	Status            string `json:"status"`
+}
