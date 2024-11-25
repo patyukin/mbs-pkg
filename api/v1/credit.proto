@@ -162,6 +162,8 @@ message Credit {
   string description = 10;                // Дополнительное описание или комментарии
   string account_id = 11;                 // UUID счета
   string credit_application_id = 12;      // UUID заявки
+  string created_at = 13;                 // Дата создания кредита
+  string updated_at = 14;                 // Дата обновления кредита
 }
 
 // Сообщение запроса для получения графика платежей

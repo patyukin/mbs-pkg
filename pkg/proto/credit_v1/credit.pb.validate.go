@@ -1831,6 +1831,10 @@ func (m *Credit) validate(all bool) error {
 
 	// no validation rules for CreditApplicationId
 
+	// no validation rules for CreatedAt
+
+	// no validation rules for UpdatedAt
+
 	if len(errors) > 0 {
 		return CreditMultiError(errors)
 	}
