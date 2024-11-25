@@ -33,6 +33,7 @@ type CreditCreatedMessage struct {
 }
 
 type CreditPaymentMessage struct {
-	AccountID string `json:"account_id"`
-	Amount    int64  `json:"amount"`
+	PaymentScheduleID string `json:"payment_schedule_id"`
+	AccountID         string `json:"account_id"`
+	Amount            int64  `json:"amount"`
 }
