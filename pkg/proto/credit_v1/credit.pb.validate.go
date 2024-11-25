@@ -884,7 +884,7 @@ func (m *GetCreditApplicationResponse) validate(all bool) error {
 
 	// no validation rules for DecisionDate
 
-	// no validation rules for Message
+	// no validation rules for Description
 
 	if all {
 		switch v := interface{}(m.GetError()).(type) {
@@ -1826,6 +1826,10 @@ func (m *Credit) validate(all bool) error {
 	// no validation rules for EndDate
 
 	// no validation rules for Description
+
+	// no validation rules for AccountId
+
+	// no validation rules for CreditApplicationId
 
 	if len(errors) > 0 {
 		return CreditMultiError(errors)
