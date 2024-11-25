@@ -37,8 +37,8 @@ service CreditsServiceV1 {
   rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
   // Создание нового кредита
   rpc CreateCredit(CreateCreditRequest) returns (CreateCreditResponse);
-  // Подтверждение новой заявки на кредит
-  rpc CreditApplicationConfirmation(CreditApplicationConfirmationRequest) returns (CreditApplicationConfirmationResponse);
+  // Решение по заявки на кредит
+  rpc CreditApplicationSolution(CreditApplicationSolutionRequest) returns (CreditApplicationSolutionResponse);
   // Получение статуса заявки на кредит
   rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
   // Обновление статуса заявки на кредит (например, одобрение или отклонение)
@@ -68,13 +68,13 @@ message CreateCreditApplicationResponse {
 }
 
 // Сообщение запроса для подтверждения заявки на кредит
-message CreditApplicationConfirmationRequest {
+message CreditApplicationSolutionRequest {
   string code = 1;                       // код для подтверждения заявки
   string user_id = 2;                    // UUID пользователя
 }
 
 // Сообщение ответа при подтверждении заявки на кредит
-message CreditApplicationConfirmationResponse {
+message CreditApplicationSolutionResponse {
   string application_id = 1;             // UUID заявки
   CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
   string message = 3;                    // Дополнительное сообщение
