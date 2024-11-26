@@ -58,3 +58,7 @@ func (c *Client) PublishCreditCreated(ctx context.Context, value []byte) error {
 func (c *Client) PublishCreditPayments(ctx context.Context, value []byte) error {
 	return c.PublishMessageWithRetry(ctx, CreditPaymentsTopic, nil, value)
 }
+
+func (c *Client) PublishPaymentRequests(ctx context.Context, value []byte) error {
+	return c.PublishMessageWithRetry(ctx, PaymentRequestsTopic, nil, value)
+}
