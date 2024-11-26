@@ -1,6 +1,7 @@
 package rabbitmq
 
 const Exchange = "banking_system_exchange"
+const TelegramNotifyQueue = "telegram_notify_queue"
 
 // Auth Service
 const (

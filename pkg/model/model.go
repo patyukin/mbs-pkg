@@ -50,8 +50,7 @@ type CreditCreated struct {
 }
 
 type CreditPayment struct {
-	PaymentScheduleID string `json:"payment_schedule_id"`
-	SenderAccountID   string `json:"account_id"`
+	AccountID         string `json:"account_id"`
 	ReceiverAccountID string `json:"receiver_account_id"`
 	Amount            int64  `json:"amount"`
 }
