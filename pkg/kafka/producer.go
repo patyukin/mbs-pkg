@@ -47,8 +47,8 @@ func (c *Client) PublishLogReport(ctx context.Context, value []byte) error {
 	return c.PublishMessageWithRetry(ctx, LogReportTopic, nil, value)
 }
 
-func (c *Client) PublishPaymentReport(ctx context.Context, value []byte) error {
-	return c.PublishMessageWithRetry(ctx, ReportTopic, nil, value)
+func (c *Client) PublishTransaction(ctx context.Context, value []byte) error {
+	return c.PublishMessageWithRetry(ctx, TransactionTopic, nil, value)
 }
 
 func (c *Client) PublishCreditCreated(ctx context.Context, value []byte) error {
@@ -59,6 +59,6 @@ func (c *Client) PublishCreditPayments(ctx context.Context, value []byte) error 
 	return c.PublishMessageWithRetry(ctx, CreditPaymentsTopic, nil, value)
 }
 
-func (c *Client) PublishPaymentRequests(ctx context.Context, value []byte) error {
-	return c.PublishMessageWithRetry(ctx, PaymentRequestsTopic, nil, value)
+func (c *Client) PublishPaymentRequest(ctx context.Context, value []byte) error {
+	return c.PublishMessageWithRetry(ctx, PaymentRequestTopic, nil, value)
 }

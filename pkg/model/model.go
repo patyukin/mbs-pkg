@@ -26,6 +26,19 @@ type PaymentRequest struct {
 	PaymentID string `json:"payment_id"`
 }
 
+type Transaction struct {
+	ID          string `json:"id"`
+	PaymentID   string `json:"payment_id"`
+	AccountID   string `json:"account_id"`
+	Type        string `json:"type"`
+	Amount      int64  `json:"amount"`
+	Currency    string `json:"currency"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+}
+
 type CreditCreated struct {
 	AccountID string `json:"account_id"`
 	Amount    int64  `json:"amount"`
