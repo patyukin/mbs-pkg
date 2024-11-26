@@ -11,6 +11,7 @@ service AuthService {
   rpc SignIn(SignInRequest) returns (SignInResponse);
   rpc SignInConfirmation(SignInConfirmationRequest) returns (SignInConfirmationResponse);
   rpc GetUserByID(GetUserByIDRequest) returns (GetUserByIDResponse);
+  rpc GetBriefUserByID(GetBriefUserByIDRequest) returns (GetBriefUserByIDResponse);
   rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
   rpc AddUserRole(AddUserRoleRequest) returns (AddUserRoleResponse);
   rpc AuthorizeUser(AuthorizeUserRequest) returns (AuthorizeUserResponse);
@@ -77,6 +78,18 @@ message GetUsersResponse {
   repeated UserInfo users = 1;
   int32 total = 2;
   error_v1.ErrorResponse error = 3;
+}
+
+message GetBriefUserByIDRequest {
+  string user_id = 1;
+}
+
+message GetBriefUserByIDResponse {
+  error_v1.ErrorResponse error = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  int64 chat_id = 5;
 }
 
 message SignInConfirmationRequest {

@@ -23,6 +23,7 @@ const (
 	AuthService_SignIn_FullMethodName             = "/auth_v1.AuthService/SignIn"
 	AuthService_SignInConfirmation_FullMethodName = "/auth_v1.AuthService/SignInConfirmation"
 	AuthService_GetUserByID_FullMethodName        = "/auth_v1.AuthService/GetUserByID"
+	AuthService_GetBriefUserByID_FullMethodName   = "/auth_v1.AuthService/GetBriefUserByID"
 	AuthService_GetUsers_FullMethodName           = "/auth_v1.AuthService/GetUsers"
 	AuthService_AddUserRole_FullMethodName        = "/auth_v1.AuthService/AddUserRole"
 	AuthService_AuthorizeUser_FullMethodName      = "/auth_v1.AuthService/AuthorizeUser"
@@ -37,6 +38,7 @@ type AuthServiceClient interface {
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
 	SignInConfirmation(ctx context.Context, in *SignInConfirmationRequest, opts ...grpc.CallOption) (*SignInConfirmationResponse, error)
 	GetUserByID(ctx context.Context, in *GetUserByIDRequest, opts ...grpc.CallOption) (*GetUserByIDResponse, error)
+	GetBriefUserByID(ctx context.Context, in *GetBriefUserByIDRequest, opts ...grpc.CallOption) (*GetBriefUserByIDResponse, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 	AddUserRole(ctx context.Context, in *AddUserRoleRequest, opts ...grpc.CallOption) (*AddUserRoleResponse, error)
 	AuthorizeUser(ctx context.Context, in *AuthorizeUserRequest, opts ...grpc.CallOption) (*AuthorizeUserResponse, error)
@@ -91,6 +93,16 @@ func (c *authServiceClient) GetUserByID(ctx context.Context, in *GetUserByIDRequ
 	return out, nil
 }
 
+func (c *authServiceClient) GetBriefUserByID(ctx context.Context, in *GetBriefUserByIDRequest, opts ...grpc.CallOption) (*GetBriefUserByIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBriefUserByIDResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetBriefUserByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *authServiceClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUsersResponse)
@@ -139,6 +151,7 @@ type AuthServiceServer interface {
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
 	SignInConfirmation(context.Context, *SignInConfirmationRequest) (*SignInConfirmationResponse, error)
 	GetUserByID(context.Context, *GetUserByIDRequest) (*GetUserByIDResponse, error)
+	GetBriefUserByID(context.Context, *GetBriefUserByIDRequest) (*GetBriefUserByIDResponse, error)
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
 	AddUserRole(context.Context, *AddUserRoleRequest) (*AddUserRoleResponse, error)
 	AuthorizeUser(context.Context, *AuthorizeUserRequest) (*AuthorizeUserResponse, error)
@@ -164,6 +177,9 @@ func (UnimplementedAuthServiceServer) SignInConfirmation(context.Context, *SignI
 }
 func (UnimplementedAuthServiceServer) GetUserByID(context.Context, *GetUserByIDRequest) (*GetUserByIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserByID not implemented")
+}
+func (UnimplementedAuthServiceServer) GetBriefUserByID(context.Context, *GetBriefUserByIDRequest) (*GetBriefUserByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBriefUserByID not implemented")
 }
 func (UnimplementedAuthServiceServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
@@ -270,6 +286,24 @@ func _AuthService_GetUserByID_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_GetBriefUserByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBriefUserByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetBriefUserByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetBriefUserByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetBriefUserByID(ctx, req.(*GetBriefUserByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AuthService_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUsersRequest)
 	if err := dec(in); err != nil {
@@ -364,6 +398,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserByID",
 			Handler:    _AuthService_GetUserByID_Handler,
+		},
+		{
+			MethodName: "GetBriefUserByID",
+			Handler:    _AuthService_GetBriefUserByID_Handler,
 		},
 		{
 			MethodName: "GetUsers",
