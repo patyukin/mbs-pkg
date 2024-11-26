@@ -35,8 +35,13 @@ type Transaction struct {
 	Currency    string `json:"currency"`
 	Description string `json:"description"`
 	Status      string `json:"status"`
+	SendStatus  string `json:"send_status"`
 	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+}
+
+type TransactionSendStatus struct {
+	ID         string `json:"id"`
+	SendStatus string `json:"send_status"`
 }
 
 type CreditCreated struct {
