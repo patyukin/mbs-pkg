@@ -5,6 +5,12 @@ import (
 	"github.com/patyukin/mbs-pkg/pkg/proto/credit_v1"
 )
 
+const (
+	CreditApplicationStatusPending  = "PENDING"
+	CreditApplicationStatusApproved = "APPROVED"
+	CreditApplicationStatusRejected = "REJECTED"
+)
+
 // Маппинг для CreditApplicationStatus
 var creditApplicationStatusToString = map[credit_v1.CreditApplicationStatus]string{
 	credit_v1.CreditApplicationStatus_UNKNOWN_STATUS: "UNKNOWN_STATUS",

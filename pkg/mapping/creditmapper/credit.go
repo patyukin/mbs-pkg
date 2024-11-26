@@ -5,6 +5,11 @@ import (
 	"github.com/patyukin/mbs-pkg/pkg/proto/credit_v1"
 )
 
+const (
+	CreditStatusActive = "ACTIVE"
+	CreditStatusClosed = "CLOSED"
+)
+
 // Маппинг для CreditStatus
 var creditStatusToString = map[credit_v1.CreditStatus]string{
 	credit_v1.CreditStatus_UNKNOWN_CREDIT_STATUS: "UNKNOWN_CREDIT_STATUS",

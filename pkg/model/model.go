@@ -22,23 +22,23 @@ type SimpleTelegramMessage struct {
 	Message string `json:"message"`
 }
 
-type PaymentStatusChangedMessage struct {
+type PaymentRequest struct {
 	PaymentID string `json:"payment_id"`
-	Status    string `json:"status"`
 }
 
-type CreditCreatedMessage struct {
+type CreditCreated struct {
 	AccountID string `json:"account_id"`
 	Amount    int64  `json:"amount"`
 }
 
-type CreditPaymentMessage struct {
+type CreditPayment struct {
 	PaymentScheduleID string `json:"payment_schedule_id"`
-	AccountID         string `json:"account_id"`
+	SenderAccountID   string `json:"account_id"`
+	ReceiverAccountID string `json:"receiver_account_id"`
 	Amount            int64  `json:"amount"`
 }
 
-type CreditPaymentSolutionMessage struct {
+type CreditPaymentSolution struct {
 	PaymentScheduleID string `json:"payment_schedule_id"`
 	Status            string `json:"status"`
 }

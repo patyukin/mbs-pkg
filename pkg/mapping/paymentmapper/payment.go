@@ -5,6 +5,13 @@ import (
 	"github.com/patyukin/mbs-pkg/pkg/proto/payment_v1"
 )
 
+const (
+	PaymentStatusDraft     = "DRAFT"
+	PaymentStatusPending   = "PENDING"
+	PaymentStatusCompleted = "COMPLETED"
+	PaymentStatusFailed    = "FAILED"
+)
+
 // Маппинг для PaymentStatus
 var paymentStatusToString = map[payment_v1.PaymentStatus]string{
 	payment_v1.PaymentStatus_UNKNOWN_PAYMENT_STATUS: "UNKNOWN_PAYMENT_STATUS",

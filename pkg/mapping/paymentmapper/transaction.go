@@ -5,6 +5,11 @@ import (
 	"github.com/patyukin/mbs-pkg/pkg/proto/payment_v1"
 )
 
+const (
+	TransactionTypeDebit  = "DEBIT"
+	TransactionTypeCredit = "CREDIT"
+)
+
 // Маппинг для TransactionType
 var paymentTransactionTypeToString = map[payment_v1.TransactionType]string{
 	payment_v1.TransactionType_UNKNOWN_TRANSACTION_TYPE: "UNKNOWN_TRANSACTION_TYPE",

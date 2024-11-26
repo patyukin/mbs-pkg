@@ -5,6 +5,14 @@ import (
 	"github.com/patyukin/mbs-pkg/pkg/proto/credit_v1"
 )
 
+const (
+	PaymentStatusScheduled = "SCHEDULED"
+	PaymentStatusPaid      = "PAID"
+	PaymentStatusMissed    = "MISSED"
+	PaymentStatusOverpaid  = "OVERPAID"
+	PaymentStatusRefunded  = "REFUNDED"
+)
+
 // Маппинг для PaymentStatus
 var paymentStatusToString = map[credit_v1.PaymentStatus]string{
 	credit_v1.PaymentStatus_UNKNOWN_PAYMENT_STATUS: "UNKNOWN_PAYMENT_STATUS",
