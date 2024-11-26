@@ -12,7 +12,7 @@ const (
 const (
 	DeadLetterTopic     = "dead_letter_topic"
 	LogReportTopic      = "log_report_topic"
-	TransactionTopic    = "transaction_topic"
+	TransactionsTopic   = "transactions_topic"
 	CreditCreatedTopic  = "credit_created_topic"
 	CreditPaymentsTopic = "credit_payments_topic"
 	PaymentRequestTopic = "payment_request_topic"
