@@ -96,3 +96,11 @@ func (r *RabbitMQ) PublishAccountCreation(ctx context.Context, body []byte, head
 func (r *RabbitMQ) PushPaymentStatusChanged(ctx context.Context, body []byte, headers amqp.Table) error {
 	return r.publishMessage(ctx, PaymentStatusChangedRouteKey, body, headers)
 }
+
+func (r *RabbitMQ) PushCreditCreated(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, CreditCreatedRouteKey, body, headers)
+}
+
+func (r *RabbitMQ) PushCreditApplicationCreated(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, CreditApplicationCreatedRouteKey, body, headers)
+}

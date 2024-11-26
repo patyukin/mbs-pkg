@@ -31,3 +31,10 @@ const (
 	AccountCreationRouteKey          = "account_creation_route_key"
 	PaymentStatusChangedRouteKey     = "payment_status_change_route_key"
 )
+
+// Credit Service
+const (
+	CreditNotifyQueue                = "credit_notify_queue"
+	CreditApplicationCreatedRouteKey = "credit_application_created_route_key"
+	CreditCreatedRouteKey            = "credit_created_route_key"
+)

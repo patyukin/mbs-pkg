@@ -10,10 +10,10 @@ const (
 )
 
 const (
-	DeadLetterTopic     = "dead_letter_topic"
-	LogReportTopic      = "log_report_topic"
-	TransactionsTopic   = "transactions_topic"
-	CreditCreatedTopic  = "credit_created_topic"
-	CreditPaymentsTopic = "credit_payments_topic"
-	PaymentRequestTopic = "payment_request_topic"
+	DeadLetterTopic     = "dead_letter"
+	LogReportTopic      = "log_report"
+	TransactionsTopic   = "transactions"
+	CreditCreatedTopic  = "credit_created"
+	CreditPaymentsTopic = "credit_payments"
+	PaymentRequestTopic = "payment_request"
 )
