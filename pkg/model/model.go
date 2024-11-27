@@ -27,26 +27,30 @@ type PaymentRequest struct {
 }
 
 type Transaction struct {
-	ID          string `json:"id"`
-	PaymentID   string `json:"payment_id"`
-	AccountID   string `json:"account_id"`
-	Type        string `json:"type"`
-	Amount      int64  `json:"amount"`
-	Currency    string `json:"currency"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-	SendStatus  string `json:"send_status"`
-	CreatedAt   string `json:"created_at"`
+	ID                 string `json:"id"`
+	PaymentID          string `json:"payment_id"`
+	AccountID          string `json:"account_id"`
+	UserID             string `json:"user_id"`
+	Type               string `json:"type"`
+	Amount             int64  `json:"amount"`
+	Currency           string `json:"currency"`
+	Description        string `json:"description"`
+	PaymentDescription string `json:"paymentDescription"`
+	Status             string `json:"status"`
+	SendStatus         string `json:"send_status"`
+	CreatedAt          string `json:"created_at"`
 }
 
 type TransactionReport struct {
-	ID          string `json:"id"`
-	Amount      int64  `json:"amount"`
-	Currency    string `json:"currency"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-	SendStatus  string `json:"send_status"`
-	CreatedAt   string `json:"created_at"`
+	ID                 string `json:"id"`
+	UserID             string `json:"user_id"`
+	Amount             int64  `json:"amount"`
+	Currency           string `json:"currency"`
+	Description        string `json:"description"`
+	PaymentDescription string `json:"paymentDescription"`
+	Status             string `json:"status"`
+	SendStatus         string `json:"send_status"`
+	CreatedAt          string `json:"created_at"`
 }
 
 type TransactionSendStatus struct {
