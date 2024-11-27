@@ -39,6 +39,16 @@ type Transaction struct {
 	CreatedAt   string `json:"created_at"`
 }
 
+type TransactionReport struct {
+	ID          string `json:"id"`
+	Amount      int64  `json:"amount"`
+	Currency    string `json:"currency"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+	SendStatus  string `json:"send_status"`
+	CreatedAt   string `json:"created_at"`
+}
+
 type TransactionSendStatus struct {
 	ID         string `json:"id"`
 	SendStatus string `json:"send_status"`
@@ -58,11 +68,4 @@ type CreditPayment struct {
 type CreditPaymentSolution struct {
 	PaymentScheduleID string `json:"payment_schedule_id"`
 	Status            string `json:"status"`
-}
-
-type ClickhouseConn struct {
-	Address  string
-	Database string
-	User     string
-	Password string
 }
