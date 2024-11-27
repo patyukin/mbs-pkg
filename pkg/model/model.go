@@ -59,3 +59,10 @@ type CreditPaymentSolution struct {
 	PaymentScheduleID string `json:"payment_schedule_id"`
 	Status            string `json:"status"`
 }
+
+type ClickhouseConn struct {
+	Address  string
+	Database string
+	User     string
+	Password string
+}
