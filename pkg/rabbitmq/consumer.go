@@ -18,29 +18,55 @@ func (r *RabbitMQ) Consume(ctx context.Context, queue string, processMessage Han
 		nil,
 	)
 	if err != nil {
-		return fmt.Errorf("failed to consume in auth_notify_queue: %w", err)
+		return fmt.Errorf("failed to start consuming from queue '%s': %w", queue, err)
 	}
 
-	for msg := range msgs {
-		go func(d amqp.Delivery) {
-			if err = processMessage(ctx, d); err != nil {
-				if err = d.Nack(false, false); err != nil {
-					log.Error().Msgf("failed to nack message in auth_sign_up_confirm_code_queue: %v", err)
+	log.Info().Msgf("Started consuming from queue '%s'", queue)
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				log.Info().Msgf("Stopping consumption from queue '%s' due to context cancellation", queue)
+				return
+			case msg, ok := <-msgs:
+				if !ok {
+					log.Warn().Msgf("Message channel closed for queue '%s'", queue)
 					return
 				}
 
-				log.Error().Msgf("failed to process message in auth_sign_up_confirm_code_queue: %v", err)
-				return
+				go r.handleMessage(ctx, queue, msg, processMessage)
 			}
-
-			if err = d.Ack(false); err != nil {
-				log.Error().Msgf("failed to ack message in auth_sign_up_confirm_code_queue: %v", err)
-				return
-			}
-
-			log.Debug().Msgf("Message processed in auth_sign_up_confirm_code_queue: %s", string(d.Body))
-		}(msg)
-	}
+		}
+	}()
 
 	return nil
+}
+
+func (r *RabbitMQ) handleMessage(ctx context.Context, queue string, msg amqp.Delivery, processMessage HandlerFunction) {
+	if err := processMessage(ctx, msg); err != nil {
+		if nackErr := msg.Nack(false, false); nackErr != nil {
+			log.Error().
+				Err(nackErr).
+				Msgf("Failed to nack message from queue '%s'", queue)
+			return
+		}
+
+		log.Error().
+			Err(err).
+			Msgf("Failed to process message from queue '%s'", queue)
+		return
+	}
+
+	if ackErr := msg.Ack(false); ackErr != nil {
+		log.Error().
+			Err(ackErr).
+			Msgf("Failed to ack message from queue '%s'", queue)
+		return
+	}
+
+	log.Debug().
+		Str("queue", queue).
+		Str("message", string(msg.Body)).
+		Msg("Message processed successfully")
 }
