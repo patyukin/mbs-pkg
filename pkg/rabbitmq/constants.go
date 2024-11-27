@@ -1,7 +1,12 @@
 package rabbitmq
 
 const Exchange = "banking_system_exchange"
-const TelegramNotifyQueue = "telegram_notify_queue"
+
+// Telegram
+const (
+	TelegramMessageQueue    = "telegram_message_queue"
+	TelegramMessageRouteKey = "telegram_message_route_key"
+)
 
 // Auth Service
 const (

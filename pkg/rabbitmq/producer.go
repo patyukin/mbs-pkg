@@ -57,50 +57,7 @@ func (r *RabbitMQ) publishMessage(ctx context.Context, routeKey string, body []b
 	return nil
 }
 
-// PublishNotifySignUpConfirmCode
-// Отправка кода подтверждения регистрации из телеграм в RabbitMQ
-func (r *RabbitMQ) PublishNotifySignUpConfirmCode(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, NotifySignUpConfirmCodeRouteKey, body, headers)
-}
-
-// PublishAuthSignUpResultMessage
-// Отправка информации подтверждения регистрации из authService в RabbitMQ
-func (r *RabbitMQ) PublishAuthSignUpResultMessage(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, AuthSignUpResultMessageRouteKey, body, headers)
-}
-
-// PublishAuthSignInCode
-// Отправка кода подтверждения входа из authService в RabbitMQ
-func (r *RabbitMQ) PublishAuthSignInCode(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, AuthSignInConfirmCodeRouteKey, body, headers)
-}
-
-// PublishLogReport
-// Отправка информации о логах сервиса в RabbitMQ
-func (r *RabbitMQ) PublishLogReport(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, LoggerReportRouteKey, body, headers)
-}
-
-// PublishPaymentExecutionInitiate
-// Отправка информации о регистрации платежа в RabbitMQ
-func (r *RabbitMQ) PublishPaymentExecutionInitiate(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, PaymentExecutionInitiateRouteKey, body, headers)
-}
-
-// PublishAccountCreation
-// Отправка информации о добавлении банковского счета в RabbitMQ
-func (r *RabbitMQ) PublishAccountCreation(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, AccountCreationRouteKey, body, headers)
-}
-
-func (r *RabbitMQ) PushPaymentStatusChanged(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, PaymentStatusChangedRouteKey, body, headers)
-}
-
-func (r *RabbitMQ) PushCreditCreated(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, CreditCreatedRouteKey, body, headers)
-}
-
-func (r *RabbitMQ) PushCreditApplicationCreated(ctx context.Context, body []byte, headers amqp.Table) error {
-	return r.publishMessage(ctx, CreditApplicationCreatedRouteKey, body, headers)
+// EnqueueTelegramMessage - Publish to telegram bot
+func (r *RabbitMQ) EnqueueTelegramMessage(ctx context.Context, body []byte, headers amqp.Table) error {
+	return r.publishMessage(ctx, TelegramMessageRouteKey, body, headers)
 }
