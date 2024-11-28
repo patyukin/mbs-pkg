@@ -55,7 +55,7 @@ service CreditsServiceV1 {
 message CreateCreditApplicationRequest {
   string user_id = 1;                    // UUID пользователя, подающего заявку
   int64 requested_amount = 2;            // Запрашиваемая сумма кредита
-  int64 interest_rate = 3;               // Процентная ставка
+  int32 interest_rate = 3;               // Процентная ставка
   string start_date = 4;                 // Предполагаемая дата начала кредита
   string end_date = 5;                   // Предполагаемая дата окончания кредита
   string description = 6;                // Дополнительное описание или комментарии
@@ -154,7 +154,7 @@ message Credit {
   string credit_id = 1;                   // UUID кредита
   string user_id = 2;                     // UUID пользователя
   int64 amount = 4;                       // Сумма кредита
-  int64 interest_rate = 5;                // Процентная ставка
+  int32 interest_rate = 5;                // Процентная ставка
   int64 remaining_amount = 6;             // Остаток по кредиту
   CreditStatus status = 7;                // Статус кредита
   string start_date = 8;                  // Дата начала кредита
