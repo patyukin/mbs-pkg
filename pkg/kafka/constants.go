@@ -6,7 +6,7 @@ import (
 
 const (
 	maxRetries     = 5
-	maxBackoff     = time.Second * 5
+	maxBackoff     = time.Second * 2
 	maxGoroutines  = 100
 	initialBackoff = 100 * time.Millisecond
 )

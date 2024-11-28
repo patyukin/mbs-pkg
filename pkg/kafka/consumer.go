@@ -2,112 +2,64 @@ package kafka
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"github.com/twmb/franz-go/pkg/kgo"
 	"math"
-	"sync"
 	"time"
 )
 
-// ProcessMessages - process messages from kafka topic
 func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx context.Context, record *kgo.Record) error) error {
-	sem := make(chan struct{}, maxGoroutines)
-	wg := &sync.WaitGroup{}
-	errorCh := make(chan error, maxGoroutines)
-
-	go func() {
-		for err := range errorCh {
-			log.Error().Msgf("Error processing message: %v", err)
-		}
-	}()
-
 	for {
-		select {
-		case <-ctx.Done():
-			wg.Wait()
-			close(errorCh)
-			return ctx.Err()
-		default:
-			fetches := c.client.PollFetches(ctx)
-			if fetches.IsClientClosed() {
-				wg.Wait()
-				close(errorCh)
-				return nil
-			}
-
-			var fetchErrors []error
-			fetches.EachError(func(t string, p int32, err error) {
-				fetchErrors = append(fetchErrors, fmt.Errorf("failed to fetch from topic %s partition %d: %w", t, p, err))
-			})
-
-			if len(fetchErrors) > 0 {
-				for _, err := range fetchErrors {
-					log.Error().Msgf("Error fetching messages: %v", err)
-				}
-			}
-
-			fetches.EachPartition(func(p kgo.FetchTopicPartition) {
-				for _, record := range p.Records {
-					select {
-					case <-ctx.Done():
-						return
-					case sem <- struct{}{}:
-						wg.Add(1)
-
-						go func(rec *kgo.Record) {
-							defer wg.Done()
-							defer func() { <-sem }()
-
-							if err := c.processRecord(ctx, rec, processFunc); err != nil {
-								select {
-								case errorCh <- err:
-								default:
-									log.Error().Msgf("many errors in channel, dropping error: %v", err)
-								}
-							}
-						}(record)
-					}
-				}
-			})
+		fetches := c.client.PollFetches(ctx)
+		if fetches.IsClientClosed() {
+			return nil
 		}
+
+		var errs []error
+		fetches.EachError(func(t string, p int32, err error) {
+			errs = append(errs, fmt.Errorf("failed to fetch %s partition %d: %w", t, p, err))
+		})
+
+		if len(errs) > 0 {
+			return errors.Join(errs...)
+		}
+
+		fetches.EachPartition(func(p kgo.FetchTopicPartition) {
+			for _, record := range p.Records {
+				go c.processRecord(ctx, record, processFunc)
+			}
+		})
 	}
 }
 
-// processRecord - process one record
-func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processFunc func(context.Context, *kgo.Record) error) error {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Error().Msgf("panic in processRecord: %v", r)
-			if err := c.sendToDeadLetter(ctx, record); err != nil {
-				log.Error().Msgf("error sending to dead letter: %v", err)
-			}
+func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processFunc func(context.Context, *kgo.Record) error) {
+	var attempt int
+	backoff := time.Millisecond * 100
+
+	for attempt = 1; attempt <= maxRetries; attempt++ {
+		err := processFunc(ctx, record)
+		if err == nil {
+			log.Info().Msgf("The message was successfully sent to the topic %s: %s", record.Topic, string(record.Value))
+			return
 		}
-	}()
 
-	select {
-	case <-ctx.Done():
-		log.Error().Msgf("Context canceled, record processing stopped, err: %v", ctx.Err())
-		return ctx.Err()
-	default:
+		log.Error().Msgf("Attempt %d failed when sending a message to the topic %s: %v", attempt, record.Topic, err)
+
+		if attempt >= maxRetries {
+			log.Error().Msgf("Failed to send message to topic %s after %d attempts: %v", record.Topic, maxRetries, err)
+			c.sendToDeadLetter(ctx, record)
+			return
+		}
+
+		time.Sleep(backoff)
+		backoff = time.Duration(math.Min(float64(maxBackoff), float64(backoff)*2))
 	}
-
-	err := processFunc(ctx, record)
-	if err == nil {
-		log.Info().Msgf("Successfully processed message from topic %s", record.Topic)
-		return nil
-	}
-
-	log.Info().Msgf("processing failed, err: %v, Sending a message to dead-letter topic %s after %d failed attempts", err, DeadLetterTopic, maxRetries)
-	if err = c.sendToDeadLetter(ctx, record); err != nil {
-		return fmt.Errorf("failed to send a message to the dead-letter topic: %w", err)
-	}
-
-	return nil
 }
 
-// sendToDeadLetter - send message to dead letter
-func (c *Client) sendToDeadLetter(ctx context.Context, record *kgo.Record) error {
+// sendToDeadLetter отправляет сообщение в dead-letter топик
+func (c *Client) sendToDeadLetter(ctx context.Context, record *kgo.Record) {
 	deadLetterRecord := &kgo.Record{
 		Topic:   DeadLetterTopic,
 		Key:     record.Key,
@@ -115,47 +67,12 @@ func (c *Client) sendToDeadLetter(ctx context.Context, record *kgo.Record) error
 		Headers: record.Headers,
 	}
 
-	backoff := time.Millisecond * 100
-
-	for attempt := 1; attempt <= maxRetries; attempt++ {
-		errCh := make(chan error, 1)
-		done := make(chan struct{})
-
-		c.client.Produce(ctx, deadLetterRecord, func(_ *kgo.Record, err error) {
-			if err != nil {
-				log.Error().Msgf("error sending to dead letter: %v", err)
-				errCh <- err
-			} else {
-				log.Info().Msgf("success sending to dead letter: %s", string(record.Value))
-				errCh <- nil
-			}
-
-			close(done)
-		})
-
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-done:
-			err := <-errCh
-			if err == nil {
-				return nil
-			}
-
-			log.Info().Msgf("Attempt %d to send topic to dead-letter failed: %v", attempt, err)
-			if attempt >= maxRetries {
-				log.Error().Msgf("Failed to send a message to the dead-letter topic after %d attempts", err)
-				return err
-			}
-
-			select {
-			case <-time.After(backoff):
-				backoff = time.Duration(math.Min(float64(maxBackoff), float64(backoff)*2))
-			case <-ctx.Done():
-				return ctx.Err()
-			}
+	c.client.Produce(ctx, deadLetterRecord, func(_ *kgo.Record, err error) {
+		if err != nil {
+			log.Error().Msgf("Failed to send message to dead-letter topic: %v", err)
+			return
 		}
-	}
 
-	return fmt.Errorf("sendToDeadLetter: The maximum number of attempts has been exceeded")
+		log.Info().Msgf("Successfully sent message to dead-letter topic: %s", DeadLetterTopic)
+	})
 }
