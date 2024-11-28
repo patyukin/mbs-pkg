@@ -85,41 +85,22 @@ func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processF
 		}
 	}()
 
-	backoff := time.Millisecond * 100
+	select {
+	case <-ctx.Done():
+		log.Error().Msgf("Context canceled, record processing stopped, err: %v", ctx.Err())
+		return ctx.Err()
+	default:
+	}
 
-	for attempt := 1; attempt <= maxRetries; attempt++ {
-		select {
-		case <-ctx.Done():
-			log.Error().Msgf("Context canceled, record processing stopped, err: %v", ctx.Err())
-			return ctx.Err()
-		default:
-		}
+	err := processFunc(ctx, record)
+	if err == nil {
+		log.Info().Msgf("Successfully processed message from topic %s", record.Topic)
+		return nil
+	}
 
-		err := processFunc(ctx, record)
-		if err == nil {
-			log.Info().Msgf("Successfully processed message from topic %s", record.Topic)
-			return nil
-		}
-
-		log.Error().Msgf("%d processing attempt failed: %v", attempt, err)
-
-		if attempt >= maxRetries {
-			log.Info().Msgf("Sending a message to dead-letter topic %s after %d failed attempts", DeadLetterTopic, maxRetries)
-			if err = c.sendToDeadLetter(ctx, record); err != nil {
-				log.Error().Msgf("Failed to send a message to the dead-letter topic: %v", err)
-				return fmt.Errorf("failed to send a message to the dead-letter topic: %w", err)
-			}
-
-			return fmt.Errorf("failed processing message: %w", err)
-		}
-
-		select {
-		case <-time.After(backoff):
-			backoff = time.Duration(math.Min(float64(maxBackoff), float64(backoff)*2))
-		case <-ctx.Done():
-			log.Error().Msgf("Context canceled while waiting for a retry: %v", ctx.Err())
-			return ctx.Err()
-		}
+	log.Info().Msgf("processing failed, err: %v, Sending a message to dead-letter topic %s after %d failed attempts", err, DeadLetterTopic, maxRetries)
+	if err = c.sendToDeadLetter(ctx, record); err != nil {
+		return fmt.Errorf("failed to send a message to the dead-letter topic: %w", err)
 	}
 
 	return nil
