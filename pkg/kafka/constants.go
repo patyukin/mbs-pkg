@@ -19,4 +19,5 @@ const (
 	CreditPaymentsTopic         = "credit_payments"
 	PaymentRequestTopic         = "payment_request"
 	CreditPaymentsSolutionTopic = "credit_payments_solution"
+	RegistrationSolutionTopic   = "registration_solution"
 )
