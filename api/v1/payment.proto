@@ -14,6 +14,12 @@ enum PaymentStatus {
   FAILED = 4;
 }
 
+enum TransactionType {
+  UNKNOWN_TRANSACTION_TYPE = 0;
+  DEBIT = 1;
+  CREDIT = 2;
+}
+
 service PaymentService {
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
   rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
