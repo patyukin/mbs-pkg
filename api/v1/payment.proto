@@ -14,19 +14,11 @@ enum PaymentStatus {
   FAILED = 4;
 }
 
-enum TransactionType {
-  UNKNOWN_TRANSACTION_TYPE = 0;
-  DEBIT = 1;
-  CREDIT = 2;
-}
-
 service PaymentService {
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
   rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
   rpc ConfirmationPayment(ConfirmationPaymentRequest) returns (ConfirmationPaymentResponse);
   rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
-  rpc UpdatePaymentStatus(UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
-  rpc GetTransactionsByPayment(GetTransactionsByPaymentRequest) returns (GetTransactionsByPaymentResponse);
 }
 
 message CreateAccountRequest {
@@ -84,35 +76,3 @@ message GetPaymentResponse {
   Payment payment = 1;
   error_v1.ErrorResponse error = 2;
 }
-
-message UpdatePaymentStatusRequest {
-  string payment_id = 1;
-  PaymentStatus status = 2;
-}
-
-message UpdatePaymentStatusResponse {
-  string message = 1;
-  error_v1.ErrorResponse error = 2;
-}
-
-message Transaction {
-  string id = 1;
-  string payment_id = 2;
-  string account_id = 3;
-  TransactionType type = 4;
-  int64 amount = 5;
-  string currency = 6;
-  string description = 7;
-  string status = 8;
-  string created_at = 9;
-}
-
-message GetTransactionsByPaymentRequest {
-  string payment_id = 1;
-}
-
-message GetTransactionsByPaymentResponse {
-  repeated Transaction transactions = 1;
-  error_v1.ErrorResponse error = 2;
-}
-
