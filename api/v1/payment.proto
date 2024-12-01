@@ -76,7 +76,8 @@ message Payment {
 }
 
 message GetPaymentRequest {
-  string id = 1;
+  string payment_id = 1;
+  string user_id = 2;
 }
 
 message GetPaymentResponse {
@@ -85,7 +86,7 @@ message GetPaymentResponse {
 }
 
 message UpdatePaymentStatusRequest {
-  string id = 1;
+  string payment_id = 1;
   PaymentStatus status = 2;
 }
 

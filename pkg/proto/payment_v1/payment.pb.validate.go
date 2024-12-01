@@ -899,7 +899,9 @@ func (m *GetPaymentRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Id
+	// no validation rules for PaymentId
+
+	// no validation rules for UserId
 
 	if len(errors) > 0 {
 		return GetPaymentRequestMultiError(errors)
@@ -1163,7 +1165,7 @@ func (m *UpdatePaymentStatusRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Id
+	// no validation rules for PaymentId
 
 	// no validation rules for Status
 
