@@ -1559,6 +1559,8 @@ func (m *SignInConfirmationRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Email
+
 	// no validation rules for Code
 
 	if len(errors) > 0 {
