@@ -93,7 +93,7 @@ message GetBriefUserByIDResponse {
 }
 
 message SignInConfirmationRequest {
-  string email = 1;
+  string login = 1;
   string code = 2;
 }
 
