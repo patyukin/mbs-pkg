@@ -9,10 +9,12 @@ import (
 )
 
 var (
-	ErrUserNotFound   = fmt.Errorf("user not found")
-	ErrUserExists     = fmt.Errorf("user exists")
-	ErrInvalidRequest = fmt.Errorf("invalid request")
-	ErrDatabaseError  = fmt.Errorf("database connection error")
+	ErrUserNotFound           = fmt.Errorf("user not found")
+	ErrUserExists             = fmt.Errorf("user exists")
+	ErrInvalidRequest         = fmt.Errorf("invalid request")
+	ErrDatabaseError          = fmt.Errorf("database connection error")
+	ErrTelegramChatIDNotFound = errors.New("telegram chat id not found")
+	ErrInvalidCode            = errors.New("invalid code")
 )
 
 // ToErrorResponse преобразует предопределенные ошибки в error_v1.ErrorResponse
