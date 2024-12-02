@@ -35,14 +35,14 @@ enum PaymentStatus {
 service CreditsServiceV1 {
   // Создание новой заявки на кредит
   rpc CreateCreditApplication(CreateCreditApplicationRequest) returns (CreateCreditApplicationResponse);
-  // Создание нового кредита
-  rpc CreateCredit(CreateCreditRequest) returns (CreateCreditResponse);
   // Подтверждение новой заявки на кредит
   rpc CreditApplicationConfirmation(CreditApplicationConfirmationRequest) returns (CreditApplicationConfirmationResponse);
   // Получение статуса заявки на кредит
   rpc GetCreditApplication(GetCreditApplicationRequest) returns (GetCreditApplicationResponse);
   // Обновление статуса заявки на кредит (например, одобрение или отклонение)
   rpc UpdateCreditApplicationSolution(UpdateCreditApplicationSolutionRequest) returns (UpdateCreditApplicationSolutionResponse);
+  // Создание нового кредита
+  rpc CreateCredit(CreateCreditRequest) returns (CreateCreditResponse);
   // Получение информации о кредите
   rpc GetCredit(GetCreditRequest) returns (GetCreditResponse);
   // Получение списка кредитов пользователя с пагинацией
