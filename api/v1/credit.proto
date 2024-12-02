@@ -75,10 +75,8 @@ message CreditApplicationConfirmationRequest {
 
 // Сообщение ответа при подтверждении заявки на кредит
 message CreditApplicationConfirmationResponse {
-  string application_id = 1;             // UUID заявки
-  CreditApplicationStatus status = 2;    // Статус заявки (обычно PENDING)
-  string message = 3;                    // Дополнительное сообщение
-  error_v1.ErrorResponse error = 4;      // Сообщение об ошибке
+  string message = 1;                    // Дополнительное сообщение
+  error_v1.ErrorResponse error = 2;      // Сообщение об ошибке
 }
 
 message CreateCreditRequest {

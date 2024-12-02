@@ -416,10 +416,6 @@ func (m *CreditApplicationConfirmationResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ApplicationId
-
-	// no validation rules for Status
-
 	// no validation rules for Message
 
 	if all {
