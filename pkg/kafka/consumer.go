@@ -14,6 +14,7 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx conte
 	for {
 		fetches := c.client.PollFetches(ctx)
 		if fetches.IsClientClosed() {
+			log.Debug().Msg("Client is closed")
 			return nil
 		}
 
@@ -22,9 +23,13 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx conte
 			errs = append(errs, fmt.Errorf("failed to fetch %s partition %d: %w", t, p, err))
 		})
 
+		log.Debug().Msgf("Received %d fetch errors", len(errs))
+
 		if len(errs) > 0 {
 			return errors.Join(errs...)
 		}
+
+		log.Debug().Msgf("Received %d fetch responses", fetches.NumRecords())
 
 		fetches.EachPartition(func(p kgo.FetchTopicPartition) {
 			for _, record := range p.Records {
