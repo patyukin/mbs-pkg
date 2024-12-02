@@ -12,12 +12,13 @@ const (
 )
 
 const (
-	DeadLetterTopic             = "dead_letter"
-	LogReportTopic              = "log_report"
-	TransactionReportTopic      = "transaction_report"
-	CreditCreatedTopic          = "credit_created"
-	CreditPaymentsTopic         = "credit_payments"
-	PaymentRequestTopic         = "payment_request"
-	CreditPaymentsSolutionTopic = "credit_payments_solution"
-	RegistrationSolutionTopic   = "registration_solution"
+	DeadLetterTopic                = "dead_letter"
+	LogReportTopic                 = "log_report"
+	TransactionReportTopic         = "transaction_report"
+	TransactionReportSolutionTopic = "transaction_report_solution"
+	CreditCreatedTopic             = "credit_created"
+	CreditPaymentsTopic            = "credit_payments"
+	PaymentRequestTopic            = "payment_request"
+	CreditPaymentsSolutionTopic    = "credit_payments_solution"
+	RegistrationSolutionTopic      = "registration_solution"
 )

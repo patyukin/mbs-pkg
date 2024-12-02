@@ -59,6 +59,10 @@ func (c *Client) PublishTransactionReport(ctx context.Context, value []byte) err
 	return c.PublishMessageWithRetry(ctx, TransactionReportTopic, nil, value)
 }
 
+func (c *Client) PublishTransactionReportSolution(ctx context.Context, value []byte) error {
+	return c.PublishMessageWithRetry(ctx, TransactionReportSolutionTopic, nil, value)
+}
+
 func (c *Client) PublishCreditCreated(ctx context.Context, value []byte) error {
 	return c.PublishMessageWithRetry(ctx, CreditCreatedTopic, nil, value)
 }
