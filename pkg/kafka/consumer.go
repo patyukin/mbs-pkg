@@ -46,7 +46,7 @@ func (c *Client) processRecord(ctx context.Context, record *kgo.Record, processF
 	for attempt = 1; attempt <= maxRetries; attempt++ {
 		err := processFunc(ctx, record)
 		if err == nil {
-			log.Info().Msgf("The message was successfully sent to the topic %s: %s", record.Topic, string(record.Value))
+			log.Info().Msgf("The message was successfully processed in the topic %s: %s", record.Topic, string(record.Value))
 			return
 		}
 
