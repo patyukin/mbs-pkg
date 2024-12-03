@@ -111,9 +111,8 @@ message GetCreditApplicationResponse {
 message UpdateCreditApplicationSolutionRequest {
   string application_id = 1;              // UUID заявки
   CreditApplicationStatus status = 2;     // Новый статус заявки (APPROVED или REJECTED)
-  string decision_date = 3;               // Дата принятия решения
-  int64 approved_amount = 4;              // Одобренная сумма
-  string decision_notes = 5;              // Примечания к решению
+  int64 approved_amount = 3;              // Одобренная сумма
+  string decision_notes = 4;              // Примечания к решению
 }
 
 // Сообщение ответа при обновлении статуса заявки

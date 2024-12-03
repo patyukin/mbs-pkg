@@ -1049,8 +1049,6 @@ func (m *UpdateCreditApplicationSolutionRequest) validate(all bool) error {
 
 	// no validation rules for Status
 
-	// no validation rules for DecisionDate
-
 	// no validation rules for ApprovedAmount
 
 	// no validation rules for DecisionNotes
