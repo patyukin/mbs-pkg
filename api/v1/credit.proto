@@ -56,9 +56,7 @@ message CreateCreditApplicationRequest {
   string user_id = 1;                    // UUID пользователя, подающего заявку
   int64 requested_amount = 2;            // Запрашиваемая сумма кредита
   int32 interest_rate = 3;               // Процентная ставка
-  string start_date = 4;                 // Предполагаемая дата начала кредита
-  string end_date = 5;                   // Предполагаемая дата окончания кредита
-  string description = 6;                // Дополнительное описание или комментарии
+  string description = 4;                // Дополнительное описание или комментарии
 }
 
 // Сообщение ответа при создании заявки на кредит

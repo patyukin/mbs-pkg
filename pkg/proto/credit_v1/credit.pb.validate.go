@@ -63,10 +63,6 @@ func (m *CreateCreditApplicationRequest) validate(all bool) error {
 
 	// no validation rules for InterestRate
 
-	// no validation rules for StartDate
-
-	// no validation rules for EndDate
-
 	// no validation rules for Description
 
 	if len(errors) > 0 {
