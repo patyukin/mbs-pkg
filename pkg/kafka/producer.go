@@ -2,10 +2,11 @@ package kafka
 
 import (
 	"context"
-	"github.com/rs/zerolog/log"
-	"github.com/twmb/franz-go/pkg/kgo"
 	"math"
 	"time"
+
+	"github.com/rs/zerolog/log"
+	"github.com/twmb/franz-go/pkg/kgo"
 )
 
 func (c *Client) PublishMessageWithRetry(ctx context.Context, topic string, key, value []byte) error {
@@ -17,9 +18,11 @@ func (c *Client) PublishMessageWithRetry(ctx context.Context, topic string, key,
 	for attempt := 1; attempt <= maxRetries; attempt++ {
 		resultCh := make(chan error, 1)
 
-		c.client.Produce(ctx, record, func(_ *kgo.Record, err error) {
-			resultCh <- err
-		})
+		c.client.Produce(
+			ctx, record, func(_ *kgo.Record, err error) {
+				resultCh <- err
+			},
+		)
 
 		err := <-resultCh
 		if err == nil {
@@ -39,6 +42,27 @@ func (c *Client) PublishMessageWithRetry(ctx context.Context, topic string, key,
 	}
 
 	log.Error().Msgf("Message %s not sent to topic %s after %d attempts", string(value), topic, maxRetries)
+
+	return lastErr
+}
+
+func (c *Client) PublishMessage(ctx context.Context, topic string, key, value []byte) error {
+	record := &kgo.Record{Topic: topic, Key: key, Value: value}
+
+	var lastErr error
+	resultCh := make(chan error, 1)
+
+	c.client.Produce(
+		ctx, record, func(_ *kgo.Record, err error) {
+			resultCh <- err
+		},
+	)
+
+	err := <-resultCh
+	if err == nil {
+		log.Info().Msgf("Message %s sent to topic %s", string(value), topic)
+		return nil
+	}
 
 	return lastErr
 }
@@ -76,5 +100,5 @@ func (c *Client) PublishCreditPaymentsSolution(ctx context.Context, value []byte
 }
 
 func (c *Client) PublishRegistrationSolution(ctx context.Context, value []byte) error {
-	return c.PublishMessageWithRetry(ctx, RegistrationSolutionTopic, nil, value)
+	return c.PublishMessage(ctx, RegistrationSolutionTopic, nil, value)
 }
