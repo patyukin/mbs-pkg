@@ -4,9 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
+
 	_ "github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/rs/zerolog/log"
-	"time"
 )
 
 func NewClickhouse(ctx context.Context, dsn string) (*sql.DB, error) {

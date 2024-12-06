@@ -4,9 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
+
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog/log"
-	"time"
 )
 
 func New(ctx context.Context, dsn string) (*sql.DB, error) {

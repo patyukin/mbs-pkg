@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"fmt"
+
 	"github.com/twmb/franz-go/pkg/kgo"
 )
 

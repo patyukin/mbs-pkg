@@ -2,6 +2,7 @@ package creditmapper
 
 import (
 	"fmt"
+
 	"github.com/patyukin/mbs-pkg/pkg/proto/credit_v1"
 )
 

@@ -3,11 +3,12 @@ package mux_server
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"net/http/pprof"
+
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"net/http"
-	"net/http/pprof"
 )
 
 type Server struct {
@@ -34,18 +35,22 @@ func (s *Server) Run(port int) error {
 	mux.Handle("/debug/pprof/goroutine", pprof.Handler("goroutine"))
 	mux.Handle("/debug/pprof/threadcreate", pprof.Handler("goroutine"))
 
-	mux.Handle("/v1/set-log-level", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		level := r.URL.Query().Get("level")
-		parsedLevel, err := zerolog.ParseLevel(level)
-		if err != nil {
-			http.Error(w, "Invalid log level", http.StatusBadRequest)
-			return
-		}
+	mux.Handle(
+		"/v1/set-log-level", http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				level := r.URL.Query().Get("level")
+				parsedLevel, err := zerolog.ParseLevel(level)
+				if err != nil {
+					http.Error(w, "Invalid log level", http.StatusBadRequest)
+					return
+				}
 
-		zerolog.SetGlobalLevel(parsedLevel)
+				zerolog.SetGlobalLevel(parsedLevel)
 
-		fmt.Println("Set log level to", level)
-	}))
+				fmt.Println("Set log level to", level)
+			},
+		),
+	)
 
 	addr := fmt.Sprintf("0.0.0.0:%d", port)
 	s.httpServer = &http.Server{

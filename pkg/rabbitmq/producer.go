@@ -3,9 +3,10 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
+	"time"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/rs/zerolog/log"
-	"time"
 )
 
 // PublishDQLMessage

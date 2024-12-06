@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/patyukin/mbs-pkg/pkg/proto/error_v1"
 	"net/http"
+
+	"github.com/patyukin/mbs-pkg/pkg/proto/error_v1"
 )
 
 var (

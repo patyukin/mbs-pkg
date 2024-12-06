@@ -2,6 +2,7 @@ package paymentmapper
 
 import (
 	"fmt"
+
 	"github.com/patyukin/mbs-pkg/pkg/proto/payment_v1"
 )
 

@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/rs/zerolog/log"
-	"github.com/twmb/franz-go/pkg/kgo"
 	"math"
 	"time"
+
+	"github.com/rs/zerolog/log"
+	"github.com/twmb/franz-go/pkg/kgo"
 )
 
 func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx context.Context, record *kgo.Record) error) error {
@@ -19,9 +20,11 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx conte
 		}
 
 		var errs []error
-		fetches.EachError(func(t string, p int32, err error) {
-			errs = append(errs, fmt.Errorf("failed to fetch %s partition %d: %w", t, p, err))
-		})
+		fetches.EachError(
+			func(t string, p int32, err error) {
+				errs = append(errs, fmt.Errorf("failed to fetch %s partition %d: %w", t, p, err))
+			},
+		)
 
 		log.Debug().Msgf("Received %d fetch errors", len(errs))
 
@@ -31,11 +34,13 @@ func (c *Client) ProcessMessages(ctx context.Context, processFunc func(ctx conte
 
 		log.Debug().Msgf("Received %d fetch responses", fetches.NumRecords())
 
-		fetches.EachPartition(func(p kgo.FetchTopicPartition) {
-			for _, record := range p.Records {
-				go c.processRecord(ctx, record, processFunc)
-			}
-		})
+		fetches.EachPartition(
+			func(p kgo.FetchTopicPartition) {
+				for _, record := range p.Records {
+					go c.processRecord(ctx, record, processFunc)
+				}
+			},
+		)
 	}
 }
 
@@ -72,12 +77,14 @@ func (c *Client) sendToDeadLetter(ctx context.Context, record *kgo.Record) {
 		Headers: record.Headers,
 	}
 
-	c.client.Produce(ctx, deadLetterRecord, func(_ *kgo.Record, err error) {
-		if err != nil {
-			log.Error().Msgf("Failed to send message to dead-letter topic: %v", err)
-			return
-		}
+	c.client.Produce(
+		ctx, deadLetterRecord, func(_ *kgo.Record, err error) {
+			if err != nil {
+				log.Error().Msgf("Failed to send message to dead-letter topic: %v", err)
+				return
+			}
 
-		log.Info().Msgf("Successfully sent message to dead-letter topic: %s", DeadLetterTopic)
-	})
+			log.Info().Msgf("Successfully sent message to dead-letter topic: %s", DeadLetterTopic)
+		},
+	)
 }
