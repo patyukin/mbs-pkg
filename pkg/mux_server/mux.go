@@ -52,10 +52,11 @@ func (s *Server) Run(port int) error {
 		),
 	)
 
+	withMiddlewareMux := loggingMiddleware(mux)
 	addr := fmt.Sprintf("0.0.0.0:%d", port)
 	s.httpServer = &http.Server{
 		Addr:           addr,
-		Handler:        mux,
+		Handler:        withMiddlewareMux,
 		MaxHeaderBytes: 1 << 20,
 	}
 
