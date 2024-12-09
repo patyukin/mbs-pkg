@@ -12,6 +12,9 @@ enum CreditApplicationStatus {
   PENDING = 1;
   APPROVED = 2;
   REJECTED = 3;
+  DRAFT = 4;
+  ARCHIVED = 5;
+  PROCESSING = 6;
 }
 
 // Статус кредита

@@ -7,9 +7,12 @@ import (
 )
 
 const (
-	CreditApplicationStatusPending  = "PENDING"
-	CreditApplicationStatusApproved = "APPROVED"
-	CreditApplicationStatusRejected = "REJECTED"
+	CreditApplicationStatusDraft      = "DRAFT"
+	CreditApplicationStatusPending    = "PENDING"
+	CreditApplicationStatusApproved   = "APPROVED"
+	CreditApplicationStatusRejected   = "REJECTED"
+	CreditApplicationStatusArchived   = "ARCHIVED"
+	CreditApplicationStatusProcessing = "PROCESSING"
 )
 
 // Маппинг для CreditApplicationStatus
@@ -18,6 +21,9 @@ var creditApplicationStatusToString = map[credit_v1.CreditApplicationStatus]stri
 	credit_v1.CreditApplicationStatus_PENDING:        "PENDING",
 	credit_v1.CreditApplicationStatus_APPROVED:       "APPROVED",
 	credit_v1.CreditApplicationStatus_REJECTED:       "REJECTED",
+	credit_v1.CreditApplicationStatus_ARCHIVED:       "ARCHIVED",
+	credit_v1.CreditApplicationStatus_PROCESSING:     "PROCESSING",
+	credit_v1.CreditApplicationStatus_DRAFT:          "DRAFT",
 }
 
 var stringToCreditApplicationStatus = map[string]credit_v1.CreditApplicationStatus{
@@ -25,6 +31,9 @@ var stringToCreditApplicationStatus = map[string]credit_v1.CreditApplicationStat
 	"PENDING":        credit_v1.CreditApplicationStatus_PENDING,
 	"APPROVED":       credit_v1.CreditApplicationStatus_APPROVED,
 	"REJECTED":       credit_v1.CreditApplicationStatus_REJECTED,
+	"ARCHIVED":       credit_v1.CreditApplicationStatus_ARCHIVED,
+	"PROCESSING":     credit_v1.CreditApplicationStatus_PROCESSING,
+	"DRAFT":          credit_v1.CreditApplicationStatus_DRAFT,
 }
 
 // EnumToStringCreditApplicationStatus converts CreditApplicationStatus enum to string
